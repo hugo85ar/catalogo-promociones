@@ -120,19 +120,19 @@
       /* Square cards */
     }
     /* NUEVO: Promotional Badge Style */
-    .promo-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: var(--accent-color); /* Rojo de Netflix: #e50914 */
-      color: white;
-      padding: 5px 10px;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      font-weight: bold;
-      z-index: 5;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-    }
+Â  Â  .promo-badge {
+Â  Â  Â  position: absolute;
+Â  Â  Â  top: 10px;
+Â  Â  Â  right: 10px;
+Â  Â  Â  background-color: var(--accent-color); /* Rojo de Netflix: #e50914 */
+Â  Â  Â  color: white;
+Â  Â  Â  padding: 5px 10px;
+Â  Â  Â  border-radius: 4px;
+Â  Â  Â  font-size: 0.8rem;
+Â  Â  Â  font-weight: bold;
+Â  Â  Â  z-index: 5;
+Â  Â  Â  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+Â  Â  }
     .card:hover {
       transform: scale(1.03);
       z-index: 10;
@@ -298,7 +298,7 @@
   <!-- Modal -->
   <div id="modal" class="modal-overlay" onclick="closeModal(event)">
     <div class="modal-content">
-      <button class="modal-close" onclick="closeModal(event)">×</button>
+      <button class="modal-close" onclick="closeModal(event)">Ã—</button>
       <img id="modal-img" class="modal-image" src="" alt="">
       <div class="modal-details">
         <h2 id="modal-title" class="modal-title"></h2>
@@ -328,18 +328,20 @@
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxTGQQZWDLXcfMtMbOH9c98PfH5cQgu5lIzK6jw9vBP-9NLR_RlmX28fDSpd92UZbZU/exec";
     
     document.addEventListener("DOMContentLoaded", () => {
-        // En lugar de usar google.script.run, usamos el fetch estándar de JavaScript
+        // En lugar de usar google.script.run, usamos el fetch estÃ¡ndar de JavaScript
         fetch(API_ENDPOINT)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(initApp)
-            .catch(error => {
+        .then(response => {
+            // ... (El resto del cÃ³digo de fetch)
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json(); // <-- ESENCIAL: Convierte la respuesta a JSON
+        })
+        .then(initApp)
+        .catch(error => {
+            
                 console.error('Error al cargar datos del API:', error);
-                // Aquí podrías mostrar un mensaje de error al usuario si falla la carga
+                // AquÃ­ podrÃ­as mostrar un mensaje de error al usuario si falla la carga
                 // initApp(mockData); // O usar datos mock para desarrollo
             });
     });
@@ -372,25 +374,25 @@
       });
     }
     function renderCategoryView(category) {
-      // Hide Hero
-      document.getElementById("hero").style.display = "none";
-      // Show Nav Bar
-      const navBar = document.getElementById("nav-bar");
-      navBar.style.display = "flex";
-      document.getElementById("section-title").textContent = category.name;
-      // Render Products Grid
-      const grid = document.getElementById("grid-container");
-      grid.innerHTML = "";
-      category.products.forEach(prod => {
-        // Incluir prod.isPromotional al llamar a createCard
-        const card = createCard(prod.name, "", prod.image, () => {
-          openModal(prod);
-        }, prod.isPromotional); // <--- CAMBIO AQUÍ
-        grid.appendChild(card);
-      });
-      // Scroll to top
-      window.scrollTo(0, 0);
-    }
+Â  Â  Â  // Hide Hero
+Â  Â  Â  document.getElementById("hero").style.display = "none";
+Â  Â  Â  // Show Nav Bar
+Â  Â  Â  const navBar = document.getElementById("nav-bar");
+Â  Â  Â  navBar.style.display = "flex";
+Â  Â  Â  document.getElementById("section-title").textContent = category.name;
+Â  Â  Â  // Render Products Grid
+Â  Â  Â  const grid = document.getElementById("grid-container");
+Â  Â  Â  grid.innerHTML = "";
+Â  Â  Â  category.products.forEach(prod => {
+Â  Â  Â  Â  // Incluir prod.isPromotional al llamar a createCard
+Â  Â  Â  Â  const card = createCard(prod.name, "", prod.image, () => {
+Â  Â  Â  Â  Â  openModal(prod);
+Â  Â  Â  Â  }, prod.isPromotional); // <--- CAMBIO AQUÃ
+Â  Â  Â  Â  grid.appendChild(card);
+Â  Â  Â  });
+Â  Â  Â  // Scroll to top
+Â  Â  Â  window.scrollTo(0, 0);
+Â  Â  }
     // --- Helpers ---
     function setupHero(categories, config) {
       const validCats = categories.filter(c => c.products.length > 0);
@@ -408,24 +410,24 @@
       const heroBtn = document.getElementById("hero-btn");
       heroBtn.onclick = () => openModal(randomProd);
     }
-    function createCard(title, subtitle, imageUrl, onClick, isPromotional = false) { // <--- CAMBIO AQUÍ: Añadir argumento con valor por defecto
-      const card = document.createElement("div");
-      card.className = "card";
-      card.onclick = onClick;
+    function createCard(title, subtitle, imageUrl, onClick, isPromotional = false) { // <--- CAMBIO AQUÃ: AÃ±adir argumento con valor por defecto
+Â  Â  Â  const card = document.createElement("div");
+Â  Â  Â  card.className = "card";
+Â  Â  Â  card.onclick = onClick;
 
-      // Lógica para el badge
-      const promoBadgeHtml = isPromotional ? 
-        '<div class="promo-badge">¡PROMO!</div>' : ''; // <--- NUEVO
+Â  Â  Â  // LÃ³gica para el badge
+Â  Â  Â  const promoBadgeHtml = isPromotional ? 
+Â  Â  Â  Â  '<div class="promo-badge">Â¡PROMO!</div>' : ''; // <--- NUEVO
 
-      card.innerHTML = `
-        ${promoBadgeHtml}         <img class="card-img" src="${imageUrl}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400?text=Sin+Imagen'">
-        <div class="card-overlay">
-          <div class="card-title">${title}</div>
-          <div class="card-subtitle">${subtitle}</div>
-        </div>
-      `;
-      return card;
-    }
+Â  Â  Â  card.innerHTML = `
+Â  Â  Â  Â  ${promoBadgeHtml} Â  Â  Â  Â  <img class="card-img" src="${imageUrl}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400?text=Sin+Imagen'">
+Â  Â  Â  Â  <div class="card-overlay">
+Â  Â  Â  Â  Â  <div class="card-title">${title}</div>
+Â  Â  Â  Â  Â  <div class="card-subtitle">${subtitle}</div>
+Â  Â  Â  Â  </div>
+Â  Â  Â  `;
+Â  Â  Â  return card;
+Â  Â  }
     function openModal(product) {
       const modal = document.getElementById("modal");
       const modalImg = document.getElementById("modal-img");
@@ -450,4 +452,5 @@
     }
   </script>
 </body>
+
 </html>
