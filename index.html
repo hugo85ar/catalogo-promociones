@@ -1,461 +1,194 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <base target="_top" />
-   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
- 
-  <style>
-    :root {
-      --bg-color: #141414;
-      --text-color: #e5e5e5;
-      --accent-color: #e50914;
-      --card-bg: #2f2f2f;
-    }
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      font-family: "Roboto", sans-serif;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-    }
-    /* Hero Section */
-    .hero {
-      height: 50vh;
-      position: relative;
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: flex-end;
-      padding: 20px 4%;
-      margin-bottom: 20px;
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(to top, var(--bg-color), transparent 50%);
-    }
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 600px;
-      text-align: left;
-    }
-    .hero-title {
-      font-size: 2.5rem;
-      font-weight: bold;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    }
-    .hero-desc {
-      font-size: 1.1rem;
-      margin-bottom: 20px;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-    }
-    .hero-btn {
-      background-color: white;
-      color: black;
-      padding: 10px 25px;
-      border-radius: 4px;
-      font-weight: bold;
-      text-decoration: none;
-      display: inline-block;
-      cursor: pointer;
-      border: none;
-      transition: opacity 0.2s;
-    }
-    .hero-btn:hover {
-      opacity: 0.8;
-    }
-    /* Navigation Bar */
-    .nav-bar {
-      padding: 10px 4%;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .back-btn {
-      background: transparent;
-      color: white;
-      border: 1px solid white;
-      padding: 5px 15px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .back-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-    .section-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-      margin: 0;
-    }
-    /* Grid Layout */
-    .main-container {
-      padding: 20px 4%;
-    }
-    .grid-container {
-      display: grid;
-      grid-template-columns: 1fr;
-      /* Mobile: 1 column */
-      gap: 20px;
-    }
-    /* Card Styles */
-    .card {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-      position: relative;
-      aspect-ratio: 1 / 1;
-      /* Square cards */
-    }
-    /* NUEVO: Promotional Badge Style */
-    .promo-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: var(--accent-color); /* Rojo de Netflix: #e50914 */
-      color: white;
-      padding: 5px 10px;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      font-weight: bold;
-      z-index: 5;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-    }
-    .card:hover {
-      transform: scale(1.03);
-      z-index: 10;
-    }
-    .card-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .card-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      height: 50%;
-    }
-    .card-title {
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    .card-subtitle {
-      font-size: 0.9rem;
-      color: #aaa;
-    }
-    /* Modal */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s;
-    }
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .modal-content {
-      background: #181818;
-      width: 90%;
-      max-width: 800px;
-      border-radius: 8px;
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      max-height: 90vh;
-    }
-    .modal-close {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      cursor: pointer;
-      font-size: 20px;
-      z-index: 10;
-    }
-    .modal-image {
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
-    }
-    .modal-details {
-      padding: 30px;
-      text-align: left;
-      overflow-y: auto;
-    }
-    .modal-title {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-    .modal-desc {
-      color: #aaa;
-      margin-bottom: 20px;
-      line-height: 1.5;
-    }
-    .btn-primary {
-      background-color: white;
-      color: black;
-      padding: 10px 30px;
-      border-radius: 4px;
-      text-decoration: none;
-      font-weight: bold;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    /* WhatsApp Float */
-    .whatsapp-float {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #25D366;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: bold;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      z-index: 900;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    /* Desktop Grid */
-    @media (min-width: 768px) {
-      .grid-container {
-        grid-template-columns: repeat(3, 1fr);
-        /* Desktop: 3 columns */
-      }
-      .modal-content {
-        flex-direction: row;
-      }
-      .modal-image {
-        width: 50%;
-        height: auto;
-      }
-      .modal-details {
-        width: 50%;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HugoBOT - Tu Asistente Virtual</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-image: url('https://res.cloudinary.com/dlnrsadbc/image/upload/v1759946006/Designer_34_s2x34f.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #chat-container {
+            width: 100%;
+            max-width: 450px;
+            height: 90vh;
+            max-height: 700px;
+            /* Sugerencia de mejora: Opacidad 0.9 para mejor lectura */
+            background: rgba(255, 255, 255, 0.9); 
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        #header-content {
+            /* Sugerencia de mejora: Azul más oscuro para contraste */
+            background-color: #004d99; 
+            color: white;
+            padding: 15px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        
+        #header-content img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        #messages { flex-grow: 1; overflow-y: auto; padding: 20px; border-bottom: 1px solid #ddd; }
+        .message { margin-bottom: 15px; display: flex; flex-direction: column; }
+        .message .sender { font-weight: bold; margin-bottom: 5px; font-size: 0.9em; color: #555; }
+        .message .text { padding: 10px 15px; border-radius: 18px; max-width: 80%; word-wrap: break-word; }
+        .user-message .text { background-color: #007bff; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .bot-message .text { background-color: #e9e9eb; color: #333; align-self: flex-start; border-bottom-left-radius: 4px; }
+        .bot-message a { color: #0056b3; text-decoration: none; font-weight: bold; }
+        /* Sugerencia de mejora: Añadido margen entre botones */
+        #options-container { padding: 10px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; } 
+        .option-button { background-color: #f8f9fa; border: 1px solid #007bff; color: #007bff; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9em; transition: all 0.2s; }
+        .option-button:hover { background-color: #007bff; color: white; }
+        #input-area { display: flex; padding: 10px; border-top: 1px solid #ddd; }
+        #input-area input { flex-grow: 1; border: 1px solid #ccc; border-radius: 20px; padding: 10px 15px; font-size: 1em; }
+        #input-area button { background: #007bff; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 1.5em; cursor: pointer; margin-left: 10px; }
+    </style>
 </head>
 <body>
-  <!-- Hero Section -->
-  <div id="hero" class="hero" style="display: none;">
-    <div class="hero-content">
-      <h1 id="hero-title" class="hero-title"></h1>
-      <p id="hero-desc" class="hero-desc"></p>
-      <button id="hero-btn" class="hero-btn">Ver Detalles</button>
-    </div>
-  </div>
-  <!-- Navigation Bar (Hidden on Home) -->
-  <div id="nav-bar" class="nav-bar" style="display: none;">
-    <button class="back-btn" onclick="renderHome()">← Volver</button>
-    <h2 id="section-title" class="section-title"></h2>
-  </div>
-  <!-- Main Content Grid -->
-  <div id="main-container" class="main-container">
-    <div id="grid-container" class="grid-container">
-      <!-- Items will be injected here -->
-    </div>
-  </div>
-  <!-- Modal -->
-  <div id="modal" class="modal-overlay" onclick="closeModal(event)">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeModal(event)">×</button>
-      <img id="modal-img" class="modal-image" src="" alt="">
-      <div class="modal-details">
-        <h2 id="modal-title" class="modal-title"></h2>
-        <p id="modal-desc" class="modal-desc"></p>
-        <p id="modal-offer" style="color: #46d369; font-weight: bold; margin-bottom: 15px;"></p>
-        <div class="modal-actions">
-  <a id="modal-buy" href="#" target="_blank" class="btn-primary">
-    <span>🛒</span> Comprar 
-  </a>
-</div>
-      </div>
-    </div>
-  </div>
-  <a id="whatsapp-btn" class="whatsapp-float" target="_blank">
-    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-      <path
-        d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.807-.297-1.537-.948-.57-.508-.956-1.135-1.068-1.327-.112-.192-.012-.296.084-.391.086-.086.192-.224.288-.336.096-.112.128-.192.192-.32.064-.128.032-.24-.016-.336-.048-.096-.432-1.04-.592-1.424-.155-.373-.313-.323-.432-.328-.111-.005-.239-.005-.367-.005-.128 0-.335.048-.511.24-.176.192-.672.656-.672 1.6s.688 1.856.784 1.984c.096.128 1.352 2.064 3.275 2.894 1.923.83 1.923.552 2.275.512.352-.04 1.134-.464 1.295-.912.16-.448.16-.832.112-.912-.048-.08-.176-.128-.368-.224z" />
-      </path>
-    </svg>
-    WhatsApp
-  </a>
-  
-  <script>
-    let allData = {};
-    
-    // ?? 1. REEMPLAZA ESTA VARIABLE con la URL /exec que obtuviste en el paso anterior (B)
-    const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxTGQQZWDLXcfMtMbOH9c98PfH5cQgu5lIzK6jw9vBP-9NLR_RlmX28fDSpd92UZbZU/exec";
-    
-    document.addEventListener("DOMContentLoaded", () => {
-        // En lugar de usar google.script.run, usamos el fetch estándar de JavaScript
-        fetch(API_ENDPOINT)
-        .then(response => {
-            // ... (El resto del código de fetch)
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json(); // <-- ESENCIAL: Convierte la respuesta a JSON
-        })
-        .then(initApp)
-        .catch(error => {
-            
-                console.error('Error al cargar datos del API:', error);
-                // Aquí podrías mostrar un mensaje de error al usuario si falla la carga
-                // initApp(mockData); // O usar datos mock para desarrollo
-            });
-    });
+    <div id="chat-container">
 
-    function initApp(data) {
-        allData = data;
-        document.body.style.backgroundColor = data.config.backgroundColor;
-        document.getElementById("whatsapp-btn").href = data.config.whatsappUrl;
-        renderHome();
-    }
-    // --- Views ---
-    function renderHome() {
-      // Show Hero
-      const hero = document.getElementById("hero");
-      hero.style.display = "flex";
-      setupHero(allData.categories, allData.config);
-      // Hide Nav Bar
-      document.getElementById("nav-bar").style.display = "none";
-      // Render Categories Grid
-      const grid = document.getElementById("grid-container");
-      grid.innerHTML = "";
-      allData.categories.forEach(cat => {
-        if (cat.products.length === 0) return;
-        // Use category image if available, else first product image
-        const imgUrl = cat.image || (cat.products[0] ? cat.products[0].image : "");
-        const card = createCard(cat.name, `${cat.products.length} productos`, imgUrl, () => {
-          renderCategoryView(cat);
+        <div id="header-content">
+            <img src="https://res.cloudinary.com/dlnrsadbc/image/upload/v1759943005/202510080950_portada_r85ywo.jpg" alt="Hugobot">
+            <div>HugoBOT - Tu Asistente Virtual</div>
+        </div>
+
+        <div id="messages"></div>
+        <div id="options-container"></div>
+        <div id="input-area">
+            <input id="input" type="text" placeholder="O escribe tu pregunta..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">›</button>
+        </div>
+
+    </div>
+
+    <script>
+        // ⚠️ DEBES REEMPLAZAR ESTA URL con la URL de despliegue de tu Web App de Apps Script
+        const WEB_APP_URL = "https://script.google.com/macros/s/REEMPLAZAME_CON_TU_ID_DE_DESPLIEGUE/exec"; 
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Muestra el mensaje de bienvenida y las opciones originales de la FAQ
+            addMessage('Bot', '¡Hola! Bienvenido a tu asistente personal!! ... Cuéntame, ¿En qué puedo ayudarte?');
+            updateOptions([
+                'Quiero conocer los cursos disponibles', 
+                'Página Web', 
+                'Consultorías', 
+                'Cursos Grupales de Productividad', 
+                'Servicios Empaquetados de pago mensual'
+            ]);
         });
-        grid.appendChild(card);
-      });
-    }
-    function renderCategoryView(category) {
-      // Hide Hero
-      document.getElementById("hero").style.display = "none";
-      // Show Nav Bar
-      const navBar = document.getElementById("nav-bar");
-      navBar.style.display = "flex";
-      document.getElementById("section-title").textContent = category.name;
-      // Render Products Grid
-      const grid = document.getElementById("grid-container");
-      grid.innerHTML = "";
-      category.products.forEach(prod => {
-        // Incluir prod.isPromotional al llamar a createCard
-        const card = createCard(prod.name, "", prod.image, () => {
-          openModal(prod);
-        }, prod.isPromotional); // <--- CAMBIO AQUÍ
-        grid.appendChild(card);
-      });
-      // Scroll to top
-      window.scrollTo(0, 0);
-    }
-    // --- Helpers ---
-    function setupHero(categories, config) {
-      const validCats = categories.filter(c => c.products.length > 0);
-      if (validCats.length === 0) return;
-      const randomCat = validCats[Math.floor(Math.random() * validCats.length)];
-      const randomProd = randomCat.products[Math.floor(Math.random() * randomCat.products.length)];
-      const hero = document.getElementById("hero");
-      const bgImage = (config && config.heroBackgroundImage) ? config.heroBackgroundImage : randomProd.image;
-      const img = new Image();
-      img.src = bgImage;
-      img.onload = () => { hero.style.backgroundImage = `url('${bgImage}')`; };
-      img.onerror = () => { hero.style.backgroundImage = `url('https://via.placeholder.com/1200x600?text=No+Image')`; };
-      document.getElementById("hero-title").textContent = randomProd.name;
-      document.getElementById("hero-desc").textContent = randomProd.detail;
-      const heroBtn = document.getElementById("hero-btn");
-      heroBtn.onclick = () => openModal(randomProd);
-    }
-    function createCard(title, subtitle, imageUrl, onClick, isPromotional = false) { // <--- CAMBIO AQUÍ: Añadir argumento con valor por defecto
-      const card = document.createElement("div");
-      card.className = "card";
-      card.onclick = onClick;
 
-      // Lógica para el badge
-      const promoBadgeHtml = isPromotional ? 
-        '<div class="promo-badge">¡PROMO!</div>' : ''; // <--- NUEVO
+        function handleOptionClick(optionText) {
+            sendMessage(optionText);
+        }
+        
+        function sendMessage(messageContent = null) {
+            const input = document.getElementById('input');
+            const message = messageContent || input.value.trim();
 
-      card.innerHTML = `
-        ${promoBadgeHtml}         <img class="card-img" src="${imageUrl}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400?text=Sin+Imagen'">
-        <div class="card-overlay">
-          <div class="card-title">${title}</div>
-          <div class="card-subtitle">${subtitle}</div>
-        </div>
-      `;
-      return card;
-    }
-    function openModal(product) {
-      const modal = document.getElementById("modal");
-      const modalImg = document.getElementById("modal-img");
-      modalImg.src = product.image;
-      modalImg.onerror = () => { modalImg.src = 'https://via.placeholder.com/600x400?text=Sin+Imagen'; };
-      document.getElementById("modal-title").textContent = product.name;
-      document.getElementById("modal-desc").textContent = product.detail;
-      document.getElementById("modal-buy").href = product.buyUrl;
-      const offerEl = document.getElementById("modal-offer");
-      if (product.offerNote) {
-        offerEl.textContent = product.offerNote;
-        offerEl.style.display = "block";
-      } else {
-        offerEl.style.display = "none";
-      }
-      modal.classList.add("active");
-    }
-    function closeModal(e) {
-      if (e.target === document.getElementById("modal") || e.target.classList.contains("modal-close")) {
-        document.getElementById("modal").classList.remove("active");
-      }
-    }
-  </script>
+            if (!message) return;
+
+            addMessage('Tú', message);
+            if (!messageContent) input.value = '';
+            
+            showLoading();
+            updateOptions([]);
+
+            const requestData = new URLSearchParams({
+                'message': message
+            });
+
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: requestData 
+            })
+            .then(response => response.text())
+            .then(responseText => {
+                hideLoading();
+                try {
+                    const response = JSON.parse(responseText);
+                    addMessage('Bot', response.content, response.url);
+                    updateOptions(response.options);
+                } catch (e) {
+                    addMessage('Bot', responseText, null);
+                    updateOptions([]);
+                }
+            })
+            .catch(error => {
+                hideLoading();
+                console.error('Error de comunicación con Apps Script:', error);
+                addMessage('Bot', '⚠️ Lo siento, hubo un error de comunicación con el servidor.', null);
+            });
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function addMessage(sender, text, url) {
+            const messagesDiv = document.getElementById('messages');
+            const messageClass = sender === 'Tú' ? 'user-message' : 'bot-message';
+            
+            let messageHTML = `<div class="message ${messageClass}">`;
+            messageHTML += `<div class="sender">${sender}</div>`;
+            messageHTML += `<div class="text">${text}`;
+            if (url) {
+                messageHTML += `<br><br><a href="${url}" target="_blank">Accede aquí</a>`;
+            }
+            messageHTML += `</div></div>`;
+            
+            messagesDiv.innerHTML += messageHTML;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function updateOptions(options) {
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            if (options && options.length > 0) {
+                options.forEach(option => {
+                    const button = document.createElement('button');
+                    button.className = 'option-button';
+                    button.textContent = option;
+                    button.onclick = function() { handleOptionClick(option); };
+                    optionsContainer.appendChild(button);
+                });
+            }
+        }
+
+        function showLoading() {
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '<p style="color:#999; font-size:0.9em;">Escribiendo...</p>';
+        }
+        
+        function hideLoading() {
+            // Se limpia al actualizar las opciones
+        }
+    </script>
 </body>
-
 </html>
-
-
-
