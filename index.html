@@ -320,142 +320,144 @@
     </svg>
     WhatsApp
   </a>
+
   <script>
-    let allData = {};
-    document.addEventListener("DOMContentLoaded", () => {
-      if (typeof google !== 'undefined' && google.script) {
-        google.script.run.withSuccessHandler(initApp).getInitialData();
-      } else {
-        // Mock data
-        initApp({
-          config: { backgroundColor: "#141414", whatsappUrl: "#", heroBackgroundImage: "https://via.placeholder.com/1200x600?text=Hero+Configurado" },
-          categories: [
-            {
-              name: "Acción",
-              image: "https://via.placeholder.com/400x400?text=Cat+Accion",
-              products: [
-                { name: "Producto 1", image: "https://via.placeholder.com/400x400", detail: "Detalle del producto 1", buyUrl: "#", offerNote: "20% OFF" },
-                { name: "Producto 2", image: "https://via.placeholder.com/400x400", detail: "Detalle del producto 2", buyUrl: "#" },
-                { name: "Producto 3", image: "https://via.placeholder.com/400x400", detail: "Detalle del producto 3", buyUrl: "#" },
-                { name: "Producto 4", image: "https://via.placeholder.com/400x400", detail: "Detalle del producto 4", buyUrl: "#" },
-              ]
-            },
-            {
-              name: "Comedia",
-              image: "https://via.placeholder.com/400x400?text=Cat+Comedia",
-              products: [
-                { name: "Producto A", image: "https://via.placeholder.com/400x400", detail: "Detalle A", buyUrl: "#" },
-                { name: "Producto B", image: "https://via.placeholder.com/400x400", detail: "Detalle B", buyUrl: "#" },
-              ]
-            }
-          ]
-        });
-      }
-    });
-    function initApp(data) {
-      allData = data;
-      document.body.style.backgroundColor = data.config.backgroundColor;
-      document.getElementById("whatsapp-btn").href = data.config.whatsappUrl;
-      renderHome();
-    }
-    // --- Views ---
-    function renderHome() {
-      // Show Hero
-      const hero = document.getElementById("hero");
-      hero.style.display = "flex";
-      setupHero(allData.categories, allData.config);
-      // Hide Nav Bar
-      document.getElementById("nav-bar").style.display = "none";
-      // Render Categories Grid
-      const grid = document.getElementById("grid-container");
-      grid.innerHTML = "";
-      allData.categories.forEach(cat => {
-        if (cat.products.length === 0) return;
-        // Use category image if available, else first product image
-        const imgUrl = cat.image || (cat.products[0] ? cat.products[0].image : "");
-        const card = createCard(cat.name, `${cat.products.length} productos`, imgUrl, () => {
-          renderCategoryView(cat);
-        });
-        grid.appendChild(card);
+  let allData = {};
+
+  // 🚨 1. PEGA TU URL DE API DE APPSCRIPT AQUÍ (Entre comillas)
+  const API_ENDPOINT = "PEGA_AQUÍ_TU_URL_DE_APPSCRIPT_EXEC";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // 2. Usamos FETCH para obtener datos del API de Apps Script
+    fetch(API_ENDPOINT)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        // El API devuelve JSON, así que lo parseamos
+        return response.json();
+      })
+      .then(initApp)
+      .catch(error => {
+        console.error('Error al cargar datos del API:', error);
+        // Podrías mostrar un mensaje de error aquí si la API falla
       });
-    }
-    function renderCategoryView(category) {
-      // Hide Hero
-      document.getElementById("hero").style.display = "none";
-      // Show Nav Bar
-      const navBar = document.getElementById("nav-bar");
-      navBar.style.display = "flex";
-      document.getElementById("section-title").textContent = category.name;
-      // Render Products Grid
-      const grid = document.getElementById("grid-container");
-      grid.innerHTML = "";
-      category.products.forEach(prod => {
-        // Incluir prod.isPromotional al llamar a createCard
-        const card = createCard(prod.name, "", prod.image, () => {
-          openModal(prod);
-        }, prod.isPromotional); // <--- CAMBIO AQUÍ
-        grid.appendChild(card);
-      });
-      // Scroll to top
-      window.scrollTo(0, 0);
-    }
-    // --- Helpers ---
-    function setupHero(categories, config) {
-      const validCats = categories.filter(c => c.products.length > 0);
-      if (validCats.length === 0) return;
-      const randomCat = validCats[Math.floor(Math.random() * validCats.length)];
-      const randomProd = randomCat.products[Math.floor(Math.random() * randomCat.products.length)];
-      const hero = document.getElementById("hero");
-      const bgImage = (config && config.heroBackgroundImage) ? config.heroBackgroundImage : randomProd.image;
-      const img = new Image();
-      img.src = bgImage;
-      img.onload = () => { hero.style.backgroundImage = `url('${bgImage}')`; };
-      img.onerror = () => { hero.style.backgroundImage = `url('https://via.placeholder.com/1200x600?text=No+Image')`; };
-      document.getElementById("hero-title").textContent = randomProd.name;
-      document.getElementById("hero-desc").textContent = randomProd.detail;
-      const heroBtn = document.getElementById("hero-btn");
-      heroBtn.onclick = () => openModal(randomProd);
-    }
-    function createCard(title, subtitle, imageUrl, onClick, isPromotional = false) { // <--- CAMBIO AQUÍ: Añadir argumento con valor por defecto
-      const card = document.createElement("div");
-      card.className = "card";
-      card.onclick = onClick;
+  });
 
-      // Lógica para el badge
-      const promoBadgeHtml = isPromotional ? 
-        '<div class="promo-badge">¡PROMO!</div>' : ''; // <--- NUEVO
+  function initApp(data) {
+    allData = data;
+    document.body.style.backgroundColor = data.config.backgroundColor;
+    document.getElementById("whatsapp-btn").href = data.config.whatsappUrl;
+    renderHome();
+  }
+  
+  // --- Views ---
+  function renderHome() {
+    // Show Hero
+    const hero = document.getElementById("hero");
+    hero.style.display = "flex";
+    setupHero(allData.categories, allData.config);
+    // Hide Nav Bar
+    document.getElementById("nav-bar").style.display = "none";
+    // Render Categories Grid
+    const grid = document.getElementById("grid-container");
+    grid.innerHTML = "";
+    allData.categories.forEach(cat => {
+      if (cat.products.length === 0) return;
+      // Use category image if available, else first product image
+      const imgUrl = cat.image || (cat.products[0] ? cat.products[0].image : "");
+      const card = createCard(cat.name, `${cat.products.length} productos`, imgUrl, () => {
+        renderCategoryView(cat);
+      });
+      grid.appendChild(card);
+    });
+  }
+  
+  function renderCategoryView(category) {
+    // Hide Hero
+    document.getElementById("hero").style.display = "none";
+    // Show Nav Bar
+    const navBar = document.getElementById("nav-bar");
+    navBar.style.display = "flex";
+    document.getElementById("section-title").textContent = category.name;
+    // Render Products Grid
+    const grid = document.getElementById("grid-container");
+    grid.innerHTML = "";
+    category.products.forEach(prod => {
+      // Incluir prod.isPromotional al llamar a createCard
+      const card = createCard(prod.name, "", prod.image, () => {
+        openModal(prod);
+      }, prod.isPromotional); // <--- CAMBIO AQUÍ
+      grid.appendChild(card);
+    });
+    // Scroll to top
+    window.scrollTo(0, 0);
+  }
+  
+  // --- Helpers ---
+  function setupHero(categories, config) {
+    const validCats = categories.filter(c => c.products.length > 0);
+    if (validCats.length === 0) return;
+    const randomCat = validCats[Math.floor(Math.random() * validCats.length)];
+    const randomProd = randomCat.products[Math.floor(Math.random() * randomCat.products.length)];
+    const hero = document.getElementById("hero");
+    const bgImage = (config && config.heroBackgroundImage) ? config.heroBackgroundImage : randomProd.image;
+    const img = new Image();
+    img.src = bgImage;
+    img.onload = () => { hero.style.backgroundImage = `url('${bgImage}')`; };
+    img.onerror = () => { hero.style.backgroundImage = `url('https://via.placeholder.com/1200x600?text=No+Image')`; };
+    document.getElementById("hero-title").textContent = randomProd.name;
+    document.getElementById("hero-desc").textContent = randomProd.detail;
+    const heroBtn = document.getElementById("hero-btn");
+    heroBtn.onclick = () => openModal(randomProd);
+  }
+  
+  function createCard(title, subtitle, imageUrl, onClick, isPromotional = false) { 
+    const card = document.createElement("div");
+    card.className = "card";
+    card.onclick = onClick;
 
-      card.innerHTML = `
-        ${promoBadgeHtml}         <img class="card-img" src="${imageUrl}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400?text=Sin+Imagen'">
-        <div class="card-overlay">
-          <div class="card-title">${title}</div>
-          <div class="card-subtitle">${subtitle}</div>
-        </div>
-      `;
-      return card;
-    }
-    function openModal(product) {
-      const modal = document.getElementById("modal");
-      const modalImg = document.getElementById("modal-img");
-      modalImg.src = product.image;
-      modalImg.onerror = () => { modalImg.src = 'https://via.placeholder.com/600x400?text=Sin+Imagen'; };
-      document.getElementById("modal-title").textContent = product.name;
-      document.getElementById("modal-desc").textContent = product.detail;
-      document.getElementById("modal-buy").href = product.buyUrl;
-      const offerEl = document.getElementById("modal-offer");
-      if (product.offerNote) {
-        offerEl.textContent = product.offerNote;
-        offerEl.style.display = "block";
-      } else {
-        offerEl.style.display = "none";
-      }
-      modal.classList.add("active");
+    // Lógica para el badge
+    const promoBadgeHtml = isPromotional ? 
+      '<div class="promo-badge">¡PROMO!</div>' : ''; 
+
+    card.innerHTML = `
+      ${promoBadgeHtml} 
+      <img class="card-img" src="${imageUrl}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400?text=Sin+Imagen'">
+      <div class="card-overlay">
+        <div class="card-title">${title}</div>
+        <div class="card-subtitle">${subtitle}</div>
+      </div>
+    `;
+    return card;
+  }
+  
+  function openModal(product) {
+    const modal = document.getElementById("modal");
+    const modalImg = document.getElementById("modal-img");
+    modalImg.src = product.image;
+    modalImg.onerror = () => { modalImg.src = 'https://via.placeholder.com/600x400?text=Sin+Imagen'; };
+    document.getElementById("modal-title").textContent = product.name;
+    document.getElementById("modal-desc").textContent = product.detail;
+    document.getElementById("modal-buy").href = product.buyUrl;
+    const offerEl = document.getElementById("modal-offer");
+    if (product.offerNote) {
+      offerEl.textContent = product.offerNote;
+      offerEl.style.display = "block";
+    } else {
+      offerEl.style.display = "none";
     }
-    function closeModal(e) {
-      if (e.target === document.getElementById("modal") || e.target.classList.contains("modal-close")) {
-        document.getElementById("modal").classList.remove("active");
-      }
+    modal.classList.add("active");
+  }
+  
+  function closeModal(e) {
+    if (e.target === document.getElementById("modal") || e.target.classList.contains("modal-close")) {
+      document.getElementById("modal").classList.remove("active");
     }
-  </script>
+  }
+</script>
+
+  
 </body>
 </html>
+
