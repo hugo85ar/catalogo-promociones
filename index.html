@@ -439,7 +439,28 @@
     modalImg.onerror = () => { modalImg.src = 'https://via.placeholder.com/600x400?text=Sin+Imagen'; };
     document.getElementById("modal-title").textContent = product.name;
     document.getElementById("modal-desc").textContent = product.detail;
-    document.getElementById("modal-buy").href = product.buyUrl;
+    
+    // --- NUEVA LÓGICA DE BOTÓN ---
+    const buyButton = document.getElementById("modal-buy");
+    const buttonSpan = buyButton.querySelector('span'); // Seleccionamos el span del ícono
+    
+    buyButton.href = product.buyUrl;
+    
+    // Si la nota de oferta contiene la palabra "gratuito" o "gratis", o si la URL es genérica,
+    // usamos "Ver más".
+    const isFree = (product.offerNote && product.offerNote.toLowerCase().includes('gratuito')) || 
+                   (product.offerNote && product.offerNote.toLowerCase().includes('gratis'));
+                   
+    if (isFree) {
+        // Opción para curso gratuito (se asume que la URL lleva a la inscripción)
+        buyButton.innerHTML = '<span>&#128279;</span> Acceder Gratis'; // Usamos 🔗 emoji (&#128279;)
+    } else {
+        // Opción de compra estándar
+        buyButton.innerHTML = '<span>🛒</span> Comprar'; // Usamos 🛒 emoji
+    }
+    
+    // --- FIN DE LÓGICA DE BOTÓN ---
+
     const offerEl = document.getElementById("modal-offer");
     if (product.offerNote) {
       offerEl.textContent = product.offerNote;
@@ -448,7 +469,7 @@
       offerEl.style.display = "none";
     }
     modal.classList.add("active");
-  }
+}
   
   function closeModal(e) {
     if (e.target === document.getElementById("modal") || e.target.classList.contains("modal-close")) {
@@ -460,5 +481,6 @@
   
 </body>
 </html>
+
 
 
