@@ -344,28 +344,49 @@
       });
   });
 
-  function initApp(data) {
+ function initApp(data) {
         // 1. Capturamos los parámetros de la URL
         const urlParams = new URLSearchParams(window.location.search);
         const modo = urlParams.get('modo');
 
-        // 2. Si el modo es 'clientes', filtramos para ocultar el curso gratuito
+        // 2. Filtramos el curso gratuito si el modo es 'clientes'
         if (modo === 'clientes' && data.categories) {
             data.categories = data.categories.map(cat => {
                 cat.products = cat.products.filter(prod => {
                     const nombreProd = (prod.name || "").toLowerCase();
-                    // Oculta cualquier producto que contenga la palabra "gratuito" o "gratis"
                     const esGratuito = nombreProd.includes("gratis") || nombreProd.includes("gratuito");
                     return !esGratuito;
                 });
                 return cat;
-            }).filter(cat => cat.products.length > 0); // Oculta categorías que se queden vacías
+            }).filter(cat => cat.products.length > 0);
         }
 
         allData = data;
         document.body.style.backgroundColor = data.config.backgroundColor;
         document.getElementById("whatsapp-btn").href = data.config.whatsappUrl;
+        
+        // 3. Renderizamos la vista principal y actualizamos el texto del Hero según el modo
         renderHome();
+        renderHeroSection(); // <--- LLAMAMOS A LA FUNCIÓN AQUÍ
+    }
+
+    // 4. Pegas la función aquí abajo dentro del mismo <script>
+    function renderHeroSection() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const modo = urlParams.get('modo');
+
+        const tituloHero = document.getElementById("hero-title");
+        const descHero = document.getElementById("hero-desc");
+
+        if (modo === 'clientes') {
+            // Mensaje exclusivo para Alumnos / Clientes
+            tituloHero.innerText = "¡Mejora tu formación con nuestros Packs Exclusivos!";
+            descHero.innerText = "Accede a los packs avanzados de actualización continua diseñados especialmente para potenciar tus proyectos digitales.";
+        } else {
+            // Mensaje para Público General (Instagram / Redes)
+            tituloHero.innerText = "Investigacion de Mercado + Creación de Landing Pages";
+            descHero.innerText = "Creación de Landing pages para mostrar tu Producto/Servicio de la mejor manera.";
+        }
     }
   
   // --- Views ---
