@@ -371,23 +371,27 @@
     }
 
     // 4. Pegas la función aquí abajo dentro del mismo <script>
-    function renderHeroSection() {
+   function renderHeroSection() {
         const urlParams = new URLSearchParams(window.location.search);
         const modo = urlParams.get('modo');
 
         const tituloHero = document.getElementById("hero-title");
         const descHero = document.getElementById("hero-desc");
+        const heroBtn = document.getElementById("hero-btn");
 
         if (modo === 'clientes') {
-            // Mensaje exclusivo para Alumnos / Clientes
-            tituloHero.innerText = "¡Mejora tu formación con nuestros Packs Exclusivos!";
-            descHero.innerText = "Accede a los packs avanzados de actualización continua diseñados especialmente para potenciar tus proyectos digitales.";
+            // Mensaje ultra persuasivo exclusivo para Alumnos
+            tituloHero.innerText = "🚀 ¡Lleva tu Negocio al Siguiente Nivel con el Pack Total!";
+            descHero.innerText = "Ya diste el primer paso. Ahora domina la trifecta definitiva: Investigación de Mercado Inteligente + Landing Pages que convierten + Automatizaciones con Google Apps Script. 10 años de experiencia resumidos en un solo lugar.";
+            heroBtn.textContent = "¡Ver Pack Completo!";
         } else {
-            // Mensaje para Público General (Instagram / Redes)
-            tituloHero.innerText = "Investigacion de Mercado + Creación de Landing Pages";
-            descHero.innerText = "Creación de Landing pages para mostrar tu Producto/Servicio de la mejor manera.";
+            // Mensaje para Público General (Redes Sociales)
+            tituloHero.innerText = "Pack Transformación Total: Todo lo que un Emprendedor Necesita";
+            descHero.innerText = "Desbloquea los 3 pilares del éxito digital: Encuentra tu nicho, crea páginas que venden y automatiza tus procesos con IA y Apps Script.";
+            heroBtn.textContent = "¡Quiero el Pack Completo!";
         }
     }
+    
   
   // --- Views ---
   function renderHome() {
