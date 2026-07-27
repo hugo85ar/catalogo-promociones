@@ -418,9 +418,13 @@
             heroBtn.textContent = "¡Quiero el Pack Completo!";
         }
 
+        // Tomar la imagen directamente desde la configuración del API (Celda de configuración en Sheets)
         const hero = document.getElementById("hero");
-        const bgImage = "https://res.cloudinary.com/dlnrsadbc/image/upload/v1754421456/Gestion_de_Clientes_Pack_2_mjihae.png";
-        hero.style.backgroundImage = `url('${bgImage}')`;
+        const bgImage = (allData.config && allData.config.heroBackgroundImage) ? allData.config.heroBackgroundImage : "";
+        
+        if (bgImage) {
+            hero.style.backgroundImage = `url('${bgImage}')`;
+        }
         
         heroBtn.onclick = () => {
             let targetProd = null;
@@ -439,6 +443,7 @@
         };
     }
 
+    
     // --- Helpers ---
     function createCard(title, subtitle, imageUrl, onClick, isPromotional = false) { 
         const card = document.createElement("div");
