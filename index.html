@@ -349,23 +349,21 @@
     document.body.style.backgroundColor = data.config.backgroundColor;
     document.getElementById("whatsapp-btn").href = data.config.whatsappUrl;
 
-    // Detectamos si la URL tiene el parámetro modo=clientes (o el nombre que prefieras)
     const urlParams = new URLSearchParams(window.location.search);
     const esModoClientes = urlParams.get('modo') === 'clientes';
 
     if (esModoClientes) {
-      // Recorremos las categorías y filtramos los productos para quitar los gratuitos o de entrada
+      // Filtramos los productos y eliminamos la categoría si se queda vacía
       allData.categories = allData.categories.map(cat => {
         return {
           ...cat,
           products: cat.products.filter(prod => {
             const nota = (prod.offerNote || "").toLowerCase();
-            // Si la nota dice gratuito o gratis, lo removemos de esta vista
             const esGratis = nota.includes('gratuito') || nota.includes('gratis');
             return !esGratis;
           })
         };
-      }).filter(cat => cat.products.length > 0); // Oculta categorías que queden vacías
+      }).filter(cat => cat.products.length > 0); // <--- ESTO ES LA CLAVE: borra la tarjeta de la categoría si ya no tiene productos
     }
 
     renderHome();
