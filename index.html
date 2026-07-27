@@ -120,19 +120,19 @@
       /* Square cards */
     }
     /* NUEVO: Promotional Badge Style */
-    .promo-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: var(--accent-color); /* Rojo de Netflix: #e50914 */
-      color: white;
-      padding: 5px 10px;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      font-weight: bold;
-      z-index: 5;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-    }
+    .promo-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: var(--accent-color); /* Rojo de Netflix: #e50914 */
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      z-index: 5;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
     .card:hover {
       transform: scale(1.03);
       z-index: 10;
@@ -322,34 +322,28 @@
   </a>
 
   <script>
-  let allData = {};
+    let allData = {};
 
-  // 🚨 1. PEGA TU URL DE API DE APPSCRIPT AQUÍ (Entre comillas)
-  const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw_H9oylBF8EZ7OV5RbqzCPnaAyVVEAOtjQM0Uc5h-rE2TkTRyWJ1XfXhRjJAOBpSw/exec";
+    const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw_H9oylBF8EZ7OV5RbqzCPnaAyVVEAOtjQM0Uc5h-rE2TkTRyWJ1XfXhRjJAOBpSw/exec";
 
-  document.addEventListener("DOMContentLoaded", () => {
-    // 2. Usamos FETCH para obtener datos del API de Apps Script
-    fetch(API_ENDPOINT)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        // El API devuelve JSON, así que lo parseamos
-        return response.json();
-      })
-      .then(initApp)
-      .catch(error => {
-        console.error('Error al cargar datos del API:', error);
-        // Podrías mostrar un mensaje de error aquí si la API falla
-      });
-  });
+    document.addEventListener("DOMContentLoaded", () => {
+        fetch(API_ENDPOINT)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(initApp)
+            .catch(error => {
+                console.error('Error al cargar datos del API:', error);
+            });
+    });
 
- function initApp(data) {
-        // 1. Capturamos los parámetros de la URL
+    function initApp(data) {
         const urlParams = new URLSearchParams(window.location.search);
         const modo = urlParams.get('modo');
 
-        // 2. Filtramos el curso gratuito si el modo es 'clientes'
         if (modo === 'clientes' && data.categories) {
             data.categories = data.categories.map(cat => {
                 cat.products = cat.products.filter(prod => {
@@ -365,13 +359,48 @@
         document.body.style.backgroundColor = data.config.backgroundColor;
         document.getElementById("whatsapp-btn").href = data.config.whatsappUrl;
         
-        // 3. Renderizamos la vista principal y actualizamos el texto del Hero según el modo
         renderHome();
-        renderHeroSection(); // <--- LLAMAMOS A LA FUNCIÓN AQUÍ
     }
 
-    // 4. Pegas la función aquí abajo dentro del mismo <script>
-   function renderHeroSection() {
+    // --- Views ---
+    function renderHome() {
+        const hero = document.getElementById("hero");
+        hero.style.display = "flex";
+        
+        renderHeroSection(); 
+
+        document.getElementById("nav-bar").style.display = "none";
+        
+        const grid = document.getElementById("grid-container");
+        grid.innerHTML = "";
+        allData.categories.forEach(cat => {
+            if (cat.products.length === 0) return;
+            const imgUrl = cat.image || (cat.products[0] ? cat.products[0].image : "");
+            const card = createCard(cat.name, `${cat.products.length} productos`, imgUrl, () => {
+                renderCategoryView(cat);
+            });
+            grid.appendChild(card);
+        });
+    }
+
+    function renderCategoryView(category) {
+        document.getElementById("hero").style.display = "none";
+        const navBar = document.getElementById("nav-bar");
+        navBar.style.display = "flex";
+        document.getElementById("section-title").textContent = category.name;
+        
+        const grid = document.getElementById("grid-container");
+        grid.innerHTML = "";
+        category.products.forEach(prod => {
+            const card = createCard(prod.name, "", prod.image, () => {
+                openModal(prod);
+            }, prod.isPromotional);
+            grid.appendChild(card);
+        });
+        window.scrollTo(0, 0);
+    }
+
+    function renderHeroSection() {
         const urlParams = new URLSearchParams(window.location.search);
         const modo = urlParams.get('modo');
 
@@ -380,150 +409,91 @@
         const heroBtn = document.getElementById("hero-btn");
 
         if (modo === 'clientes') {
-            // Mensaje exclusivo para Alumnos (Sin palabras raras)
             tituloHero.innerText = "🚀 ¡Lleva tu Negocio al Siguiente Nivel con el Pack Total!";
             descHero.innerText = "Ya diste el primer paso. Domina los tres pilares definitivos: Investigación de Mercado Inteligente, Landing Pages que convierten y Automatizaciones con Google Apps Script. 10 años de experiencia resumidos en un solo lugar.";
             heroBtn.textContent = "¡Ver Pack Completo!";
         } else {
-            // Mensaje para Público General (Redes Sociales)
             tituloHero.innerText = "Pack Transformación Total: Todo lo que un Emprendedor Necesita";
             descHero.innerText = "Desbloquea los 3 pilares del éxito digital: Encuentra tu nicho, crea páginas que venden y automatiza tus procesos con IA y Apps Script.";
             heroBtn.textContent = "¡Quiero el Pack Completo!";
         }
-    }
-    }
-    
-  
-  // --- Views ---
-  function renderHome() {
-    // Show Hero
-    const hero = document.getElementById("hero");
-    hero.style.display = "flex";
-    setupHero(allData.categories, allData.config);
-    // Hide Nav Bar
-    document.getElementById("nav-bar").style.display = "none";
-    // Render Categories Grid
-    const grid = document.getElementById("grid-container");
-    grid.innerHTML = "";
-    allData.categories.forEach(cat => {
-      if (cat.products.length === 0) return;
-      // Use category image if available, else first product image
-      const imgUrl = cat.image || (cat.products[0] ? cat.products[0].image : "");
-      const card = createCard(cat.name, `${cat.products.length} productos`, imgUrl, () => {
-        renderCategoryView(cat);
-      });
-      grid.appendChild(card);
-    });
-  }
-  
-  function renderCategoryView(category) {
-    // Hide Hero
-    document.getElementById("hero").style.display = "none";
-    // Show Nav Bar
-    const navBar = document.getElementById("nav-bar");
-    navBar.style.display = "flex";
-    document.getElementById("section-title").textContent = category.name;
-    // Render Products Grid
-    const grid = document.getElementById("grid-container");
-    grid.innerHTML = "";
-    category.products.forEach(prod => {
-      // Incluir prod.isPromotional al llamar a createCard
-      const card = createCard(prod.name, "", prod.image, () => {
-        openModal(prod);
-      }, prod.isPromotional); // <--- CAMBIO AQUÍ
-      grid.appendChild(card);
-    });
-    // Scroll to top
-    window.scrollTo(0, 0);
-  }
-  
-  // --- Helpers ---
-  function setupHero(categories, config) {
-    const validCats = categories.filter(c => c.products.length > 0);
-    if (validCats.length === 0) return;
-    const randomCat = validCats[Math.floor(Math.random() * validCats.length)];
-    const randomProd = randomCat.products[Math.floor(Math.random() * randomCat.products.length)];
-    const hero = document.getElementById("hero");
-    const bgImage = (config && config.heroBackgroundImage) ? config.heroBackgroundImage : randomProd.image;
-    const img = new Image();
-    img.src = bgImage;
-    img.onload = () => { hero.style.backgroundImage = `url('${bgImage}')`; };
-    img.onerror = () => { hero.style.backgroundImage = `url('https://via.placeholder.com/1200x600?text=No+Image')`; };
-    document.getElementById("hero-title").textContent = randomProd.name;
-    document.getElementById("hero-desc").textContent = randomProd.detail;
-    const heroBtn = document.getElementById("hero-btn");
-    heroBtn.onclick = () => openModal(randomProd);
-  }
-  
-  function createCard(title, subtitle, imageUrl, onClick, isPromotional = false) { 
-    const card = document.createElement("div");
-    card.className = "card";
-    card.onclick = onClick;
 
-    // Lógica para el badge
-    const promoBadgeHtml = isPromotional ? 
-      '<div class="promo-badge">¡PROMO!</div>' : ''; 
-
-    card.innerHTML = `
-      ${promoBadgeHtml} 
-      <img class="card-img" src="${imageUrl}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400?text=Sin+Imagen'">
-      <div class="card-overlay">
-        <div class="card-title">${title}</div>
-        <div class="card-subtitle">${subtitle}</div>
-      </div>
-    `;
-    return card;
-  }
-  
-  function openModal(product) {
-    const modal = document.getElementById("modal");
-    const modalImg = document.getElementById("modal-img");
-    modalImg.src = product.image;
-    modalImg.onerror = () => { modalImg.src = 'https://via.placeholder.com/600x400?text=Sin+Imagen'; };
-    document.getElementById("modal-title").textContent = product.name;
-    document.getElementById("modal-desc").textContent = product.detail;
-    
-    // --- NUEVA LÓGICA DE BOTÓN ---
-    const buyButton = document.getElementById("modal-buy");
-    const buttonSpan = buyButton.querySelector('span'); // Seleccionamos el span del ícono
-    
-    buyButton.href = product.buyUrl;
-    
-    // Si la nota de oferta contiene la palabra "gratuito" o "gratis", o si la URL es genérica,
-    // usamos "Ver más".
-    const isFree = (product.offerNote && product.offerNote.toLowerCase().includes('gratuito')) || 
-                   (product.offerNote && product.offerNote.toLowerCase().includes('gratis'));
-                   
-    if (isFree) {
-        // Opción para curso gratuito (se asume que la URL lleva a la inscripción)
-        buyButton.innerHTML = '<span>&#128279;</span> Acceder Gratis'; // Usamos 🔗 emoji (&#128279;)
-    } else {
-        // Opción de compra estándar
-        buyButton.innerHTML = '<span>🛒</span> Comprar'; // Usamos 🛒 emoji
+        const hero = document.getElementById("hero");
+        const bgImage = "https://res.cloudinary.com/dlnrsadbc/image/upload/v1754421456/Gestion_de_Clientes_Pack_2_mjihae.png";
+        hero.style.backgroundImage = `url('${bgImage}')`;
+        
+        heroBtn.onclick = () => {
+            let targetProd = null;
+            if (allData.categories) {
+                allData.categories.forEach(cat => {
+                    cat.products.forEach(p => {
+                        if (p.name.includes("Transformación Total") || p.name.includes("Automatizaciones con Appscripts")) {
+                            targetProd = p;
+                        }
+                    });
+                });
+            }
+            if (targetProd) {
+                openModal(targetProd);
+            }
+        };
     }
-    
-    // --- FIN DE LÓGICA DE BOTÓN ---
 
-    const offerEl = document.getElementById("modal-offer");
-    if (product.offerNote) {
-      offerEl.textContent = product.offerNote;
-      offerEl.style.display = "block";
-    } else {
-      offerEl.style.display = "none";
-    }
-    modal.classList.add("active");
-}
-  
-  function closeModal(e) {
-    if (e.target === document.getElementById("modal") || e.target.classList.contains("modal-close")) {
-      document.getElementById("modal").classList.remove("active");
-    }
-  }
-</script>
+    // --- Helpers ---
+    function createCard(title, subtitle, imageUrl, onClick, isPromotional = false) { 
+        const card = document.createElement("div");
+        card.className = "card";
+        card.onclick = onClick;
 
-  
+        const promoBadgeHtml = isPromotional ? 
+            '<div class="promo-badge">¡PROMO!</div>' : ''; 
+
+        card.innerHTML = `
+            ${promoBadgeHtml} 
+            <img class="card-img" src="${imageUrl}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400?text=Sin+Imagen'">
+            <div class="card-overlay">
+              <div class="card-title">${title}</div>
+              <div class="card-subtitle">${subtitle}</div>
+            </div>
+        `;
+        return card;
+    }
+
+    function openModal(product) {
+        const modal = document.getElementById("modal");
+        const modalImg = document.getElementById("modal-img");
+        modalImg.src = product.image;
+        modalImg.onerror = () => { modalImg.src = 'https://via.placeholder.com/600x400?text=Sin+Imagen'; };
+        document.getElementById("modal-title").textContent = product.name;
+        document.getElementById("modal-desc").textContent = product.detail;
+        
+        const buyButton = document.getElementById("modal-buy");
+        buyButton.href = product.buyUrl;
+        
+        const isFree = (product.offerNote && product.offerNote.toLowerCase().includes('gratuito')) || 
+                       (product.offerNote && product.offerNote.toLowerCase().includes('gratis'));
+                       
+        if (isFree) {
+            buyButton.innerHTML = '<span>🔗</span> Acceder Gratis';
+        } else {
+            buyButton.innerHTML = '<span>🛒</span> Comprar';
+        }
+
+        const offerEl = document.getElementById("modal-offer");
+        if (product.offerNote) {
+            offerEl.textContent = product.offerNote;
+            offerEl.style.display = "block";
+        } else {
+            offerEl.style.display = "none";
+        }
+        modal.classList.add("active");
+    }
+
+    function closeModal(e) {
+        if (e.target === document.getElementById("modal") || e.target.classList.contains("modal-close")) {
+            document.getElementById("modal").classList.remove("active");
+        }
+    }
+  </script>
 </body>
 </html>
-
-
-
