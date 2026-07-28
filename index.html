@@ -123,14 +123,14 @@
       gap: 20px;
     }
     /* Card Styles (para categorías) */
-    .card {
-      background-color: var(--card-bg);
+  .card {
+      background-color: #1f1f1f;
       border-radius: 8px;
       overflow: hidden;
       cursor: pointer;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       position: relative;
-      aspect-ratio: 1 / 1;
+      border: 1px solid #333;
     }
     .promo-badge {
       position: absolute;
@@ -146,8 +146,9 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     }
     .card:hover {
-      transform: scale(1.03);
-      z-index: 10;
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+      border-color: #555;
     }
     .card-img {
       width: 100%;
@@ -156,6 +157,22 @@
       display: block;
       margin-top: 10px;
     }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover img {
+      transform: scale(1.03); /* Sutil zoom de la imagen al hacer hover */
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+    
     .card-overlay {
       position: absolute;
       bottom: 0;
@@ -169,14 +186,17 @@
       height: 40%;
       pointer-events: none;
     }
-    .card-title {
-      font-size: 1.1rem;
+   .card-title {
+      font-size: 1.25rem;
       font-weight: bold;
-      margin-bottom: 5px;
+      color: white;
+      margin-bottom: 8px;
     }
-    .card-subtitle {
-      font-size: 0.85rem;
+    
+   .card-subtitle {
+      font-size: 0.95rem;
       color: #aaa;
+      line-height: 1.4;
     }
 
     /* ESTILOS NUEVOS: Banner Especial para el Curso Gratuito */
@@ -364,7 +384,7 @@
         renderHome();
     }
 
-   function renderHome() {
+function renderHome() {
         document.getElementById("category-header").style.display = "none";
         document.getElementById("hero").style.display = "flex";
         renderHeroSection();
@@ -375,7 +395,7 @@
         
         if (!allData.categories) return;
 
-        // 1. PRIMERO: Buscar y renderizar el Banner del Curso Gratuito arriba de todo
+        // 1. Encontrar el producto gratuito para mantener operativo su banner y modal
         let freeProduct = null;
         allData.categories.forEach(cat => {
             cat.products.forEach(prod => {
@@ -387,38 +407,49 @@
             });
         });
 
+        // 2. Renderizar el Banner superior de la categoría Gratuita (leyendo de Listas)
+        const freeCategoryConfig = allData.categories.find(cat => {
+            const cName = (cat.name || "").toLowerCase();
+            return cName.includes("gratis") || cName.includes("gratuito");
+        });
+
         if (freeProduct) {
+            const bannerTitle = freeCategoryConfig ? freeCategoryConfig.name : freeProduct.name;
+            const bannerDesc = freeCategoryConfig ? freeCategoryConfig.subtitle : freeProduct.detail;
+            const bannerImg = freeCategoryConfig ? freeCategoryConfig.image : freeProduct.image;
+            const bannerCTA = freeCategoryConfig ? freeCategoryConfig.cta : (freeProduct.offerNote || "Reservá tu Cupo!!");
+
             const bannerDiv = document.createElement("div");
             bannerDiv.className = "course-banner-wrapper";
             bannerDiv.innerHTML = `
-                <img class="course-banner-img" src="${freeProduct.image}" alt="${freeProduct.name}" onerror="this.src='https://via.placeholder.com/400x400?text=Sin+Imagen'">
+                <img class="course-banner-img" src="${bannerImg}" alt="${bannerTitle}" onerror="this.src='https://via.placeholder.com/400x400?text=Sin+Imagen'">
                 <div class="course-banner-text">
-                    <h2 class="course-banner-title">${freeProduct.name}</h2>
-                    <p class="course-banner-desc">${freeProduct.detail || ""}</p>
-                    <button class="hero-btn" onclick='openModal(${JSON.stringify(freeProduct)})'>${freeProduct.offerNote || "Reservá tu Cupo!!"}</button>
+                    <h2 class="course-banner-title">${bannerTitle}</h2>
+                    <p class="course-banner-desc">${bannerDesc || ""}</p>
+                    <button class="hero-btn" onclick='openModal(${JSON.stringify(freeProduct)})'>${bannerCTA}</button>
                 </div>
             `;
             grid.appendChild(bannerDiv);
         }
 
-        // 2. SEGUNDO: Renderizar las carátulas de las categorías (una sola vez por categoría, sin duplicarse por cada producto)
+        // 3. Renderizar las carátulas del resto de categorías basándose estrictamente en la hoja Listas
         allData.categories.forEach(cat => {
+            const cNameLower = (cat.name || "").toLowerCase();
+            if (cNameLower.includes("gratis") || cNameLower.includes("gratuito")) return; // Evitar duplicar el banner
             if (cat.products.length === 0) return;
 
-            // Filtramos la categoría para ignorar el producto gratuito si se coló en la grilla de pago
-            const activeProducts = cat.products.filter(prod => {
-                const pName = (prod.name || "").toLowerCase();
-                const offerNoteLower = (prod.offerNote || "").toLowerCase();
-                return !pName.includes("gratis") && !pName.includes("gratuito") && !offerNoteLower.includes("gratis") && !offerNoteLower.includes("gratuito");
-            });
+            const card = document.createElement("div");
+            card.className = "card";
+            card.onclick = () => renderCategoryView(cat);
 
-            if (activeProducts.length === 0) return;
-
-            // Usamos la imagen de la categoría o la del primer producto válido
-            const imgUrl = cat.image || activeProducts[0].image;
-            const card = createCard(cat.name, `${activeProducts.length} productos`, imgUrl, () => {
-                renderCategoryView(cat);
-            });
+            // Usamos cat.name (título de Listas), cat.subtitle (subtítulo de Listas) y cat.image
+            card.innerHTML = `
+                <img src="${cat.image || 'https://via.placeholder.com/600x400?text=Sin+Imagen'}" alt="${cat.name}" onerror="this.src='https://via.placeholder.com/600x400?text=Sin+Imagen'">
+                <div class="card-content">
+                    <div class="card-title">${cat.name}</div>
+                    <div class="card-subtitle">${cat.subtitle || ''}</div>
+                </div>
+            `;
             grid.appendChild(card);
         });
     }
