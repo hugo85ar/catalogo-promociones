@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +9,7 @@
       --bg-color: #141414;
       --text-color: #e5e5e5;
       --accent-color: #e50914;
-      --card-bg: #141414; /* Fondo de tarjeta igual al fondo de página */
+      --card-bg: #141414;
     }
     body {
       background-color: var(--bg-color);
@@ -94,10 +93,9 @@
     .back-btn:hover {
       background: rgba(255, 255, 255, 0.1);
     }
-    /* Category Header View */
     .category-header {
       padding: 10px 4%;
-      display: none; /* Oculto por defecto, JS lo muestra */
+      display: none;
       flex-direction: column;
       margin-bottom: 10px;
       background-color: var(--bg-color);
@@ -115,16 +113,16 @@
       max-width: 700px;
     }
 
-    /* Grid Layout */
+    /* Grid Layout y Banner Especial */
     .main-container {
       padding: 0 4%;
     }
     .grid-container {
       display: grid;
-      grid-template-columns: 1fr; /* Mobile: 1 column */
+      grid-template-columns: 1fr;
       gap: 20px;
     }
-    /* Card Styles */
+    /* Card Styles (para categorías) */
     .card {
       background-color: var(--card-bg);
       border-radius: 8px;
@@ -132,14 +130,13 @@
       cursor: pointer;
       transition: transform 0.3s ease;
       position: relative;
-      aspect-ratio: 1 / 1; /* Mantiene el cuadrado */
+      aspect-ratio: 1 / 1;
     }
-    /* Promotional Badge Style */
     .promo-badge {
       position: absolute;
       top: 10px;
       right: 10px;
-      background-color: var(--accent-color); /* Rojo de Netflix */
+      background-color: var(--accent-color);
       color: white;
       padding: 5px 10px;
       border-radius: 4px;
@@ -181,115 +178,105 @@
       font-size: 0.85rem;
       color: #aaa;
     }
-    /* Modal */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s;
-    }
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .modal-content {
-      background: #181818;
-      width: 90%;
-      max-width: 800px;
+
+    /* ESTILOS NUEVOS: Banner Especial para el Curso Gratuito */
+    .course-banner-wrapper {
+      /* Ocupa todo el ancho disponible de la grilla */
+      grid-column: 1 / -1; 
+      /* Estilo visual que imita al Hero */
+      background-color: #2f2f2f; /* Un gris oscuro distinto al negro */
       border-radius: 8px;
-      overflow: hidden;
-      position: relative;
+      padding: 30px;
       display: flex;
       flex-direction: column;
-      max-height: 90vh;
-    }
-    .modal-close {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      cursor: pointer;
-      font-size: 20px;
-      z-index: 10;
-    }
-    .modal-image {
-      width: 100%;
-      height: 300px;
-      object-fit: contain;
-      background-color: #000;
-    }
-    .modal-details {
-      padding: 30px;
-      text-align: left;
-      overflow-y: auto;
-    }
-    .modal-title {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-    .modal-desc {
-      color: #aaa;
+      align-items: center;
+      text-align: center;
       margin-bottom: 20px;
+      border: 1px solid #444;
+    }
+    @media (min-width: 768px) {
+      /* En desktop, el banner se ve aún mejor */
+      .course-banner-wrapper {
+        flex-direction: row;
+        text-align: left;
+        align-items: center;
+        padding: 40px;
+      }
+    }
+
+    .course-banner-img {
+      max-width: 200px;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      object-fit: contain;
+    }
+    @media (min-width: 768px) {
+      .course-banner-img {
+        margin-bottom: 0;
+        margin-right: 40px;
+        max-width: 250px;
+      }
+    }
+
+    .course-banner-text {
+      flex: 1;
+    }
+    .course-banner-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: white;
+    }
+    .course-banner-desc {
+      font-size: 1.1rem;
+      color: #ddd;
+      margin-bottom: 25px;
       line-height: 1.5;
     }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .modal-content {
+      background: #181818; width: 90%; max-width: 800px;
+      border-radius: 8px; overflow: hidden; position: relative;
+      display: flex; flex-direction: column; max-height: 90vh;
+    }
+    .modal-close {
+      position: absolute; top: 15px; right: 15px;
+      background: rgba(0, 0, 0, 0.5); color: white; border: none;
+      border-radius: 50%; width: 36px; height: 36px; cursor: pointer;
+      font-size: 20px; z-index: 10;
+    }
+    .modal-image { width: 100%; height: 300px; object-fit: contain; background-color: #000; }
+    .modal-details { padding: 30px; text-align: left; overflow-y: auto; }
+    .modal-title { font-size: 2rem; margin-bottom: 10px; }
+    .modal-desc { color: #aaa; margin-bottom: 20px; line-height: 1.5; }
     .btn-primary {
-      background-color: white;
-      color: black;
-      padding: 10px 30px;
-      border-radius: 4px;
-      text-decoration: none;
-      font-weight: bold;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
+      background-color: white; color: black; padding: 10px 30px;
+      border-radius: 4px; text-decoration: none; font-weight: bold;
+      display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
     }
     /* WhatsApp Float */
     .whatsapp-float {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #25D366;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: bold;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      z-index: 900;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      position: fixed; bottom: 20px; right: 20px;
+      background-color: #25D366; color: white; padding: 12px 20px;
+      border-radius: 50px; text-decoration: none; font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); z-index: 900;
+      display: flex; align-items: center; gap: 8px;
     }
     /* Desktop Grid */
     @media (min-width: 768px) {
-      .grid-container {
-        grid-template-columns: repeat(3, 1fr);
-      }
-      .modal-content {
-        flex-direction: row;
-      }
-      .modal-image {
-        width: 50%;
-        height: auto;
-      }
-      .modal-details {
-        width: 50%;
-      }
+      .grid-container { grid-template-columns: repeat(3, 1fr); }
+      .modal-content { flex-direction: row; }
+      .modal-image { width: 50%; height: auto; }
+      .modal-details { width: 50%; }
     }
   </style>
 </head>
@@ -314,6 +301,7 @@
   <!-- Main Content Grid -->
   <div id="main-container" class="main-container">
     <div id="grid-container" class="grid-container">
+      <!-- Items will be injected here -->
     </div>
   </div>
   <!-- Modal -->
@@ -332,12 +320,9 @@
     </div>
   </div>
   <a id="whatsapp-btn" class="whatsapp-float" target="_blank">
-
     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.807-.297-1.537-.948-.57-.508-.956-1.135-1.068-1.327-.112-.192-.012-.296.084-.391" />
-    </svg>
-    WhatsApp
-  </a>
+      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.8
+
 
 
 
