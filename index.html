@@ -407,14 +407,14 @@ function renderHome() {
             });
         });
 
-        // 2. Renderizar el Banner superior de la categoría Gratuita (leyendo de Listas)
+        // 2. Renderizar el Banner superior de la categoría Gratuita
         const freeCategoryConfig = allData.categories.find(cat => {
             const cName = (cat.name || "").toLowerCase();
             return cName.includes("gratis") || cName.includes("gratuito");
         });
 
         if (freeProduct) {
-            const bannerTitle = freeCategoryConfig ? freeCategoryConfig.name : freeProduct.name;
+            const bannerTitle = freeCategoryConfig ? (freeCategoryConfig.title || freeCategoryConfig.name) : freeProduct.name;
             const bannerDesc = freeCategoryConfig ? freeCategoryConfig.subtitle : freeProduct.detail;
             const bannerImg = freeCategoryConfig ? freeCategoryConfig.image : freeProduct.image;
             const bannerCTA = freeCategoryConfig ? freeCategoryConfig.cta : (freeProduct.offerNote || "Reservá tu Cupo!!");
@@ -432,28 +432,29 @@ function renderHome() {
             grid.appendChild(bannerDiv);
         }
 
-        // 3. Renderizar las carátulas del resto de categorías basándose estrictamente en la hoja Listas
+        // 3. Renderizar el resto de las carátulas usando cat.title (la columna Titulo de tu hoja Listas)
         allData.categories.forEach(cat => {
             const cNameLower = (cat.name || "").toLowerCase();
             if (cNameLower.includes("gratis") || cNameLower.includes("gratuito")) return; // Evitar duplicar el banner
             if (cat.products.length === 0) return;
 
+            // Usamos cat.title para que muestre "Ruta del Emprendedor" y "Las riendas de tu negocio en tus manos"
+            const displayTitle = cat.title || cat.name;
+
             const card = document.createElement("div");
             card.className = "card";
             card.onclick = () => renderCategoryView(cat);
 
-            // Usamos cat.name (título de Listas), cat.subtitle (subtítulo de Listas) y cat.image
             card.innerHTML = `
-                <img src="${cat.image || 'https://via.placeholder.com/600x400?text=Sin+Imagen'}" alt="${cat.name}" onerror="this.src='https://via.placeholder.com/600x400?text=Sin+Imagen'">
+                <img src="${cat.image || 'https://via.placeholder.com/600x400?text=Sin+Imagen'}" alt="${displayTitle}" onerror="this.src='https://via.placeholder.com/600x400?text=Sin+Imagen'">
                 <div class="card-content">
-                    <div class="card-title">${cat.name}</div>
+                    <div class="card-title">${displayTitle}</div>
                     <div class="card-subtitle">${cat.subtitle || ''}</div>
                 </div>
             `;
             grid.appendChild(card);
         });
     }
-
     function openModal(product) {
         const modal = document.getElementById("modal");
         const modalImg = document.getElementById("modal-img");
