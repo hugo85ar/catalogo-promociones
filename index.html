@@ -384,7 +384,8 @@
         renderHome();
     }
 
-function renderHome() {
+
+    function renderHome() {
         document.getElementById("category-header").style.display = "none";
         document.getElementById("hero").style.display = "flex";
         renderHeroSection();
@@ -395,7 +396,7 @@ function renderHome() {
         
         if (!allData.categories) return;
 
-        // 1. Encontrar el producto gratuito para mantener operativo su banner y modal
+        // 1. Encontrar el producto gratuito para mantener operativo su modal y banner superior
         let freeProduct = null;
         allData.categories.forEach(cat => {
             cat.products.forEach(prod => {
@@ -407,17 +408,17 @@ function renderHome() {
             });
         });
 
-        // 2. Renderizar el Banner superior de la categoría Gratuita
+        // 2. Buscar la configuración de la categoría gratuita en la hoja Listas
         const freeCategoryConfig = allData.categories.find(cat => {
-            const cName = (cat.name || "").toLowerCase();
+            const cName = (cat.Category || cat.name || "").toLowerCase();
             return cName.includes("gratis") || cName.includes("gratuito");
         });
 
         if (freeProduct) {
-            const bannerTitle = freeCategoryConfig ? (freeCategoryConfig.title || freeCategoryConfig.name) : freeProduct.name;
-            const bannerDesc = freeCategoryConfig ? freeCategoryConfig.subtitle : freeProduct.detail;
-            const bannerImg = freeCategoryConfig ? freeCategoryConfig.image : freeProduct.image;
-            const bannerCTA = freeCategoryConfig ? freeCategoryConfig.cta : (freeProduct.offerNote || "Reservá tu Cupo!!");
+            const bannerTitle = (freeCategoryConfig && freeCategoryConfig.Titulo) ? freeCategoryConfig.Titulo : freeProduct.name;
+            const bannerDesc = (freeCategoryConfig && freeCategoryConfig.Subtitulo) ? freeCategoryConfig.Subtitulo : freeProduct.detail;
+            const bannerImg = (freeCategoryConfig && freeCategoryConfig.ImageUrl) ? freeCategoryConfig.ImageUrl : freeProduct.image;
+            const bannerCTA = (freeCategoryConfig && freeCategoryConfig.CTA) ? freeCategoryConfig.CTA : (freeProduct.offerNote || "Reservá tu Cupo!!");
 
             const bannerDiv = document.createElement("div");
             bannerDiv.className = "course-banner-wrapper";
@@ -432,29 +433,32 @@ function renderHome() {
             grid.appendChild(bannerDiv);
         }
 
-        // 3. Renderizar el resto de las carátulas usando cat.title (la columna Titulo de tu hoja Listas)
+        // 3. Renderizar el resto de las carátulas leyendo las columnas exactas de Listas
         allData.categories.forEach(cat => {
-            const cNameLower = (cat.name || "").toLowerCase();
-            if (cNameLower.includes("gratis") || cNameLower.includes("gratuito")) return; // Evitar duplicar el banner
+            const catNameField = (cat.Category || cat.name || "").toLowerCase();
+            if (catNameField.includes("gratis") || catNameField.includes("gratuito")) return; // Evitar duplicar el banner
             if (cat.products.length === 0) return;
 
-            // Usamos cat.title para que muestre "Ruta del Emprendedor" y "Las riendas de tu negocio en tus manos"
-            const displayTitle = cat.title || cat.name;
+            const displayTitle = cat.Titulo || cat.Category || cat.name;
+            const displaySubtitle = cat.Subtitulo || '';
+            const displayImg = cat.ImageUrl || cat.image || 'https://via.placeholder.com/600x400?text=Sin+Imagen';
 
             const card = document.createElement("div");
             card.className = "card";
             card.onclick = () => renderCategoryView(cat);
 
             card.innerHTML = `
-                <img src="${cat.image || 'https://via.placeholder.com/600x400?text=Sin+Imagen'}" alt="${displayTitle}" onerror="this.src='https://via.placeholder.com/600x400?text=Sin+Imagen'">
+                <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='https://via.placeholder.com/600x400?text=Sin+Imagen'">
                 <div class="card-content">
                     <div class="card-title">${displayTitle}</div>
-                    <div class="card-subtitle">${cat.subtitle || ''}</div>
+                    <div class="card-subtitle">${displaySubtitle}</div>
                 </div>
             `;
             grid.appendChild(card);
         });
     }
+
+    
     function openModal(product) {
         const modal = document.getElementById("modal");
         const modalImg = document.getElementById("modal-img");
