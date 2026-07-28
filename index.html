@@ -193,6 +193,7 @@
       text-align: center;
       margin-bottom: 20px;
       border: 1px solid #444;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     }
     @media (min-width: 768px) {
       /* En desktop, el banner se ve aún mejor */
@@ -227,6 +228,7 @@
       font-weight: bold;
       margin-bottom: 15px;
       color: white;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
     .course-banner-desc {
       font-size: 1.1rem;
@@ -319,14 +321,16 @@
       </div>
     </div>
   </div>
+
+
   <a id="whatsapp-btn" class="whatsapp-float" target="_blank">
     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.8
+      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.8-.384-1.456-.752-.64-.368-1.072-.816-1.312-1.168-.24-.352-.025-.544.128-.704.131-.131.296-.336.448-.504.152-.168.203-.288.304-.496.101-.208.05-.39-.025-.546-.075-.156-.665-1.6-.913-2.192-.24-.58-.48-.5-.656-.51-.17-.01-.365-.01-.56-.01-.192 0-.504.072-.768.352-.264.28-1.008.984-1.008 2.4 0 1.416 1.032 2.784 1.176 2.976.144.192 2.032 3.104 4.928 4.352.688.296 1.224.472 1.64.6.688.224 1.312.192 1.808.116.552-.084 1.704-.696 1.944-1.368.24-.672.24-1.248.168-1.368-.072-.12-.264-.192-.552-.336z"/>
+    </svg>
+    WhatsApp
+  </a>
 
-
-
-
-<script>
+  <script>
     let allData = {};
 
     // CRÍTICO: Pega aquí tu URL de aplicación web de Apps Script (/exec)
@@ -334,64 +338,40 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         if (!API_ENDPOINT || API_ENDPOINT.includes("TU_URL")) {
-            console.error("Error: API_ENDPOINT no está configurado correctamente en el script HTML.");
-            document.getElementById("grid-container").innerHTML = '<p style="text-align:center; color:red;">Error de configuración. Contacte al administrador.</p>';
+            console.error("Error: API_ENDPOINT no está configurado correctamente.");
             return;
         }
         fetch(API_ENDPOINT)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
+            .then(res => res.json())
             .then(initApp)
-            .catch(error => {
-                console.error('Error al cargar datos:', error);
-                document.getElementById("grid-container").innerHTML = '<p style="text-align:center; color:red;">Error al cargar el catálogo.</p>';
-            });
+            .catch(err => console.error('Error al cargar datos:', err));
     });
 
     function initApp(data) {
         const urlParams = new URLSearchParams(window.location.search);
         const modo = urlParams.get('modo');
         
-        // Filtrado para modo clientes (ocultar productos con palabra clave "gratis")
         if (modo === 'clientes' && data.categories) {
             data.categories = data.categories.map(cat => {
                 cat.products = cat.products.filter(prod => {
                     const nombreProd = (prod.name || "").toLowerCase();
-                    const esGratuito = nombreProd.includes("gratis") || nombreProd.includes("gratuito");
-                    return !esGratuito;
+                    return !nombreProd.includes("gratis") && !nombreProd.includes("gratuito");
                 });
                 return cat;
             }).filter(cat => cat.products.length > 0);
         }
         
         allData = data;
-        if(data.config && data.config.backgroundColor) {
-            document.body.style.backgroundColor = data.config.backgroundColor;
-        }
-        if(data.config && data.config.whatsappUrl) {
-            document.getElementById("whatsapp-btn").href = data.config.whatsappUrl;
-        }
+        if(data.config?.backgroundColor) document.body.style.backgroundColor = data.config.backgroundColor;
+        if(data.config?.whatsappUrl) document.getElementById("whatsapp-btn").href = data.config.whatsappUrl;
         
         renderHome();
     }
 
-    // --- Views ---
-
     function renderHome() {
-        // Ocultar Header de Categoría
-        const catHeader = document.getElementById("category-header");
-        catHeader.style.display = "none";
-        
-        // Mostrar Hero Section
-        const hero = document.getElementById("hero");
-        hero.style.display = "flex";
-        renderHeroSection(); 
-        
-        // Ocultar Botón Volver
+        document.getElementById("category-header").style.display = "none";
+        document.getElementById("hero").style.display = "flex";
+        renderHeroSection();
         document.getElementById("nav-bar").style.display = "none";
         
         const grid = document.getElementById("grid-container");
@@ -401,37 +381,49 @@
 
         allData.categories.forEach(cat => {
             if (cat.products.length === 0) return;
-            const imgUrl = cat.image || (cat.products[0] ? cat.products[0].image : "");
-            const card = createCard(cat.name, `${cat.products.length} productos`, imgUrl, () => {
-                renderCategoryView(cat);
+
+            // Verificamos si la categoría o sus productos contienen el curso gratuito para destacarlo como banner
+            cat.products.forEach(prod => {
+                const pName = (prod.name || "").toLowerCase();
+                const isFree = pName.includes("gratis") || pName.includes("gratuito");
+
+                if (isFree) {
+                    // Renderizar como Banner Especial de Ancho Completo
+                    const bannerDiv = document.createElement("div");
+                    bannerDiv.className = "course-banner-wrapper";
+                    bannerDiv.innerHTML = `
+                        <img class="course-banner-img" src="${prod.image}" alt="${prod.name}" onerror="this.src='https://via.placeholder.com/400x400?text=Sin+Imagen'">
+                        <div class="course-banner-text">
+                            <h2 class="course-banner-title">${prod.name}</h2>
+                            <p class="course-banner-desc">${prod.detail || ""}</p>
+                            <button class="hero-btn" onclick='openModal(${JSON.stringify(prod)})'>${prod.offerNote || "Acceder Gratis"}</button>
+                        </div>
+                    `;
+                    grid.appendChild(bannerDiv);
+                } else {
+                    // Renderizar como tarjeta normal de categoría/producto
+                    const imgUrl = cat.image || prod.image;
+                    const card = createCard(cat.name, `${cat.products.length} productos`, imgUrl, () => {
+                        renderCategoryView(cat);
+                    });
+                    grid.appendChild(card);
+                }
             });
-            grid.appendChild(card);
         });
     }
 
-    // --- FUNCIÓN CORREGIDA Y MEJORADA ---
     function renderCategoryView(category) {
-        // Ocultar Hero Section
         document.getElementById("hero").style.display = "none";
-        
-        // Mostrar y configurar Header de Categoría (Añadido para UX)
         const catHeader = document.getElementById("category-header");
         document.getElementById("category-title").textContent = category.name;
-        document.getElementById("category-subtitle").textContent = `Explora los ${category.products.length} recursos disponibles en esta sección.`;
-        catHeader.style.display = "flex"; // Forzamos que se muestre
+        document.getElementById("category-subtitle").textContent = `Explora los recursos disponibles en esta sección.`;
+        catHeader.style.display = "flex";
 
-        // Mostrar Botón Volver
-        const navBar = document.getElementById("nav-bar");
-        navBar.style.display = "flex";
+        document.getElementById("nav-bar").style.display = "flex";
 
         const grid = document.getElementById("grid-container");
         grid.innerHTML = "";
         
-        // Asegurar que la grilla mantenga su comportamiento de columnas incluso en vista de categoría
-        // (Esto es lo que provocaba que se vieran mal los packs en la Imagen 2)
-        grid.style.display = 'grid'; 
-        // Si en tu CSS el grid tiene 1 col en mobile y 3 en desktop, esto lo respetará automáticamente.
-
         category.products.forEach(prod => {
             const card = createCard(prod.name, "", prod.image, () => {
                 openModal(prod);
@@ -439,7 +431,6 @@
             grid.appendChild(card);
         });
         
-        // Volver al principio de la página
         window.scrollTo(0, 0);
     }
 
@@ -452,7 +443,7 @@
         
         if (modo === 'clientes') {
             tituloHero.innerText = "🚀 ¡Lleva tu Negocio al Siguiente Nivel con el Pack Total!";
-            descHero.innerText = "Ya diste el primer paso. Domina los tres pilares definitivos: Investigación de Mercado Inteligente, Landing Pages que convierten y Automatizaciones con Google Apps Script. 10 años de experiencia resumidos en un solo lugar.";
+            descHero.innerText = "Ya diste el primer paso. Domina los tres pilares definitivos: Investigación de Mercado Inteligente, Landing Pages que convierten y Automatizaciones.";
             heroBtn.textContent = "¡Ver Pack Completo!";
         } else {
             tituloHero.innerText = "Pack Transformación Total: Todo lo que un Emprendedor Necesita";
@@ -461,44 +452,31 @@
         }
         
         const hero = document.getElementById("hero");
-        const bgImage = (allData.config && allData.config.heroBackgroundImage) ? allData.config.heroBackgroundImage : "";
-        
-        if (bgImage) {
-            hero.style.backgroundImage = `url('${bgImage}')`;
-        }
+        const bgImage = allData.config?.heroBackgroundImage;
+        if (bgImage) hero.style.backgroundImage = `url('${bgImage}')`;
         
         heroBtn.onclick = () => {
             let targetProd = null;
-            if (allData.categories) {
-                allData.categories.forEach(cat => {
-                    cat.products.forEach(p => {
-                        const pName = (p.name || "").toLowerCase();
-                        if (pName.includes("transformación total") || pName.includes("appscript")) {
-                            targetProd = p;
-                        }
-                    });
+            allData.categories?.forEach(cat => {
+                cat.products.forEach(p => {
+                    if (p.name.toLowerCase().includes("transformación total") || p.name.toLowerCase().includes("appscript")) {
+                        targetProd = p;
+                    }
                 });
-            }
-            if (targetProd) {
-                openModal(targetProd);
-            } else {
-                 console.log("Producto 'Transformación Total' no encontrado para el botón Hero.");
-            }
+            });
+            if (targetProd) openModal(targetProd);
         };
     }
-    
-    // --- Helpers ---
 
-    function createCard(title, subtitle, imageUrl, onClick, isPromotional = false) { 
+    function createCard(title, subtitle, imageUrl, onClick, isPromotional = false) {  
         const card = document.createElement("div");
         card.className = "card";
         card.onclick = onClick;
         
-        const promoBadgeHtml = isPromotional ? 
-            '<div class="promo-badge">¡PROMO!</div>' : ''; 
+        const promoBadgeHtml = isPromotional ? '<div class="promo-badge">¡PROMO!</div>' : '';  
         
         card.innerHTML = `
-            ${promoBadgeHtml} 
+            ${promoBadgeHtml}  
             <img class="card-img" src="${imageUrl}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400?text=Sin+Imagen'">
             <div class="card-overlay">
                 <div class="card-title">${title}</div>
@@ -520,14 +498,8 @@
         const buyButton = document.getElementById("modal-buy");
         buyButton.href = product.buyUrl;
         
-        const offerNoteLower = (product.offerNote || "").toLowerCase();
-        const isFree = offerNoteLower.includes('gratuito') || offerNoteLower.includes('gratis');
-                       
-        if (isFree) {
-            buyButton.innerHTML = '<span>🔗</span> Acceder Gratis';
-        } else {
-            buyButton.innerHTML = '<span>🛒</span> Comprar';
-        }
+        const isFree = (product.offerNote || "").toLowerCase().includes('gratuito') || (product.name || "").toLowerCase().includes('gratis');
+        buyButton.innerHTML = isFree ? '<span>🔗</span> Acceder Gratis' : '<span>🛒</span> Comprar';
         
         const offerEl = document.getElementById("modal-offer");
         if (product.offerNote) {
@@ -538,16 +510,16 @@
         }
         
         modal.classList.add("active");
-        document.body.style.overflow = 'hidden'; // Prevenir scroll de fondo al abrir modal
+        document.body.style.overflow = 'hidden';
     }
 
     function closeModal(e) {
         if (e.target === document.getElementById("modal") || e.target.classList.contains("modal-close")) {
             document.getElementById("modal").classList.remove("active");
-            document.body.style.overflow = ''; // Restaurar scroll
+            document.body.style.overflow = '';
         }
     }
   </script>
 </body>
-</html> 
+</html>
 
