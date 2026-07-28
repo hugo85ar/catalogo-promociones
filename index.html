@@ -9,7 +9,7 @@
       --bg-color: #141414;
       --text-color: #e5e5e5;
       --accent-color: #e50914;
-      --card-bg: #2f2f2f;
+      --card-bg: #141414; /* Fondo de tarjeta igual al fondo de página */
     }
     body {
       background-color: var(--bg-color);
@@ -28,7 +28,7 @@
       display: flex;
       align-items: flex-end;
       padding: 20px 4%;
-      margin-bottom: 20px;
+      margin-bottom: 10px; /* Reducido de 20px a 10px */
     }
     .hero::after {
       content: '';
@@ -93,30 +93,30 @@
     .back-btn:hover {
       background: rgba(255, 255, 255, 0.1);
     }
-    .section-title {
-      font-size: 1.5rem;
+    /* Category Header View */
+    .category-header {
+      padding: 10px 4%; /* Reducido de 20px a 10px */
+      display: none; /* Oculto por defecto, JS lo muestra */
+      flex-direction: column;
+      margin-bottom: 10px; /* Reducido de 20px a 10px */
+      background-color: var(--bg-color);
+      border-bottom: 1px solid #333;
+    }
+    .category-title {
+      font-size: 1.8rem;
       font-weight: bold;
       margin: 0;
     }
-    /* Category Header View (persuasivo) */
-    .category-header {
-      padding: 20px 4%;
-      display: none; /* Oculto por defecto, JS lo muestra */
-      flex-direction: column;
-      background-color: rgba(47, 47, 47, 0.3);
-      margin-bottom: 20px;
-      border-bottom: 1px solid #333;
-    }
     .category-subtitle {
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: #aaa;
-      margin-top: 10px;
+      margin-top: 5px;
       max-width: 700px;
     }
 
     /* Grid Layout */
     .main-container {
-      padding: 20px 4%;
+      padding: 0 4%; /* Padding horizontal mantenido */
     }
     .grid-container {
       display: grid;
@@ -125,7 +125,7 @@
     }
     /* Card Styles */
     .card {
-      background-color: var(--bg-color);
+      background-color: var(--card-bg); /* Negro de fondo de página */
       border-radius: 8px;
       overflow: hidden;
       cursor: pointer;
@@ -133,7 +133,7 @@
       position: relative;
       aspect-ratio: 1 / 1; /* Mantiene el cuadrado */
     }
-    /* Promotional Badge Style */
+    /* NUEVO: Promotional Badge Style */
     .promo-badge {
       position: absolute;
       top: 10px;
@@ -153,9 +153,10 @@
     }
     .card-img {
       width: 100%;
-      height: 100%;
+      height: 80%; /* Ajuste para que el texto no se superponga */
       object-fit: contain; /* Mantiene la imagen completa */
       display: block;
+      margin-top: 10px;
     }
     .card-overlay {
       position: absolute;
@@ -163,20 +164,20 @@
       left: 0;
       right: 0;
       background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-      padding: 20px;
+      padding: 15px; /* Reducido de 20px a 15px */
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      height: 50%;
+      height: 40%;
       pointer-events: none;
     }
     .card-title {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: bold;
       margin-bottom: 5px;
     }
     .card-subtitle {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #aaa;
     }
     /* Modal */
@@ -227,7 +228,7 @@
     .modal-image {
       width: 100%;
       height: 300px;
-      object-fit: contain; /* Mantiene la imagen completa */
+      object-fit: contain;
       background-color: #000;
     }
     .modal-details {
@@ -254,6 +255,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      cursor: pointer;
     }
     /* WhatsApp Float */
     .whatsapp-float {
@@ -291,21 +293,21 @@
   </style>
 </head>
 <body>
-  <!-- Hero Section (Visible only on Home) -->
+  <!-- Hero Section -->
   <div id="hero" class="hero" style="display: none;">
     <div class="hero-content">
       <h1 id="hero-title" class="hero-title"></h1>
       <p id="hero-desc" class="hero-desc"></p>
-      <button id="hero-btn" class="hero-btn">Ver Detalles</button>
+      <a id="hero-btn" href="#" class="hero-btn"></a> <!-- Cambiado a <a> -->
     </div>
   </div>
-  <!-- Navigation Bar (Visible only in Categories) -->
+  <!-- Navigation Bar & Category Header -->
   <div id="nav-bar" class="nav-bar" style="display: none;">
     <button class="back-btn" onclick="renderHome()">← Volver</button>
   </div>
-  <!-- Category Header (Visible only in Categories) -->
+  <!-- NUEVO: Category Header (Activado y corregido) -->
   <div id="category-header" class="category-header">
-    <h2 id="category-title" class="section-title"></h2>
+    <h2 id="category-title" class="category-title"></h2>
     <p id="category-subtitle" class="category-subtitle"></p>
   </div>
 
@@ -325,19 +327,19 @@
         <p id="modal-desc" class="modal-desc"></p>
         <p id="modal-offer" style="color: #46d369; font-weight: bold; margin-bottom: 15px;"></p>
         <div class="modal-actions">
-          <a id="modal-buy" href="#" target="_blank" class="btn-primary">
-            <span>▶</span>
-          </a>
+          <a id="modal-buy" href="#" target="_blank" class="btn-primary"></a>
         </div>
       </div>
     </div>
   </div>
-<a id="whatsapp-btn" class="whatsapp-float" target="_blank">
-  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.807-.297-1.537-.948-.57-.508-.956-1.135-1.068-1.327-.112-.192-.012-.296.084-.391" />
-  </svg>
-  WhatsApp
-</a>
+  <a id="whatsapp-btn" class="whatsapp-float" target="_blank">
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.807-.297-1.537-.948-.57-.508-.956-1.135-1.068-1.327-.112-.192-.012-.296.084-.391" />
+    </svg>
+    WhatsApp
+  </a>
+
+
 
 <script>
     let allData = {};
