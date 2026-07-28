@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,7 +29,7 @@
       display: flex;
       align-items: flex-end;
       padding: 20px 4%;
-      margin-bottom: 10px; /* Reducido de 20px a 10px */
+      margin-bottom: 10px;
     }
     .hero::after {
       content: '';
@@ -95,10 +96,10 @@
     }
     /* Category Header View */
     .category-header {
-      padding: 10px 4%; /* Reducido de 20px a 10px */
+      padding: 10px 4%;
       display: none; /* Oculto por defecto, JS lo muestra */
       flex-direction: column;
-      margin-bottom: 10px; /* Reducido de 20px a 10px */
+      margin-bottom: 10px;
       background-color: var(--bg-color);
       border-bottom: 1px solid #333;
     }
@@ -116,7 +117,7 @@
 
     /* Grid Layout */
     .main-container {
-      padding: 0 4%; /* Padding horizontal mantenido */
+      padding: 0 4%;
     }
     .grid-container {
       display: grid;
@@ -125,7 +126,7 @@
     }
     /* Card Styles */
     .card {
-      background-color: var(--card-bg); /* Negro de fondo de página */
+      background-color: var(--card-bg);
       border-radius: 8px;
       overflow: hidden;
       cursor: pointer;
@@ -133,7 +134,7 @@
       position: relative;
       aspect-ratio: 1 / 1; /* Mantiene el cuadrado */
     }
-    /* NUEVO: Promotional Badge Style */
+    /* Promotional Badge Style */
     .promo-badge {
       position: absolute;
       top: 10px;
@@ -153,8 +154,8 @@
     }
     .card-img {
       width: 100%;
-      height: 80%; /* Ajuste para que el texto no se superponga */
-      object-fit: contain; /* Mantiene la imagen completa */
+      height: 80%;
+      object-fit: contain;
       display: block;
       margin-top: 10px;
     }
@@ -164,7 +165,7 @@
       left: 0;
       right: 0;
       background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-      padding: 15px; /* Reducido de 20px a 15px */
+      padding: 15px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -298,14 +299,13 @@
     <div class="hero-content">
       <h1 id="hero-title" class="hero-title"></h1>
       <p id="hero-desc" class="hero-desc"></p>
-      <a id="hero-btn" href="#" class="hero-btn"></a> <!-- Cambiado a <a> -->
+      <a id="hero-btn" href="#" class="hero-btn"></a>
     </div>
   </div>
   <!-- Navigation Bar & Category Header -->
   <div id="nav-bar" class="nav-bar" style="display: none;">
     <button class="back-btn" onclick="renderHome()">← Volver</button>
   </div>
-  <!-- NUEVO: Category Header (Activado y corregido) -->
   <div id="category-header" class="category-header">
     <h2 id="category-title" class="category-title"></h2>
     <p id="category-subtitle" class="category-subtitle"></p>
@@ -314,7 +314,6 @@
   <!-- Main Content Grid -->
   <div id="main-container" class="main-container">
     <div id="grid-container" class="grid-container">
-      <!-- Items will be injected here -->
     </div>
   </div>
   <!-- Modal -->
@@ -333,6 +332,7 @@
     </div>
   </div>
   <a id="whatsapp-btn" class="whatsapp-float" target="_blank">
+
     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
       <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.807-.297-1.537-.948-.57-.508-.956-1.135-1.068-1.327-.112-.192-.012-.296.084-.391" />
     </svg>
