@@ -180,23 +180,20 @@
     }
 
     /* ESTILOS NUEVOS: Banner Especial para el Curso Gratuito */
-    .course-banner-wrapper {
-      /* Ocupa todo el ancho disponible de la grilla */
+   .course-banner-wrapper {
       grid-column: 1 / -1; 
-      /* Estilo visual que imita al Hero */
-      background-color: #2f2f2f; /* Un gris oscuro distinto al negro */
+      background-color: #2f2f2f;
       border-radius: 8px;
       padding: 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 25px; /* Espacio con las carátulas de abajo */
       border: 1px solid #444;
       box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     }
-    @media (min-width: 768px) {
-      /* En desktop, el banner se ve aún mejor */
+   @media (min-width: 768px) {
       .course-banner-wrapper {
         flex-direction: row;
         text-align: left;
@@ -204,9 +201,8 @@
         padding: 40px;
       }
     }
-
-    .course-banner-img {
-      max-width: 200px;
+ .course-banner-img {
+      max-width: 280px; /* Aumentado para que se vea mucho más */
       height: auto;
       border-radius: 8px;
       margin-bottom: 20px;
@@ -216,11 +212,11 @@
       .course-banner-img {
         margin-bottom: 0;
         margin-right: 40px;
-        max-width: 250px;
+        max-width: 350px; /* Tamaño destacado en desktop */
       }
     }
 
-    .course-banner-text {
+   .course-banner-text {
       flex: 1;
     }
     .course-banner-title {
@@ -379,37 +375,51 @@
         
         if (!allData.categories) return;
 
+        // 1. PRIMERO: Buscar y renderizar el Banner del Curso Gratuito arriba de todo
+        let freeProduct = null;
         allData.categories.forEach(cat => {
-            if (cat.products.length === 0) return;
-
             cat.products.forEach(prod => {
                 const pName = (prod.name || "").toLowerCase();
                 const offerNoteLower = (prod.offerNote || "").toLowerCase();
-                // Detección unificada de gratuidad
-                const isFree = pName.includes("gratis") || pName.includes("gratuito") || offerNoteLower.includes("gratis") || offerNoteLower.includes("gratuito");
-
-                if (isFree) {
-                    // Renderizar como Banner Especial de Ancho Completo
-                    const bannerDiv = document.createElement("div");
-                    bannerDiv.className = "course-banner-wrapper";
-                    bannerDiv.innerHTML = `
-                        <img class="course-banner-img" src="${prod.image}" alt="${prod.name}" onerror="this.src='https://via.placeholder.com/400x400?text=Sin+Imagen'">
-                        <div class="course-banner-text">
-                            <h2 class="course-banner-title">${prod.name}</h2>
-                            <p class="course-banner-desc">${prod.detail || ""}</p>
-                            <button class="hero-btn" onclick='openModal(${JSON.stringify(prod)})'>${prod.offerNote || "Acceder Gratis"}</button>
-                        </div>
-                    `;
-                    grid.appendChild(bannerDiv);
-                } else {
-                    // Renderizar como tarjeta normal
-                    const imgUrl = cat.image || prod.image;
-                    const card = createCard(cat.name, `${cat.products.length} productos`, imgUrl, () => {
-                        renderCategoryView(cat);
-                    });
-                    grid.appendChild(card);
+                if (pName.includes("gratis") || pName.includes("gratuito") || offerNoteLower.includes("gratis") || offerNoteLower.includes("gratuito")) {
+                    freeProduct = prod;
                 }
             });
+        });
+
+        if (freeProduct) {
+            const bannerDiv = document.createElement("div");
+            bannerDiv.className = "course-banner-wrapper";
+            bannerDiv.innerHTML = `
+                <img class="course-banner-img" src="${freeProduct.image}" alt="${freeProduct.name}" onerror="this.src='https://via.placeholder.com/400x400?text=Sin+Imagen'">
+                <div class="course-banner-text">
+                    <h2 class="course-banner-title">${freeProduct.name}</h2>
+                    <p class="course-banner-desc">${freeProduct.detail || ""}</p>
+                    <button class="hero-btn" onclick='openModal(${JSON.stringify(freeProduct)})'>${freeProduct.offerNote || "Reservá tu Cupo!!"}</button>
+                </div>
+            `;
+            grid.appendChild(bannerDiv);
+        }
+
+        // 2. SEGUNDO: Renderizar las carátulas de las categorías (una sola vez por categoría, sin duplicarse por cada producto)
+        allData.categories.forEach(cat => {
+            if (cat.products.length === 0) return;
+
+            // Filtramos la categoría para ignorar el producto gratuito si se coló en la grilla de pago
+            const activeProducts = cat.products.filter(prod => {
+                const pName = (prod.name || "").toLowerCase();
+                const offerNoteLower = (prod.offerNote || "").toLowerCase();
+                return !pName.includes("gratis") && !pName.includes("gratuito") && !offerNoteLower.includes("gratis") && !offerNoteLower.includes("gratuito");
+            });
+
+            if (activeProducts.length === 0) return;
+
+            // Usamos la imagen de la categoría o la del primer producto válido
+            const imgUrl = cat.image || activeProducts[0].image;
+            const card = createCard(cat.name, `${activeProducts.length} productos`, imgUrl, () => {
+                renderCategoryView(cat);
+            });
+            grid.appendChild(card);
         });
     }
 
