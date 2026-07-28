@@ -110,15 +110,14 @@
     }
     /* Card Styles */
     .card {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-      position: relative;
-      aspect-ratio: 1 / 1;
-      /* Square cards */
-    }
+  background-color: var(--bg-color); /* Esto usará el negro de tu fondo: #141414 */
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  position: relative;
+  aspect-ratio: 1 / 1; /* Mantiene el cuadrado */
+}
     /* NUEVO: Promotional Badge Style */
     .promo-badge {
       position: absolute;
@@ -137,13 +136,11 @@
       transform: scale(1.03);
       z-index: 10;
     }
-   .card-img {
+  .card-img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* ESTE CAMBIO AJUSTA LA IMAGEN PARA QUE SE VEA COMPLETA */
+  object-fit: contain; /* Mantiene la imagen completa */
   display: block;
-  /* OPCIONAL: Si sobra espacio, puedes cambiar el color de fondo de la tarjeta para que no se vea blanco */
-  /* background-color: #000000; */ 
 }
     .card-overlay {
       position: absolute;
