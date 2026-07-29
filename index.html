@@ -442,15 +442,15 @@
             if (cat.products.length === 0) return;
 
             // Diccionario de respaldo dinámico basado puramente en la hoja
-            let customTitle = cat.Titulo || cat.title;
-            let customSubtitle = cat.Subtitulo || cat.subtitle;
+           let customTitle = cat.Titulo || cat.title || cat.TITULO || "";
+            let customSubtitle = cat.Subtitulo || cat.subtitulo || cat.subtitle || cat.SUBTITULO || "";
 
             if (rawCatName.includes("Packs & Programas Integrales")) {
                 customTitle = customTitle || "Ruta del Emprendedor";
                 customSubtitle = customSubtitle || "El paso a paso para escalar tu negocio digital";
             } else if (rawCatName.includes("Soluciones empaquetadas")) {
                 customTitle = customTitle || "Las riendas de tu negocio en tus manos";
-                // Aquí ya no forzamos el texto viejo, dejamos que use customSubtitle de la hoja
+                customSubtitle = customSubtitle || "Herramientas inteligentes y automatizaciones listas para usar en tu propio negocio.";
             }
 
             const displayTitle = customTitle || rawCatName;
