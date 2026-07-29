@@ -441,16 +441,16 @@
             if (catNameLower.includes("gratis") || catNameLower.includes("gratuito")) return;
             if (cat.products.length === 0) return;
 
-            // Diccionario de respaldo por si el JSON no trae las columnas leídas correctamente
+            // Diccionario de respaldo dinámico basado puramente en la hoja
             let customTitle = cat.Titulo || cat.title;
             let customSubtitle = cat.Subtitulo || cat.subtitle;
 
             if (rawCatName.includes("Packs & Programas Integrales")) {
-                customTitle = "Ruta del Emprendedor";
-                customSubtitle = "El paso a paso para escalar tu negocio digital";
+                customTitle = customTitle || "Ruta del Emprendedor";
+                customSubtitle = customSubtitle || "El paso a paso para escalar tu negocio digital";
             } else if (rawCatName.includes("Soluciones empaquetadas")) {
-                customTitle = "Las riendas de tu negocio en tus manos";
-                customSubtitle = "Ahora con opciones en cuotas (SaaS) - Una solución a medida de tu negocio!";
+                customTitle = customTitle || "Las riendas de tu negocio en tus manos";
+                // Aquí ya no forzamos el texto viejo, dejamos que use customSubtitle de la hoja
             }
 
             const displayTitle = customTitle || rawCatName;
