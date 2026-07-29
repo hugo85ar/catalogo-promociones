@@ -521,6 +521,13 @@
         const grid = document.getElementById("grid-container");
         grid.innerHTML = "";
         
+        // ORDENAMIENTO: Ordena los productos de menor a mayor (Pack 1, Pack 2, Pack 3...)
+        if (category.products) {
+            category.products.sort((a, b) => {
+                return (a.name || "").localeCompare(b.name || "", undefined, { numeric: true });
+            });
+        }
+
         category.products.forEach(prod => {
             const card = createCard(prod.name, "", prod.image, () => {
                 openModal(prod);
