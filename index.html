@@ -441,8 +441,7 @@
             if (catNameLower.includes("gratis") || catNameLower.includes("gratuito")) return;
             if (cat.products.length === 0) return;
 
-            // Diccionario de respaldo dinámico basado puramente en la hoja
-           let customTitle = cat.Titulo || cat.title || cat.TITULO || "";
+            let customTitle = cat.Titulo || cat.title || cat.TITULO || "";
             let customSubtitle = cat.Subtitulo || cat.subtitulo || cat.subtitle || cat.SUBTITULO || "";
 
             if (rawCatName.includes("Packs & Programas Integrales")) {
@@ -459,7 +458,18 @@
 
             const card = document.createElement("div");
             card.className = "card";
-            card.onclick = () => renderCategoryView(cat);
+
+            // --- AQUÍ ESTÁ EL CAMBIO CLAVE DE UX ---
+            if (rawCatName.includes("Packs & Programas Integrales")) {
+                // Si es la categoría de Packs, va directo a tu Landing optimizada con cuotas y precios de frente
+                card.onclick = () => {
+                    window.location.href = "https://hugo85ar.github.io/LandingPacks/";
+                };
+            } else {
+                // Para el resto de las categorías, mantiene el comportamiento normal
+                card.onclick = () => renderCategoryView(cat);
+            }
+            // ---------------------------------------
 
             card.innerHTML = `
                 <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='https://via.placeholder.com/600x400?text=Sin+Imagen'">
@@ -470,7 +480,6 @@
             `;
             grid.appendChild(card);
         });
-    }
     
 
     
