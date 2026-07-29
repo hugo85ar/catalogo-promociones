@@ -531,14 +531,13 @@
         window.scrollTo(0, 0);
     }
 
-   function renderHeroSection() {
+    function renderHeroSection() {
         const urlParams = new URLSearchParams(window.location.search);
         const modo = urlParams.get('modo');
         const tituloHero = document.getElementById("hero-title");
         const descHero = document.getElementById("hero-desc");
         const heroBtn = document.getElementById("hero-btn");
         
-        // 1. Buscar la categoría o producto principal (Packs & Programas Integrales)
         let targetCat = null;
         let targetProd = null;
 
@@ -548,13 +547,13 @@
                 if (cName.includes("packs") || cName.includes("integrales")) {
                     targetCat = cat;
                     if (cat.products && cat.products.length > 0) {
-                        targetProd = cat.products[0]; // El primer producto del pack integral
+                        targetProd = cat.products[0];
                     }
                 }
             });
         }
 
-        // 2. Textos dinámicos basados en la hoja o respaldo por defecto
+        // Textos dinámicos
         if (modo === 'clientes') {
             tituloHero.innerText = "🚀 ¡Lleva tu Negocio al Siguiente Nivel con el Pack Total!";
             descHero.innerText = "Ya diste el primer paso. Domina los tres pilares definitivos: Investigación de Mercado Inteligente, Landing Pages que convierten y Automatizaciones.";
@@ -565,19 +564,18 @@
             heroBtn.textContent = "¡Quiero el Pack Completo!";
         }
         
-        // 3. Imagen de fondo del Hero sincronizada con la hoja
+        // CORRECCIÓN: Respetamos la imagen de fondo original de la configuración global (o un respaldo limpio)
         const hero = document.getElementById("hero");
-        const bgImage = (targetCat && (targetCat.ImageUrl || targetCat.image)) ? (targetCat.ImageUrl || targetCat.image) : allData.config?.heroBackgroundImage;
+        const bgImage = allData.config?.heroBackgroundImage;
         if (bgImage) {
             hero.style.backgroundImage = `url('${bgImage}')`;
         }
         
-        // 4. Acción del botón: abre directamente el modal del producto estrella
+        // Acción del botón: abre perfectamente el modal con el enlace de pago
         heroBtn.onclick = () => {
             if (targetProd) {
                 openModal(targetProd);
             } else {
-                // Respaldo de búsqueda global si no encontró la categoría exacta
                 let fallbackProd = null;
                 allData.categories?.forEach(cat => {
                     cat.products.forEach(p => {
@@ -592,6 +590,7 @@
         };
     }
 
+    
     function createCard(title, subtitle, imageUrl, onClick, isPromotional = false) {  
         const card = document.createElement("div");
         card.className = "card";
