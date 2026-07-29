@@ -385,7 +385,7 @@
     }
 
 
-    function renderHome() {
+   function renderHome() {
         document.getElementById("category-header").style.display = "none";
         document.getElementById("hero").style.display = "flex";
         renderHeroSection();
@@ -396,7 +396,7 @@
         
         if (!allData.categories) return;
 
-        // 1. Encontrar el producto gratuito para mantener operativo su modal y banner superior
+        // 1. Encontrar el producto gratuito para mantener operativo su modal
         let freeProduct = null;
         allData.categories.forEach(cat => {
             cat.products.forEach(prod => {
@@ -415,6 +415,7 @@
         });
 
         if (freeProduct) {
+            // USAMOS ESTRICTAMENTE LA COLUMNA 'Titulo' y 'Subtitulo' DE LA HOJA LISTAS SI EXISTEN
             const bannerTitle = (freeCategoryConfig && freeCategoryConfig.Titulo) ? freeCategoryConfig.Titulo : freeProduct.name;
             const bannerDesc = (freeCategoryConfig && freeCategoryConfig.Subtitulo) ? freeCategoryConfig.Subtitulo : freeProduct.detail;
             const bannerImg = (freeCategoryConfig && freeCategoryConfig.ImageUrl) ? freeCategoryConfig.ImageUrl : freeProduct.image;
@@ -433,12 +434,13 @@
             grid.appendChild(bannerDiv);
         }
 
-        // 3. Renderizar el resto de las carátulas leyendo las columnas exactas de Listas
+        // 3. Renderizar el resto de las carátulas tomando de forma absoluta la hoja Listas
         allData.categories.forEach(cat => {
             const catNameField = (cat.Category || cat.name || "").toLowerCase();
             if (catNameField.includes("gratis") || catNameField.includes("gratuito")) return; // Evitar duplicar el banner
             if (cat.products.length === 0) return;
 
+            // AQUÍ ESTÁ EL CAMBIO CLAVE: Priorizamos cat.Titulo (hoja Listas) por encima de cualquier otro nombre
             const displayTitle = cat.Titulo || cat.Category || cat.name;
             const displaySubtitle = cat.Subtitulo || '';
             const displayImg = cat.ImageUrl || cat.image || 'https://via.placeholder.com/600x400?text=Sin+Imagen';
@@ -457,6 +459,8 @@
             grid.appendChild(card);
         });
     }
+
+    
 
     
     function openModal(product) {
