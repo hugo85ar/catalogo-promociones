@@ -531,37 +531,64 @@
         window.scrollTo(0, 0);
     }
 
-    function renderHeroSection() {
+   function renderHeroSection() {
         const urlParams = new URLSearchParams(window.location.search);
         const modo = urlParams.get('modo');
         const tituloHero = document.getElementById("hero-title");
         const descHero = document.getElementById("hero-desc");
         const heroBtn = document.getElementById("hero-btn");
         
+        // 1. Buscar la categoría o producto principal (Packs & Programas Integrales)
+        let targetCat = null;
+        let targetProd = null;
+
+        if (allData.categories) {
+            allData.categories.forEach(cat => {
+                const cName = (cat.Category || cat.name || "").toLowerCase();
+                if (cName.includes("packs") || cName.includes("integrales")) {
+                    targetCat = cat;
+                    if (cat.products && cat.products.length > 0) {
+                        targetProd = cat.products[0]; // El primer producto del pack integral
+                    }
+                }
+            });
+        }
+
+        // 2. Textos dinámicos basados en la hoja o respaldo por defecto
         if (modo === 'clientes') {
             tituloHero.innerText = "🚀 ¡Lleva tu Negocio al Siguiente Nivel con el Pack Total!";
             descHero.innerText = "Ya diste el primer paso. Domina los tres pilares definitivos: Investigación de Mercado Inteligente, Landing Pages que convierten y Automatizaciones.";
             heroBtn.textContent = "¡Ver Pack Completo!";
         } else {
-            tituloHero.innerText = "Pack Transformación Total: Todo lo que un Emprendedor Necesita";
-            descHero.innerText = "Desbloquea los 3 pilares del éxito digital: Encuentra tu nicho, crea páginas que venden y automatiza tus procesos con IA y Apps Script.";
+            tituloHero.innerText = (targetCat && (targetCat.Titulo || targetCat.title)) ? (targetCat.Titulo || targetCat.title) : "Pack Transformación Total: Todo lo que un Emprendedor Necesita";
+            descHero.innerText = (targetCat && (targetCat.Subtitulo || targetCat.subtitulo)) ? (targetCat.Subtitulo || targetCat.subtitulo) : "Desbloquea los 3 pilares del éxito digital: Encuentra tu nicho, crea páginas que venden y automatiza tus procesos con IA y Apps Script.";
             heroBtn.textContent = "¡Quiero el Pack Completo!";
         }
         
+        // 3. Imagen de fondo del Hero sincronizada con la hoja
         const hero = document.getElementById("hero");
-        const bgImage = allData.config?.heroBackgroundImage;
-        if (bgImage) hero.style.backgroundImage = `url('${bgImage}')`;
+        const bgImage = (targetCat && (targetCat.ImageUrl || targetCat.image)) ? (targetCat.ImageUrl || targetCat.image) : allData.config?.heroBackgroundImage;
+        if (bgImage) {
+            hero.style.backgroundImage = `url('${bgImage}')`;
+        }
         
+        // 4. Acción del botón: abre directamente el modal del producto estrella
         heroBtn.onclick = () => {
-            let targetProd = null;
-            allData.categories?.forEach(cat => {
-                cat.products.forEach(p => {
-                    if (p.name.toLowerCase().includes("transformación total") || p.name.toLowerCase().includes("appscript")) {
-                        targetProd = p;
-                    }
+            if (targetProd) {
+                openModal(targetProd);
+            } else {
+                // Respaldo de búsqueda global si no encontró la categoría exacta
+                let fallbackProd = null;
+                allData.categories?.forEach(cat => {
+                    cat.products.forEach(p => {
+                        const pName = (p.name || "").toLowerCase();
+                        if (pName.includes("investigación") || pName.includes("pack") || pName.includes("transformación")) {
+                            fallbackProd = p;
+                        }
+                    });
                 });
-            });
-            if (targetProd) openModal(targetProd);
+                if (fallbackProd) openModal(fallbackProd);
+            }
         };
     }
 
