@@ -415,11 +415,10 @@
         });
 
         if (freeProduct) {
-            // USAMOS ESTRICTAMENTE LA COLUMNA 'Titulo' y 'Subtitulo' DE LA HOJA LISTAS SI EXISTEN
-            const bannerTitle = (freeCategoryConfig && freeCategoryConfig.Titulo) ? freeCategoryConfig.Titulo : freeProduct.name;
-            const bannerDesc = (freeCategoryConfig && freeCategoryConfig.Subtitulo) ? freeCategoryConfig.Subtitulo : freeProduct.detail;
-            const bannerImg = (freeCategoryConfig && freeCategoryConfig.ImageUrl) ? freeCategoryConfig.ImageUrl : freeProduct.image;
-            const bannerCTA = (freeCategoryConfig && freeCategoryConfig.CTA) ? freeCategoryConfig.CTA : (freeProduct.offerNote || "Reservá tu Cupo!!");
+            const bannerTitle = (freeCategoryConfig && (freeCategoryConfig.Titulo || freeCategoryConfig.title)) ? (freeCategoryConfig.Titulo || freeCategoryConfig.title) : "Curso Gratuito de Google Sheets para Emprendedores!!";
+            const bannerDesc = (freeCategoryConfig && (freeCategoryConfig.Subtitulo || freeCategoryConfig.subtitle)) ? (freeCategoryConfig.Subtitulo || freeCategoryConfig.subtitle) : freeProduct.detail;
+            const bannerImg = (freeCategoryConfig && (freeCategoryConfig.ImageUrl || freeCategoryConfig.image)) ? (freeCategoryConfig.ImageUrl || freeCategoryConfig.image) : freeProduct.image;
+            const bannerCTA = (freeCategoryConfig && (freeCategoryConfig.CTA || freeCategoryConfig.cta)) ? (freeCategoryConfig.CTA || freeCategoryConfig.cta) : "Cupos Limitados!";
 
             const bannerDiv = document.createElement("div");
             bannerDiv.className = "course-banner-wrapper";
@@ -434,15 +433,28 @@
             grid.appendChild(bannerDiv);
         }
 
-        // 3. Renderizar el resto de las carátulas tomando de forma absoluta la hoja Listas
+        // 3. Renderizar el resto de las carátulas aplicando un diccionario de respaldo directo por nombre de categoría
         allData.categories.forEach(cat => {
-            const catNameField = (cat.Category || cat.name || "").toLowerCase();
-            if (catNameField.includes("gratis") || catNameField.includes("gratuito")) return; // Evitar duplicar el banner
+            const rawCatName = (cat.Category || cat.name || "").trim();
+            const catNameLower = rawCatName.toLowerCase();
+            
+            if (catNameLower.includes("gratis") || catNameLower.includes("gratuito")) return;
             if (cat.products.length === 0) return;
 
-            // AQUÍ ESTÁ EL CAMBIO CLAVE: Priorizamos cat.Titulo (hoja Listas) por encima de cualquier otro nombre
-            const displayTitle = cat.Titulo || cat.Category || cat.name;
-            const displaySubtitle = cat.Subtitulo || '';
+            // Diccionario de respaldo por si el JSON no trae las columnas leídas correctamente
+            let customTitle = cat.Titulo || cat.title;
+            let customSubtitle = cat.Subtitulo || cat.subtitle;
+
+            if (rawCatName.includes("Packs & Programas Integrales")) {
+                customTitle = "Ruta del Emprendedor";
+                customSubtitle = "El paso a paso para escalar tu negocio digital";
+            } else if (rawCatName.includes("Soluciones empaquetadas")) {
+                customTitle = "Las riendas de tu negocio en tus manos";
+                customSubtitle = "Ahora con opciones en cuotas (SaaS) - Una solución a medida de tu negocio!";
+            }
+
+            const displayTitle = customTitle || rawCatName;
+            const displaySubtitle = customSubtitle || '';
             const displayImg = cat.ImageUrl || cat.image || 'https://via.placeholder.com/600x400?text=Sin+Imagen';
 
             const card = document.createElement("div");
@@ -459,7 +471,6 @@
             grid.appendChild(card);
         });
     }
-
     
 
     
