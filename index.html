@@ -528,8 +528,7 @@ fbq('track', 'PageView');
    }
     
 
-    
-    function openModal(product) {
+   function openModal(product) {
         const modal = document.getElementById("modal");
         const modalImg = document.getElementById("modal-img");
         modalImg.src = product.image;
@@ -546,11 +545,18 @@ fbq('track', 'PageView');
         const offerNoteLower = (product.offerNote || "").toLowerCase();
         const isFree = pName.includes("gratis") || pName.includes("gratuito") || offerNoteLower.includes("gratis") || offerNoteLower.includes("gratuito");
         
+        // --- NUEVA VALIDACIÓN: Detectar si el enlace es de WhatsApp ---
+        const urlDestino = (product.buyUrl || "").toLowerCase();
+        const isWhatsApp = urlDestino.includes("wa.me") || urlDestino.includes("whatsapp.com");
+
         if (isFree) {
             buyButton.innerHTML = '<span>🔗</span> ' + (product.offerNote || 'Acceder Gratis');
+        } else if (isWhatsApp) {
+            buyButton.innerHTML = '<span>💬</span> Consultar por WhatsApp';
         } else {
             buyButton.innerHTML = '<span>🛒</span> Comprar';
         }
+        // -------------------------------------------------------------
         
         const offerEl = document.getElementById("modal-offer");
         if (product.offerNote && !isFree) {
@@ -564,6 +570,7 @@ fbq('track', 'PageView');
         document.body.style.overflow = 'hidden';
     }
 
+    
     function renderCategoryView(category) {
         document.getElementById("hero").style.display = "none";
         const catHeader = document.getElementById("category-header");
