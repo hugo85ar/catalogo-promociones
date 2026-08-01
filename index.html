@@ -540,14 +540,14 @@ fbq('track', 'PageView');
         const buyButton = document.getElementById("modal-buy");
         buyButton.href = product.buyUrl;
         
-        // Detección robusta de gratuidad para el botón del Modal
+        // Detección robusta de gratuidad
         const pName = (product.name || "").toLowerCase();
         const offerNoteLower = (product.offerNote || "").toLowerCase();
         const isFree = pName.includes("gratis") || pName.includes("gratuito") || offerNoteLower.includes("gratis") || offerNoteLower.includes("gratuito");
         
-        // --- NUEVA VALIDACIÓN: Detectar si el enlace es de WhatsApp ---
+        // Detección ampliada de WhatsApp (cubre api.whatsapp.com, wa.me, etc.)
         const urlDestino = (product.buyUrl || "").toLowerCase();
-        const isWhatsApp = urlDestino.includes("wa.me") || urlDestino.includes("whatsapp.com");
+        const isWhatsApp = urlDestino.includes("whatsapp") || urlDestino.includes("wa.me");
 
         if (isFree) {
             buyButton.innerHTML = '<span>🔗</span> ' + (product.offerNote || 'Acceder Gratis');
@@ -556,7 +556,6 @@ fbq('track', 'PageView');
         } else {
             buyButton.innerHTML = '<span>🛒</span> Comprar';
         }
-        // -------------------------------------------------------------
         
         const offerEl = document.getElementById("modal-offer");
         if (product.offerNote && !isFree) {
@@ -569,7 +568,6 @@ fbq('track', 'PageView');
         modal.classList.add("active");
         document.body.style.overflow = 'hidden';
     }
-
     
     function renderCategoryView(category) {
         document.getElementById("hero").style.display = "none";
