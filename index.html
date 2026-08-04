@@ -455,16 +455,17 @@ fbq('track', 'PageView');
             });
         });
 
-        const freeCategoryConfig = allData.categories.find(cat => {
-            const cName = (cat.Category || cat.name || "").toLowerCase();
+        const listasConfig = allData.listas || allData.categories;
+        const freeCategoryConfig = listasConfig.find(item => {
+            const cName = (item.Category || item.name || "").toLowerCase();
             return cName.includes("gratis") || cName.includes("gratuito");
         });
 
         if (freeProduct) {
-            const bannerTitle = (freeCategoryConfig && (freeCategoryConfig.Titulo || freeCategoryConfig.title)) ? (freeCategoryConfig.Titulo || freeCategoryConfig.title) : "Curso Gratuito de Google Sheets para Emprendedores!!";
-            const bannerDesc = (freeCategoryConfig && (freeCategoryConfig.Subtitulo || freeCategoryConfig.subtitle)) ? (freeCategoryConfig.Subtitulo || freeCategoryConfig.subtitle) : freeProduct.detail;
-            const bannerImg = (freeCategoryConfig && (freeCategoryConfig.ImageUrl || freeCategoryConfig.image)) ? (freeCategoryConfig.ImageUrl || freeCategoryConfig.image) : freeProduct.image;
-            const bannerCTA = (freeCategoryConfig && (freeCategoryConfig.CTA || freeCategoryConfig.cta)) ? (freeCategoryConfig.CTA || freeCategoryConfig.cta) : "Cupos Limitados!";
+            const bannerTitle = freeCategoryConfig?.Titulo || freeCategoryConfig?.title || "Curso Gratuito de Google Sheets para Emprendedores!!";
+            const bannerDesc = freeCategoryConfig?.Subtitulo || freeCategoryConfig?.subtitle || freeProduct.detail;
+            const bannerImg = freeCategoryConfig?.ImageUrl || freeCategoryConfig?.image || freeProduct.image;
+            const bannerCTA = freeCategoryConfig?.CTA || freeCategoryConfig?.cta || "Cupos Limitados!";
 
             const bannerDiv = document.createElement("div");
             bannerDiv.className = "course-banner-wrapper";
@@ -484,10 +485,12 @@ fbq('track', 'PageView');
             const catNameLower = rawCatName.toLowerCase();
             
             if (catNameLower.includes("gratis") || catNameLower.includes("gratuito")) return;
-            if (cat.products.length === 0) return;
+            if (cat.products && cat.products.length === 0) return;
 
-            let customTitle = cat.Titulo || cat.title || cat.TITULO || "";
-            let customSubtitle = cat.Subtitulo || cat.subtitulo || cat.subtitle || cat.SUBTITULO || "";
+            const matchConfig = listasConfig.find(item => (item.Category || item.name || "").trim().toLowerCase() === catNameLower);
+
+            let customTitle = matchConfig?.Titulo || matchConfig?.title || cat.Titulo || cat.title || "";
+            let customSubtitle = matchConfig?.Subtitulo || matchConfig?.subtitulo || matchConfig?.subtitle || cat.Subtitulo || "";
 
             if (rawCatName.includes("Packs & Programas Integrales")) {
                 customTitle = customTitle || "Ruta del Emprendedor";
@@ -499,7 +502,7 @@ fbq('track', 'PageView');
 
             const displayTitle = customTitle || rawCatName;
             const displaySubtitle = customSubtitle || '';
-            const displayImg = cat.ImageUrl || cat.image || 'https://via.placeholder.com/600x400?text=Sin+Imagen';
+            const displayImg = matchConfig?.ImageUrl || matchConfig?.image || cat.ImageUrl || cat.image || 'https://via.placeholder.com/600x400?text=Sin+Imagen';
 
             const card = document.createElement("div");
             card.className = "card";
