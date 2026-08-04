@@ -381,7 +381,9 @@ fbq('track', 'PageView');
             const displayTitle = item.Titulo || item.title || rawCatName;
             const displaySubtitle = item.Subtitulo || item.subtitulo || item.subtitle || '';
             const displayImg = item.ImageUrl || item.image || FALLBACK_IMG;
-            const displayCTA = item.CTA || item.cta || "Ver más";
+            
+            // AQUÍ TOMAMOS EL TEXTO DE LA NUEVA COLUMNA O USAMOS UN VALOR POR DEFECTO
+            const displayCTA = item.BotonTexto || item.CTA || item.cta || "Ver más";
 
             const isFree = catNameLower.includes("gratis") || catNameLower.includes("gratuito");
 
@@ -399,16 +401,11 @@ fbq('track', 'PageView');
                 const bannerDiv = document.createElement("div");
                 bannerDiv.className = "course-banner-wrapper";
                 
-                // Aseguramos capturar la propiedad real del curso gratuito (cursoGratuito o buyUrl o buyUrlContado)
-                const freeUrl = freeProduct?.cursoGratuito || freeProduct?.buyUrl || freeProduct?.buyUrlContado || "#";
                 const productPayload = freeProduct || {
                     name: displayTitle, 
                     detail: displaySubtitle, 
-                    image: displayImg, 
-                    cursoGratuito: freeUrl
+                    image: displayImg
                 };
-                // Forzar la propiedad cursoGratuito para que el modal la detecte bien
-                productPayload.cursoGratuito = freeUrl;
 
                 const productData = JSON.stringify(productPayload).replace(/"/g, '&quot;');
 
@@ -422,6 +419,9 @@ fbq('track', 'PageView');
                 `;
                 grid.appendChild(bannerDiv);
             } else {
+                // Si son tarjetas normales, también podemos inyectar el botón o usar el evento de clic de la tarjeta. 
+                // Como las tarjetas de categoría abren la sección al hacer clic, el diseño limpio se mantiene, 
+                // pero si quisieras que el texto se refleje en algún botón flotante o tarjeta, ya lo tienes disponible en `displayCTA`.
                 const card = document.createElement("div");
                 card.className = "card";
                 card.onclick = () => {
