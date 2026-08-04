@@ -398,8 +398,9 @@ fbq('track', 'PageView');
 
   <script>
     let allData = {};
-
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxTGQQZWDLXcfMtMbOH9c98PfH5cQgu5lIzK6jw9vBP-9NLR_RlmX28fDSpd92UZbZU/exec"; 
+
+    const FALLBACK_IMG = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23222222'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23666666' font-family='Roboto, sans-serif' font-size='20'%3ESin Imagen%3C/text%3E%3C/svg%3E";
 
     document.addEventListener("DOMContentLoaded", () => {
         if (!API_ENDPOINT || API_ENDPOINT.includes("TU_URL")) {
@@ -433,7 +434,7 @@ fbq('track', 'PageView');
         renderHome();
     }
 
-   function renderHome() {
+    function renderHome() {
         document.getElementById("category-header").style.display = "none";
         document.getElementById("hero").style.display = "flex";
         renderHeroSection();
@@ -442,98 +443,82 @@ fbq('track', 'PageView');
         const grid = document.getElementById("grid-container");
         grid.innerHTML = "";
         
-        if (!allData.categories) return;
+        // Obtenemos la configuración de la hoja Listas
+        const listasConfig = allData.listas || [];
+        if (listasConfig.length === 0) return;
 
-        let freeProduct = null;
-        allData.categories.forEach(cat => {
-            cat.products.forEach(prod => {
-                const pName = (prod.name || "").toLowerCase();
-                const offerNoteLower = (prod.offerNote || "").toLowerCase();
-                if (pName.includes("gratis") || pName.includes("gratuito") || offerNoteLower.includes("gratis") || offerNoteLower.includes("gratuito")) {
-                    freeProduct = prod;
-                }
-            });
-        });
-
-        const listasConfig = allData.listas || allData.categories;
-        const freeCategoryConfig = listasConfig.find(item => {
-            const cName = (item.Category || item.name || "").toLowerCase();
-            return cName.includes("gratis") || cName.includes("gratuito");
-        });
-
-        if (freeProduct) {
-            const bannerTitle = freeCategoryConfig?.Titulo || freeCategoryConfig?.title || "Curso Gratuito de Google Sheets para Emprendedores!!";
-            const bannerDesc = freeCategoryConfig?.Subtitulo || freeCategoryConfig?.subtitle || freeProduct.detail;
-            const bannerImg = freeCategoryConfig?.ImageUrl || freeCategoryConfig?.image || freeProduct.image;
-            const bannerCTA = freeCategoryConfig?.CTA || freeCategoryConfig?.cta || "Cupos Limitados!";
-
-            const bannerDiv = document.createElement("div");
-            bannerDiv.className = "course-banner-wrapper";
-            bannerDiv.innerHTML = `
-                <img class="course-banner-img" src="${bannerImg}" alt="${bannerTitle}" onerror="this.src='https://via.placeholder.com/400x400?text=Sin+Imagen'">
-                <div class="course-banner-text">
-                    <h2 class="course-banner-title">${bannerTitle}</h2>
-                    <p class="course-banner-desc">${bannerDesc || ""}</p>
-                    <button class="hero-btn" onclick='openModal(${JSON.stringify(freeProduct)})'>${bannerCTA}</button>
-                </div>
-            `;
-            grid.appendChild(bannerDiv);
-        }
-
-        allData.categories.forEach(cat => {
-            const rawCatName = (cat.Category || cat.name || "").trim();
+        listasConfig.forEach(item => {
+            const rawCatName = (item.Category || item.name || "").trim();
             const catNameLower = rawCatName.toLowerCase();
             
-            if (catNameLower.includes("gratis") || catNameLower.includes("gratuito")) return;
-            if (cat.products && cat.products.length === 0) return;
+            const displayTitle = item.Titulo || item.title || rawCatName;
+            const displaySubtitle = item.Subtitulo || item.subtitulo || item.subtitle || '';
+            const displayImg = item.ImageUrl || item.image || FALLBACK_IMG;
+            const displayCTA = item.CTA || item.cta || "Ver más";
 
-            const matchConfig = listasConfig.find(item => (item.Category || item.name || "").trim().toLowerCase() === catNameLower);
+            // Identificamos si es el bloque del Curso Gratuito para pintarlo como Banner destacado
+            const isFree = catNameLower.includes("gratis") || catNameLower.includes("gratuito");
 
-            let customTitle = matchConfig?.Titulo || matchConfig?.title || cat.Titulo || cat.title || "";
-            let customSubtitle = matchConfig?.Subtitulo || matchConfig?.subtitulo || matchConfig?.subtitle || cat.Subtitulo || "";
+            if (isFree) {
+                // Buscamos el producto gratuito asociado para abrir el modal al hacer click
+                let freeProduct = null;
+                allData.categories?.forEach(cat => {
+                    cat.products?.forEach(prod => {
+                        const pName = (prod.name || "").toLowerCase();
+                        if (pName.includes("gratis") || pName.includes("gratuito")) {
+                            freeProduct = prod;
+                        }
+                    });
+                });
 
-            if (rawCatName.includes("Packs & Programas Integrales")) {
-                customTitle = customTitle || "Ruta del Emprendedor";
-                customSubtitle = customSubtitle || "El paso a paso para escalar tu negocio digital";
-            } else if (rawCatName.includes("Soluciones empaquetadas")) {
-                customTitle = customTitle || "Las riendas de tu negocio en tus manos";
-                customSubtitle = customSubtitle || "Herramientas inteligentes y automatizaciones listas para usar en tu propio negocio.";
-            }
-
-            const displayTitle = customTitle || rawCatName;
-            const displaySubtitle = customSubtitle || '';
-            const displayImg = matchConfig?.ImageUrl || matchConfig?.image || cat.ImageUrl || cat.image || 'https://via.placeholder.com/600x400?text=Sin+Imagen';
-
-            const card = document.createElement("div");
-            card.className = "card";
-
-            if (rawCatName.includes("Packs & Programas Integrales")) {
-                card.onclick = () => {
-                    window.location.href = "https://hugo85ar.github.io/LandingPacks/";
-                };
+                const bannerDiv = document.createElement("div");
+                bannerDiv.className = "course-banner-wrapper";
+                bannerDiv.innerHTML = `
+                    <img class="course-banner-img" src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
+                    <div class="course-banner-text">
+                        <h2 class="course-banner-title">${displayTitle}</h2>
+                        <p class="course-banner-desc">${displaySubtitle}</p>
+                        <button class="hero-btn" onclick='openModal(${JSON.stringify(freeProduct || {name: displayTitle, detail: displaySubtitle, image: displayImg})})'>${displayCTA}</button>
+                    </div>
+                `;
+                grid.appendChild(bannerDiv);
             } else {
-                card.onclick = () => renderCategoryView(cat);
-            }
+                // Tarjetas normales de categorías (ej. Packs, Soluciones)
+                const card = document.createElement("div");
+                card.className = "card";
 
-            card.innerHTML = `
-                <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='https://via.placeholder.com/600x400?text=Sin+Imagen'">
-                <div class="card-content">
-                    <div class="card-title">${displayTitle}</div>
-                    <div class="card-subtitle">${displaySubtitle}</div>
-                </div>
-            `;
-            grid.appendChild(card);
+                if (rawCatName.includes("Packs & Programas Integrales")) {
+                    card.onclick = () => {
+                        window.location.href = "https://hugo85ar.github.io/LandingPacks/";
+                    };
+                } else {
+                    // Buscar la categoría correspondiente en allData.categories para abrir su vista de productos
+                    const matchedCat = allData.categories?.find(c => (c.Category || c.name || "").trim().toLowerCase() === catNameLower);
+                    card.onclick = () => {
+                        if (matchedCat) renderCategoryView(matchedCat);
+                    };
+                }
+
+                card.innerHTML = `
+                    <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
+                    <div class="card-content">
+                        <div class="card-title">${displayTitle}</div>
+                        <div class="card-subtitle">${displaySubtitle}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            }
         });
-   }
-    
-  function openModal(product) {
+    }
+
+    function openModal(product) {
         const modal = document.getElementById("modal");
         const modalImg = document.getElementById("modal-img");
-        modalImg.src = product.image || product.imageUrl;
-        modalImg.onerror = () => { modalImg.src = 'https://via.placeholder.com/600x400?text=Sin+Imagen'; };
+        modalImg.src = product.image || product.imageUrl || FALLBACK_IMG;
+        modalImg.onerror = () => { modalImg.src = FALLBACK_IMG; };
         
         document.getElementById("modal-title").textContent = product.name;
-        document.getElementById("modal-desc").textContent = product.detail;
+        document.getElementById("modal-desc").textContent = product.detail || "";
         
         const btnContado = document.getElementById("modal-buy-contado");
         const btn3Cuotas = document.getElementById("modal-buy-3cuotas");
@@ -612,12 +597,12 @@ fbq('track', 'PageView');
             });
         }
 
-        category.products.forEach(prod => {
+        category.products?.forEach(prod => {
             const card = document.createElement("div");
             card.className = "card";
             card.onclick = () => openModal(prod);
             card.innerHTML = `
-                <img src="${prod.image || prod.imageUrl || 'https://via.placeholder.com/600x400?text=Sin+Imagen'}" alt="${prod.name}" onerror="this.src='https://via.placeholder.com/600x400?text=Sin+Imagen'">
+                <img src="${prod.image || prod.imageUrl || FALLBACK_IMG}" alt="${prod.name}" onerror="this.src='${FALLBACK_IMG}'">
                 <div class="card-content">
                     <div class="card-title">${prod.name}</div>
                     <div class="card-subtitle">${prod.detail || ''}</div>
@@ -656,8 +641,8 @@ fbq('track', 'PageView');
             descHero.innerText = "Ya diste el primer paso. Domina los tres pilares definitivos: Investigación de Mercado Inteligente, Landing Pages que convierten y Automatizaciones.";
             heroBtn.textContent = "¡Ver Pack Completo!";
         } else {
-            tituloHero.innerText = (targetCat && (targetCat.Titulo || targetCat.title)) ? (targetCat.Titulo || targetCat.title) : "Pack Transformación Total: Todo lo que un Emprendedor Necesita";
-            descHero.innerText = (targetCat && (targetCat.Subtitulo || targetCat.subtitulo)) ? (targetCat.Subtitulo || targetCat.subtitulo) : "Desbloquea los 3 pilares del éxito digital: Encuentra tu nicho, crea páginas que venden y automatiza tus procesos con IA y Apps Script.";
+            tituloHero.innerText = "Pack Transformación Total: Todo lo que un Emprendedor Necesita";
+            descHero.innerText = "Desbloquea los 3 pilares del éxito digital: Encuentra tu nicho, crea páginas que venden y automatiza tus procesos con IA y Apps Script.";
             heroBtn.textContent = "¡Quiero el Pack Completo!";
         }
         
@@ -670,17 +655,6 @@ fbq('track', 'PageView');
         heroBtn.onclick = () => {
             if (targetProd) {
                 openModal(targetProd);
-            } else {
-                let fallbackProd = null;
-                allData.categories?.forEach(cat => {
-                    cat.products.forEach(p => {
-                        const pName = (p.name || "").toLowerCase();
-                        if (pName.includes("investigación") || pName.includes("pack") || pName.includes("transformación")) {
-                            fallbackProd = p;
-                        }
-                    });
-                });
-                if (fallbackProd) openModal(fallbackProd);
             }
         };
     }
