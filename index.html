@@ -244,11 +244,14 @@ fbq('track', 'PageView');
     .modal-title { font-size: 2rem; margin-bottom: 10px; }
     .modal-desc { color: #aaa; margin-bottom: 20px; line-height: 1.5; }
     .modal-actions { display: flex; flex-direction: column; gap: 10px; }
+    
     .btn-primary {
       background-color: white; color: black; padding: 12px 30px;
       border-radius: 4px; text-decoration: none; font-weight: bold;
       display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
+      transition: opacity 0.2s;
     }
+    .btn-primary:hover { opacity: 0.85; }
     
     /* WhatsApp Float */
     .whatsapp-float {
@@ -306,10 +309,10 @@ fbq('track', 'PageView');
         <p id="modal-offer" style="color: #46d369; font-weight: bold; margin-bottom: 15px; display:none;"></p>
        
         <div class="modal-actions">
-          <a id="modal-buy-contado" href="#" target="_blank" class="btn-primary" style="display:none;"></a>
-          <a id="modal-buy-3cuotas" href="#" target="_blank" class="btn-primary" style="display:none;"></a>
-          <a id="modal-buy-6cuotas" href="#" target="_blank" class="btn-primary" style="display:none;"></a>
-          <a id="modal-buy-gen" href="#" target="_blank" class="btn-primary" style="display:none;"></a>
+          <a id="modal-buy-contado" href="#" target="_blank" class="btn-primary" style="display:none;">Comprar de Contado</a>
+          <a id="modal-buy-3cuotas" href="#" target="_blank" class="btn-primary" style="display:none;">Pagar en 3 Cuotas</a>
+          <a id="modal-buy-6cuotas" href="#" target="_blank" class="btn-primary" style="display:none;">Pagar en 6 Cuotas</a>
+          <a id="modal-buy-gen" href="#" target="_blank" class="btn-primary" style="display:none;">Acceder</a>
         </div>
       </div>
     </div>
@@ -396,8 +399,18 @@ fbq('track', 'PageView');
                 const bannerDiv = document.createElement("div");
                 bannerDiv.className = "course-banner-wrapper";
                 
-                const productData = JSON.stringify(freeProduct || {name: displayTitle, detail: displaySubtitle, image: displayImg, cursoGratuito: freeProduct?.cursoGratuito || "#"})
-                    .replace(/"/g, '&quot;');
+                // Aseguramos capturar la propiedad real del curso gratuito (cursoGratuito o buyUrl o buyUrlContado)
+                const freeUrl = freeProduct?.cursoGratuito || freeProduct?.buyUrl || freeProduct?.buyUrlContado || "#";
+                const productPayload = freeProduct || {
+                    name: displayTitle, 
+                    detail: displaySubtitle, 
+                    image: displayImg, 
+                    cursoGratuito: freeUrl
+                };
+                // Forzar la propiedad cursoGratuito para que el modal la detecte bien
+                productPayload.cursoGratuito = freeUrl;
+
+                const productData = JSON.stringify(productPayload).replace(/"/g, '&quot;');
 
                 bannerDiv.innerHTML = `
                     <img class="course-banner-img" src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
@@ -409,11 +422,9 @@ fbq('track', 'PageView');
                 `;
                 grid.appendChild(bannerDiv);
             } else {
-                // Tarjetas inferiores: búsqueda flexible y robusta para evitar que fallen los clics
                 const card = document.createElement("div");
                 card.className = "card";
                 card.onclick = () => {
-                    // Busca coincidencia exacta o parcial con los nombres de categorías del JSON
                     const matchedCat = allData.categories?.find(c => {
                         const cName = (c.name || "").trim().toLowerCase();
                         return cName === catNameLower || cName.includes(catNameLower) || catNameLower.includes(cName);
@@ -456,6 +467,7 @@ fbq('track', 'PageView');
         const btn6Cuotas = document.getElementById("modal-buy-6cuotas");
         const btnGen = document.getElementById("modal-buy-gen");
 
+        // Ocultar todos por defecto
         btnContado.style.display = "none";
         btn3Cuotas.style.display = "none";
         btn6Cuotas.style.display = "none";
@@ -465,9 +477,10 @@ fbq('track', 'PageView');
         const urlDestino = (urlContado || "").toLowerCase();
         const isWhatsApp = urlDestino.includes("whatsapp") || urlDestino.includes("wa.me");
 
-        // Corrección de renderizado para cursos gratuitos o enlaces generales en modal
+        // Detección precisa de enlace gratuito o URL general
         const freeUrl = product.cursoGratuito || product.cursoGratuitoUrl;
-        if (freeUrl && freeUrl.trim() !== "") {
+
+        if (freeUrl && freeUrl.trim() !== "" && freeUrl !== "#") {
             btnGen.href = freeUrl;
             btnGen.innerHTML = '<span>🔗</span> ' + (product.offerNote || 'Acceder al Curso Gratuito');
             btnGen.style.display = "inline-flex";
@@ -476,25 +489,38 @@ fbq('track', 'PageView');
             btnGen.innerHTML = '<span>💬</span> Consultar por WhatsApp';
             btnGen.style.display = "inline-flex";
         } else {
+            // Si tiene múltiples opciones de pago o pago único
+            let hasButtons = false;
+            
             if (urlContado) {
                 btnContado.href = urlContado;
                 btnContado.textContent = product.textContado || 'Comprar de Contado';
                 btnContado.style.display = "inline-flex";
+                hasButtons = true;
             }
             if (product.buyUrl3Cuotas) {
                 btn3Cuotas.href = product.buyUrl3Cuotas;
                 btn3Cuotas.textContent = product.text3Cuotas || 'Pagar en 3 Cuotas';
                 btn3Cuotas.style.display = "inline-flex";
+                hasButtons = true;
             }
             if (product.buyUrl6Cuotas) {
                 btn6Cuotas.href = product.buyUrl6Cuotas;
                 btn6Cuotas.textContent = product.text6Cuotas || 'Pagar en 6 Cuotas';
                 btn6Cuotas.style.display = "inline-flex";
+                hasButtons = true;
+            }
+
+            // Si por alguna razón ninguna de las propiedades anteriores se llenó pero existe un enlace general
+            if (!hasButtons && product.buyUrl) {
+                btnGen.href = product.buyUrl;
+                btnGen.innerHTML = '<span>🛒</span> Comprar Ahora';
+                btnGen.style.display = "inline-flex";
             }
         }
         
         const offerEl = document.getElementById("modal-offer");
-        if (product.offerNote && (!freeUrl || freeUrl.trim() === "")) {
+        if (product.offerNote && (!freeUrl || freeUrl.trim() === "" || freeUrl === "#")) {
             offerEl.textContent = product.offerNote;
             offerEl.style.display = "block";
         } else {
@@ -556,19 +582,19 @@ fbq('track', 'PageView');
       
       let targetProd = null;
 
-      // Búsqueda estricta del Pack Principal (Transformación Total o Pack 3)
+      // Buscar específicamente el Pack 3 o Transformación Total para el botón del Hero
       if (allData.categories) {
           allData.categories.forEach(cat => {
               cat.products?.forEach(prod => {
                   const pName = (prod.name || "").toLowerCase();
-                  if (pName.includes("transformación total") || pName.includes("pack 3") || pName.includes("pack total")) {
+                  if (pName.includes("pack 3") || pName.includes("transformación total") || pName.includes("pack total")) {
                       targetProd = prod;
                   }
               });
           });
       }
 
-      // Si no encuentra uno específico por nombre, toma el primero que tenga cuotas o el primero disponible
+      // Fallback si no encuentra por nombre exacto
       if (!targetProd && allData.categories?.[0]?.products?.[0]) {
           targetProd = allData.categories[0].products[0];
       }
