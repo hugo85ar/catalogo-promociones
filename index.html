@@ -904,216 +904,215 @@
        MODAL
        ========================================================== */
 
-    function openModal(product) {
+  function openModal(product) {
 
-      const modal =
-        document.getElementById("modal");
+  const modal = document.getElementById("modal");
+  const modalImg = document.getElementById("modal-img");
 
-      const modalImg =
-        document.getElementById("modal-img");
+  /* ======================================================
+     IMAGEN
+     ====================================================== */
 
+  modalImg.src =
+    product.image ||
+    product.imageUrl ||
+    FALLBACK_IMG;
 
-      modalImg.src =
-        product.image ||
-        product.imageUrl ||
-        FALLBACK_IMG;
+  modalImg.onerror = () => {
+    modalImg.src = FALLBACK_IMG;
+  };
 
 
-      modalImg.onerror = () => {
-        modalImg.src = FALLBACK_IMG;
-      };
+  /* ======================================================
+     TÍTULO
+     ====================================================== */
 
+  document.getElementById("modal-title").textContent =
+    product.name || "Detalle";
 
-      document.getElementById("modal-title").textContent =
-        product.name || "Detalle";
 
+  /* ======================================================
+     DESCRIPCIÓN
+     ====================================================== */
 
-      document.getElementById("modal-desc").textContent =
-        product.detail ||
-        product.description ||
-        "";
+  document.getElementById("modal-desc").textContent =
+    product.detail ||
+    product.description ||
+    "";
 
 
-      const btnContado =
-        document.getElementById("modal-buy-contado");
+  /* ======================================================
+     ELEMENTOS
+     ====================================================== */
 
-      const btn3Cuotas =
-        document.getElementById("modal-buy-3cuotas");
+  const btnContado =
+    document.getElementById("modal-buy-contado");
 
-      const btn6Cuotas =
-        document.getElementById("modal-buy-6cuotas");
+  const btn3Cuotas =
+    document.getElementById("modal-buy-3cuotas");
 
-      const btnGen =
-        document.getElementById("modal-buy-gen");
+  const btn6Cuotas =
+    document.getElementById("modal-buy-6cuotas");
 
+  const btnGen =
+    document.getElementById("modal-buy-gen");
 
-      /* Ocultar todos inicialmente */
+  const offerEl =
+    document.getElementById("modal-offer");
 
-      btnContado.style.display = "none";
-      btn3Cuotas.style.display = "none";
-      btn6Cuotas.style.display = "none";
-      btnGen.style.display = "none";
 
+  /* ======================================================
+     OCULTAR TODO AL ABRIR
+     ====================================================== */
 
-      /* ======================================================
-         TEXTO DEL BOTÓN
-         ====================================================== */
+  btnContado.style.display = "none";
+  btn3Cuotas.style.display = "none";
+  btn6Cuotas.style.display = "none";
+  btnGen.style.display = "none";
 
-      const buttonText =
-        product.buttonText ||
-        "Más información";
+  offerEl.style.display = "none";
+  offerEl.textContent = "";
 
 
-      /* ======================================================
-         URL PRINCIPAL
-         ====================================================== */
+  /* ======================================================
+     TEXTO DEL BOTÓN
+     ====================================================== */
 
-      if (product.buyUrlContado) {
+  const buttonText =
+    product.buttonText ||
+    product.BotonTexto ||
+    product.botonTexto ||
+    product.buttonText ||
+    "Más información";
 
-        btnContado.href =
-          product.buyUrlContado;
 
-        /*
-         * AQUÍ ESTÁ EL CAMBIO PRINCIPAL:
-         * ya no dice "Comprar de Contado"
-         * sino el BotonTexto de Listas.
-         */
+  /* ======================================================
+     DETECTAR URL EN offerNote
+     
+     Esto soluciona el problema de la URL verde
+     que aparece en la captura.
+     ====================================================== */
 
-        btnContado.textContent =
-          buttonText;
+  const offerNote =
+    (product.offerNote || "").trim();
 
-        btnContado.style.display =
-          "inline-flex";
+  const offerNoteIsUrl =
+    /^https?:\/\/\S+$/i.test(offerNote);
 
-      }
 
+  /* ======================================================
+     URL PRINCIPAL
+     ====================================================== */
 
-      /* ======================================================
-         3 CUOTAS
-         ====================================================== */
+  let mainUrl =
+    product.buyUrlContado ||
+    product.buyUrl ||
+    product.url ||
+    product.link ||
+    "";
 
-      if (product.buyUrl3Cuotas) {
 
-        btn3Cuotas.href =
-          product.buyUrl3Cuotas;
+  /*
+   * SI offerNote contiene una URL y no existe
+   * otra URL principal, usamos esa URL.
+   */
 
-        btn3Cuotas.textContent =
-          "Pagar en 3 Cuotas";
+  if (!mainUrl && offerNoteIsUrl) {
 
-        btn3Cuotas.style.display =
-          "inline-flex";
+    mainUrl = offerNote;
 
-      }
+  }
 
 
-      /* ======================================================
-         6 CUOTAS
-         ====================================================== */
+  /* ======================================================
+     BOTÓN PRINCIPAL
+     ====================================================== */
 
-      if (product.buyUrl6Cuotas) {
+  if (mainUrl) {
 
-        btn6Cuotas.href =
-          product.buyUrl6Cuotas;
+    btnContado.href = mainUrl;
 
-        btn6Cuotas.textContent =
-          "Pagar en 6 Cuotas";
+    btnContado.textContent = buttonText;
 
-        btn6Cuotas.style.display =
-          "inline-flex";
+    btnContado.target = "_blank";
+    btnContado.rel = "noopener noreferrer";
 
-      }
+    btnContado.style.display = "inline-flex";
 
+  }
 
-      /* ======================================================
-         URL GENERAL
-         ====================================================== */
 
-      const generalUrl =
-        product.buyUrl ||
-        product.url ||
-        product.link;
+  /* ======================================================
+     3 CUOTAS
+     ====================================================== */
 
+  if (product.buyUrl3Cuotas) {
 
-      /*
-       * Si no existe buyUrlContado pero sí existe
-       * una URL general, usamos el botón general.
-       */
+    btn3Cuotas.href =
+      product.buyUrl3Cuotas;
 
-      if (
-        generalUrl &&
-        !product.buyUrlContado
-      ) {
+    btn3Cuotas.textContent =
+      "Pagar en 3 Cuotas";
 
-        btnGen.href =
-          generalUrl;
+    btn3Cuotas.target = "_blank";
+    btn3Cuotas.rel = "noopener noreferrer";
 
-        btnGen.textContent =
-          buttonText;
+    btn3Cuotas.style.display =
+      "inline-flex";
 
-        btnGen.style.display =
-          "inline-flex";
+  }
 
-      }
 
+  /* ======================================================
+     6 CUOTAS
+     ====================================================== */
 
-      /* ======================================================
-         OFERTA
-         ====================================================== */
+  if (product.buyUrl6Cuotas) {
 
-      const offerEl =
-        document.getElementById("modal-offer");
+    btn6Cuotas.href =
+      product.buyUrl6Cuotas;
 
+    btn6Cuotas.textContent =
+      "Pagar en 6 Cuotas";
 
-      if (product.offerNote) {
+    btn6Cuotas.target = "_blank";
+    btn6Cuotas.rel = "noopener noreferrer";
 
-        offerEl.textContent =
-          product.offerNote;
+    btn6Cuotas.style.display =
+      "inline-flex";
 
-        offerEl.style.display =
-          "block";
+  }
 
-      } else {
 
-        offerEl.style.display =
-          "none";
+  /* ======================================================
+     OFERTA / NOTA
+     
+     IMPORTANTE:
+     Si offerNote es una URL NO la mostramos.
+     Si es texto normal, sí la mostramos.
+     ====================================================== */
 
-      }
+  if (offerNote && !offerNoteIsUrl) {
 
+    offerEl.textContent =
+      offerNote;
 
-      /* ======================================================
-         MOSTRAR MODAL
-         ====================================================== */
+    offerEl.style.display =
+      "block";
 
-      modal.classList.add("active");
+  }
 
-      document.body.style.overflow =
-        'hidden';
 
+  /* ======================================================
+     MOSTRAR MODAL
+     ====================================================== */
+
+  modal.classList.add("active");
+
+  document.body.style.overflow = "hidden";
+
+}
     }
-
-
-    /* ==========================================================
-       CERRAR MODAL
-       ========================================================== */
-
-    function closeModal(event) {
-
-      if (
-        event.target.id === 'modal' ||
-        event.target.classList.contains('modal-close')
-      ) {
-
-        document
-          .getElementById("modal")
-          .classList.remove("active");
-
-        document.body.style.overflow =
-          'auto';
-
-      }
-
-    }
-
 
     /* ==========================================================
        VISTA DE CATEGORÍA
