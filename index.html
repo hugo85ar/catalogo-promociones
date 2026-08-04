@@ -381,9 +381,7 @@ fbq('track', 'PageView');
             const displayTitle = item.Titulo || item.title || rawCatName;
             const displaySubtitle = item.Subtitulo || item.subtitulo || item.subtitle || '';
             const displayImg = item.ImageUrl || item.image || FALLBACK_IMG;
-            
-            // AQUÍ TOMAMOS EL TEXTO DE LA NUEVA COLUMNA O USAMOS UN VALOR POR DEFECTO
-            const displayCTA = item.BotonTexto || item.CTA || item.cta || "Ver más";
+            const displayCTA = item.CTA || item.cta || "Ver más";
 
             const isFree = catNameLower.includes("gratis") || catNameLower.includes("gratuito");
 
@@ -419,9 +417,6 @@ fbq('track', 'PageView');
                 `;
                 grid.appendChild(bannerDiv);
             } else {
-                // Si son tarjetas normales, también podemos inyectar el botón o usar el evento de clic de la tarjeta. 
-                // Como las tarjetas de categoría abren la sección al hacer clic, el diseño limpio se mantiene, 
-                // pero si quisieras que el texto se refleje en algún botón flotante o tarjeta, ya lo tienes disponible en `displayCTA`.
                 const card = document.createElement("div");
                 card.className = "card";
                 card.onclick = () => {
@@ -459,68 +454,38 @@ fbq('track', 'PageView');
         modalImg.src = product.image || product.imageUrl || FALLBACK_IMG;
         modalImg.onerror = () => { modalImg.src = FALLBACK_IMG; };
         
-        document.getElementById("modal-title").textContent = product.name;
-        document.getElementById("modal-desc").textContent = product.detail || "";
+        document.getElementById("modal-title").textContent = product.name || "Detalle";
+        document.getElementById("modal-desc").textContent = product.detail || product.description || "";
         
         const btnContado = document.getElementById("modal-buy-contado");
         const btn3Cuotas = document.getElementById("modal-buy-3cuotas");
         const btn6Cuotas = document.getElementById("modal-buy-6cuotas");
         const btnGen = document.getElementById("modal-buy-gen");
 
-        // Ocultar todos por defecto
         btnContado.style.display = "none";
         btn3Cuotas.style.display = "none";
         btn6Cuotas.style.display = "none";
         btnGen.style.display = "none";
-        
-        const urlContado = product.buyUrlContado || product.buyUrl || product.Contado;
-        const urlDestino = (urlContado || "").toLowerCase();
-        const isWhatsApp = urlDestino.includes("whatsapp") || urlDestino.includes("wa.me");
 
-        // Detección precisa de enlace gratuito o URL general
-        const freeUrl = product.cursoGratuito || product.cursoGratuitoUrl;
-
-        if (freeUrl && freeUrl.trim() !== "" && freeUrl !== "#") {
-            btnGen.href = freeUrl;
-            btnGen.innerHTML = '<span>🔗</span> ' + (product.offerNote || 'Acceder al Curso Gratuito');
+        if (product.buyUrlContado) {
+            btnContado.href = product.buyUrlContado;
+            btnContado.style.display = "inline-flex";
+        }
+        if (product.buyUrl3Cuotas) {
+            btn3Cuotas.href = product.buyUrl3Cuotas;
+            btn3Cuotas.style.display = "inline-flex";
+        }
+        if (product.buyUrl6Cuotas) {
+            btn6Cuotas.href = product.buyUrl6Cuotas;
+            btn6Cuotas.style.display = "inline-flex";
+        }
+        if (product.buyUrl || product.url || product.link) {
+            btnGen.href = product.buyUrl || product.url || product.link;
             btnGen.style.display = "inline-flex";
-        } else if (isWhatsApp) {
-            btnGen.href = urlContado;
-            btnGen.innerHTML = '<span>💬</span> Consultar por WhatsApp';
-            btnGen.style.display = "inline-flex";
-        } else {
-            // Si tiene múltiples opciones de pago o pago único
-            let hasButtons = false;
-            
-            if (urlContado) {
-                btnContado.href = urlContado;
-                btnContado.textContent = product.textContado || 'Comprar de Contado';
-                btnContado.style.display = "inline-flex";
-                hasButtons = true;
-            }
-            if (product.buyUrl3Cuotas) {
-                btn3Cuotas.href = product.buyUrl3Cuotas;
-                btn3Cuotas.textContent = product.text3Cuotas || 'Pagar en 3 Cuotas';
-                btn3Cuotas.style.display = "inline-flex";
-                hasButtons = true;
-            }
-            if (product.buyUrl6Cuotas) {
-                btn6Cuotas.href = product.buyUrl6Cuotas;
-                btn6Cuotas.textContent = product.text6Cuotas || 'Pagar en 6 Cuotas';
-                btn6Cuotas.style.display = "inline-flex";
-                hasButtons = true;
-            }
-
-            // Si por alguna razón ninguna de las propiedades anteriores se llenó pero existe un enlace general
-            if (!hasButtons && product.buyUrl) {
-                btnGen.href = product.buyUrl;
-                btnGen.innerHTML = '<span>🛒</span> Comprar Ahora';
-                btnGen.style.display = "inline-flex";
-            }
         }
         
         const offerEl = document.getElementById("modal-offer");
-        if (product.offerNote && (!freeUrl || freeUrl.trim() === "" || freeUrl === "#")) {
+        if (product.offerNote) {
             offerEl.textContent = product.offerNote;
             offerEl.style.display = "block";
         } else {
@@ -582,7 +547,6 @@ fbq('track', 'PageView');
       
       let targetProd = null;
 
-      // Buscar específicamente el Pack 3 o Transformación Total para el botón del Hero
       if (allData.categories) {
           allData.categories.forEach(cat => {
               cat.products?.forEach(prod => {
@@ -594,7 +558,6 @@ fbq('track', 'PageView');
           });
       }
 
-      // Fallback si no encuentra por nombre exacto
       if (!targetProd && allData.categories?.[0]?.products?.[0]) {
           targetProd = allData.categories[0].products[0];
       }
