@@ -377,11 +377,7 @@ fbq('track', 'PageView');
         <p id="modal-desc" class="modal-desc"></p>
         <p id="modal-offer" style="color: #46d369; font-weight: bold; margin-bottom: 15px;"></p>
         <!-- Opciones de pago integradas aquí -->
-        <div class="opciones-pago-wrapper">
-          <div class="opcion-pago-container" data-tipo="contado">Pago Contado</div>
-          <div class="opcion-pago-container" data-tipo="3cuotas">En 3 Cuotas</div>
-          <div class="opcion-pago-container" data-tipo="6cuotas">En 6 Cuotas</div>
-        </div>
+       
         <div class="modal-actions">
           <a id="modal-buy" href="#" target="_blank" class="btn-primary"></a>
 
@@ -666,60 +662,7 @@ fbq('track', 'PageView');
     }
 
     
-    function createCard(title, subtitle, imageUrl, onClick, isPromotional = false) {  
-        const card = document.createElement("div");
-        card.className = "card";
-        card.onclick = onClick;
-        
-        const promoBadgeHtml = isPromotional ? '<div class="promo-badge">¡PROMO!</div>' : '';  
-        
-        card.innerHTML = `
-            ${promoBadgeHtml}  
-            <img class="card-img" src="${imageUrl}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400?text=Sin+Imagen'">
-            <div class="card-overlay">
-                <div class="card-title">${title}</div>
-                <div class="card-subtitle">${subtitle}</div>
-            </div>
-        `;
-        return card;
-    }
-
-    function closeModal(e) {
-        if (e.target === document.getElementById("modal") || e.target.classList.contains("modal-close")) {
-            document.getElementById("modal").classList.remove("active");
-            document.body.style.overflow = '';
-        }
-    }
-
-    let opcionPagoSeleccionada = 'contado'; // Por defecto arranca en contado
-
-// 1. Función que actualiza el link del botón de Lemon según la opción activa
-function actualizarBotonLemon() {
-    const btnPagar = document.getElementById("btn-pagar-lemon"); 
-    if (!btnPagar || !window.productoSeleccionado) return;
-
-    let urlDestino = "#";
     
-    if (opcionPagoSeleccionada === 'contado') {
-        urlDestino = window.productoSeleccionado.buyUrlContado || window.productoSeleccionado.buyUrl;
-    } else if (opcionPagoSeleccionada === '3cuotas') {
-        urlDestino = window.productoSeleccionado.buyUrl3Cuotas;
-    } else if (opcionPagoSeleccionada === '6cuotas') {
-        urlDestino = window.productoSeleccionado.buyUrl6Cuotas;
-    }
-
-    btnPagar.href = urlDestino;
-}
-
-// 2. Escuchador de clics en las opciones de pago (Contado / 3 / 6 cuotas)
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll('.opcion-pago-container').forEach(elemento => {
-        elemento.addEventListener('click', (e) => {
-            opcionPagoSeleccionada = e.currentTarget.dataset.tipo; 
-            actualizarBotonLemon();
-        });
-    });
-});
   </script>
 </body>
 </html>
