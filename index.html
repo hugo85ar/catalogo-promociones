@@ -459,8 +459,7 @@ fbq('track', 'PageView');
             // Identificamos si es el bloque del Curso Gratuito para pintarlo como Banner destacado
             const isFree = catNameLower.includes("gratis") || catNameLower.includes("gratuito");
 
-            if (isFree) {
-                // Buscamos el producto gratuito asociado para abrir el modal al hacer click
+          if (isFree) {
                 let freeProduct = null;
                 allData.categories?.forEach(cat => {
                     cat.products?.forEach(prod => {
@@ -473,42 +472,20 @@ fbq('track', 'PageView');
 
                 const bannerDiv = document.createElement("div");
                 bannerDiv.className = "course-banner-wrapper";
+                
+                // Determinamos el link del curso gratuito (puede venir en buyUrl, cursoGratuito o en el detalle)
+                const freeUrl = freeProduct?.buyUrl || freeProduct?.cursoGratuito || "https://hugo85ar.github.io/formulario-curso-sheets/";
+
                 bannerDiv.innerHTML = `
                     <img class="course-banner-img" src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
                     <div class="course-banner-text">
                         <h2 class="course-banner-title">${displayTitle}</h2>
                         <p class="course-banner-desc">${displaySubtitle}</p>
-                        <button class="hero-btn" onclick='openModal(${JSON.stringify(freeProduct || {name: displayTitle, detail: displaySubtitle, image: displayImg})})'>${displayCTA}</button>
+                        <a class="hero-btn" href="${freeUrl}" target="_blank" style="text-decoration: none; display: inline-block; text-align: center;">${displayCTA}</a>
                     </div>
                 `;
                 grid.appendChild(bannerDiv);
-            } else {
-                // Tarjetas normales de categorías (ej. Packs, Soluciones)
-                const card = document.createElement("div");
-                card.className = "card";
-
-                if (rawCatName.includes("Packs & Programas Integrales")) {
-                    card.onclick = () => {
-                        window.location.href = "https://hugo85ar.github.io/LandingPacks/";
-                    };
-                } else {
-                    // Buscar la categoría correspondiente en allData.categories para abrir su vista de productos
-                    const matchedCat = allData.categories?.find(c => (c.Category || c.name || "").trim().toLowerCase() === catNameLower);
-                    card.onclick = () => {
-                        if (matchedCat) renderCategoryView(matchedCat);
-                    };
-                }
-
-                card.innerHTML = `
-                    <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
-                    <div class="card-content">
-                        <div class="card-title">${displayTitle}</div>
-                        <div class="card-subtitle">${displaySubtitle}</div>
-                    </div>
-                `;
-                grid.appendChild(card);
             }
-        });
     }
 
     function openModal(product) {
@@ -615,49 +592,52 @@ fbq('track', 'PageView');
     }
 
     function renderHeroSection() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const modo = urlParams.get('modo');
-        const tituloHero = document.getElementById("hero-title");
-        const descHero = document.getElementById("hero-desc");
-        const heroBtn = document.getElementById("hero-btn");
-        
-        let targetCat = null;
-        let targetProd = null;
+      const urlParams = new URLSearchParams(window.location.search);
+      const modo = urlParams.get('modo');
+      const tituloHero = document.getElementById("hero-title");
+      const descHero = document.getElementById("hero-desc");
+      const heroBtn = document.getElementById("hero-btn");
+      
+      let targetProd = null;
 
-        if (allData.categories) {
-            allData.categories.forEach(cat => {
-                const cName = (cat.Category || cat.name || "").toLowerCase();
-                if (cName.includes("packs") || cName.includes("integrales")) {
-                    targetCat = cat;
-                    if (cat.products && cat.products.length > 0) {
-                        targetProd = cat.products[0];
-                    }
-                }
-            });
-        }
+      // Buscamos explícitamente el producto del Pack para asignarlo al botón del Hero
+      if (allData.categories) {
+          allData.categories.forEach(cat => {
+              cat.products?.forEach(prod => {
+                  const pName = (prod.name || "").toLowerCase();
+                  if (pName.includes("transformación total") || pName.includes("pack")) {
+                      targetProd = prod;
+                  }
+              });
+          });
+      }
 
-        if (modo === 'clientes') {
-            tituloHero.innerText = "🚀 ¡Lleva tu Negocio al Siguiente Nivel con el Pack Total!";
-            descHero.innerText = "Ya diste el primer paso. Domina los tres pilares definitivos: Investigación de Mercado Inteligente, Landing Pages que convierten y Automatizaciones.";
-            heroBtn.textContent = "¡Ver Pack Completo!";
-        } else {
-            tituloHero.innerText = "Pack Transformación Total: Todo lo que un Emprendedor Necesita";
-            descHero.innerText = "Desbloquea los 3 pilares del éxito digital: Encuentra tu nicho, crea páginas que venden y automatiza tus procesos con IA y Apps Script.";
-            heroBtn.textContent = "¡Quiero el Pack Completo!";
-        }
-        
-        const hero = document.getElementById("hero");
-        const bgImage = allData.config?.heroBackgroundImage;
-        if (bgImage) {
-            hero.style.backgroundImage = `url('${bgImage}')`;
-        }
-        
-        heroBtn.onclick = () => {
-            if (targetProd) {
-                openModal(targetProd);
-            }
-        };
-    }
+      if (modo === 'clientes') {
+          tituloHero.innerText = "🚀 ¡Lleva tu Negocio al Siguiente Nivel con el Pack Total!";
+          descHero.innerText = "Ya diste el primer paso. Domina los tres pilares definitivos: Investigación de Mercado Inteligente, Landing Pages que convierten y Automatizaciones.";
+          heroBtn.textContent = "¡Ver Pack Completo!";
+      } else {
+          tituloHero.innerText = "Pack Transformación Total: Todo lo que un Emprendedor Necesita";
+          descHero.innerText = "Desbloquea los 3 pilares del éxito digital: Encuentra tu nicho, crea páginas que venden y automatiza tus procesos con IA y Apps Script.";
+          heroBtn.textContent = "¡Quiero el Pack Completo!";
+      }
+      
+      const hero = document.getElementById("hero");
+      const bgImage = allData.config?.heroBackgroundImage;
+      if (bgImage) {
+          hero.style.backgroundImage = `url('${bgImage}')`;
+      }
+      
+      // Vinculamos el botón para que abra el modal del producto encontrado
+      heroBtn.onclick = () => {
+          if (targetProd) {
+              openModal(targetProd);
+          } else {
+              // Fallback por si acaso: redirige a la landing de packs
+              window.location.href = "https://hugo85ar.github.io/LandingPacks/";
+          }
+      };
+  }
   </script>
 </body>
 </html>
