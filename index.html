@@ -6,34 +6,41 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   
   <!-- META PIXEL -->
-<script>
-!function(f,b,e,v,n,t,s)
-{
-if(f.fbq)return;
-n=f.fbq=function(){
-n.callMethod ?
-n.callMethod.apply(n,arguments) :
-n.queue.push(arguments)
-};
-if(!f._fbq)f._fbq=n;
-n.push=n;
-n.loaded=!0;
-n.version='2.0';
-n.queue=[];
-t=b.createElement(e);
-t.async=!0;
-t.src=v;
-s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s);
-}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '2189151328193841');
-fbq('track', 'PageView');
-</script>
-<noscript>
-<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2189151328193841&ev=PageView&noscript=1"/>
-</noscript>
-<!-- FIN META PIXEL -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {
+  if(f.fbq)return;
+  n=f.fbq=function(){
+  n.callMethod ?
+  n.callMethod.apply(n,arguments) :
+  n.queue.push(arguments)
+  };
+  if(!f._fbq)f._fbq=n;
+  n.push=n;
+  n.loaded=!0;
+  n.version='2.0';
+  n.queue=[];
+  t=b.createElement(e);
+  t.async=!0;
+  t.src=v;
+  s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s);
+  }(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+
+  fbq('init', '2189151328193841');
+  fbq('track', 'PageView');
+  </script>
+
+  <noscript>
+    <img 
+      height="1" 
+      width="1" 
+      style="display:none" 
+      src="https://www.facebook.com/tr?id=2189151328193841&ev=PageView&noscript=1"
+    />
+  </noscript>
+  <!-- FIN META PIXEL -->
   
   <style>
     :root {
@@ -42,6 +49,7 @@ fbq('track', 'PageView');
       --accent-color: #e50914;
       --card-bg: #141414;
     }
+
     body {
       background-color: var(--bg-color);
       color: var(--text-color);
@@ -50,6 +58,7 @@ fbq('track', 'PageView');
       padding: 0;
       overflow-x: hidden;
     }
+
     /* Hero Section */
     .hero {
       height: 50vh;
@@ -61,29 +70,37 @@ fbq('track', 'PageView');
       padding: 20px 4%;
       margin-bottom: 10px;
     }
+
     .hero::after {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background: linear-gradient(to top, var(--bg-color), transparent 50%);
     }
+
     .hero-content {
       position: relative;
       z-index: 2;
       max-width: 600px;
       text-align: left;
     }
+
     .hero-title {
       font-size: 2.5rem;
       font-weight: bold;
       margin-bottom: 10px;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     }
+
     .hero-desc {
       font-size: 1.1rem;
       margin-bottom: 20px;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     }
+
     .hero-btn {
       background-color: white;
       color: black;
@@ -96,7 +113,10 @@ fbq('track', 'PageView');
       border: none;
       transition: opacity 0.2s;
     }
-    .hero-btn:hover { opacity: 0.8; }
+
+    .hero-btn:hover {
+      opacity: 0.8;
+    }
     
     /* Navigation Bar & Category Header */
     .nav-bar {
@@ -105,6 +125,7 @@ fbq('track', 'PageView');
       align-items: center;
       gap: 10px;
     }
+
     .back-btn {
       background: transparent;
       color: white;
@@ -117,7 +138,11 @@ fbq('track', 'PageView');
       align-items: center;
       gap: 5px;
     }
-    .back-btn:hover { background: rgba(255, 255, 255, 0.1); }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
     .category-header {
       padding: 10px 4%;
       display: none;
@@ -126,11 +151,25 @@ fbq('track', 'PageView');
       background-color: var(--bg-color);
       border-bottom: 1px solid #333;
     }
-    .category-title { font-size: 1.8rem; font-weight: bold; margin: 0; }
-    .category-subtitle { font-size: 1rem; color: #aaa; margin-top: 5px; max-width: 700px; }
+
+    .category-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .category-subtitle {
+      font-size: 1rem;
+      color: #aaa;
+      margin-top: 5px;
+      max-width: 700px;
+    }
 
     /* Main Container & Grid */
-    .main-container { padding: 0 4%; }
+    .main-container {
+      padding: 0 4%;
+    }
+
     .grid-container {
       display: grid;
       grid-template-columns: 1fr;
@@ -147,22 +186,33 @@ fbq('track', 'PageView');
       position: relative;
       border: 1px solid #333;
     }
+
     .card:hover {
       transform: translateY(-6px);
       box-shadow: 0 10px 20px rgba(0,0,0,0.5);
       border-color: #555;
     }
+
     .card img {
       width: 100%;
       height: auto;
       display: block;
       transition: transform 0.4s ease;
     }
-    .card:hover img { transform: scale(1.03); }
-    .card-content { padding: 20px; }
+
+    .card:hover img {
+      transform: scale(1.03);
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+
     .card-overlay {
       position: absolute;
-      bottom: 0; left: 0; right: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
       background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
       padding: 15px;
       display: flex;
@@ -171,8 +221,19 @@ fbq('track', 'PageView');
       height: 40%;
       pointer-events: none;
     }
-    .card-title { font-size: 1.25rem; font-weight: bold; color: white; margin-bottom: 8px; }
-    .card-subtitle { font-size: 0.95rem; color: #aaa; line-height: 1.4; }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    .card-subtitle {
+      font-size: 0.95rem;
+      color: #aaa;
+      line-height: 1.4;
+    }
 
     /* Course Banner Wrapper */
     .course-banner-wrapper {
@@ -188,6 +249,7 @@ fbq('track', 'PageView');
       border: 1px solid #444;
       box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     }
+
     @media (min-width: 768px) {
       .course-banner-wrapper {
         flex-direction: row;
@@ -196,6 +258,7 @@ fbq('track', 'PageView');
         padding: 40px;
       }
     }
+
     .course-banner-img {
       max-width: 280px;
       height: auto;
@@ -203,6 +266,7 @@ fbq('track', 'PageView');
       margin-bottom: 20px;
       object-fit: contain;
     }
+
     @media (min-width: 768px) {
       .course-banner-img {
         margin-bottom: 0;
@@ -210,7 +274,11 @@ fbq('track', 'PageView');
         max-width: 350px;
       }
     }
-    .course-banner-text { flex: 1; }
+
+    .course-banner-text {
+      flex: 1;
+    }
+
     .course-banner-title {
       font-size: 1.8rem;
       font-weight: bold;
@@ -218,59 +286,155 @@ fbq('track', 'PageView');
       color: white;
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
-    .course-banner-desc { font-size: 1.1rem; color: #ddd; margin-bottom: 25px; line-height: 1.5; }
+
+    .course-banner-desc {
+      font-size: 1.1rem;
+      color: #ddd;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
 
     /* Modal */
     .modal-overlay {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background: rgba(0, 0, 0, 0.8);
-      display: flex; justify-content: center; align-items: center;
-      z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
     }
-    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
     .modal-content {
-      background: #181818; width: 90%; max-width: 800px;
-      border-radius: 8px; overflow: hidden; position: relative;
-      display: flex; flex-direction: column; max-height: 90vh;
+      background: #181818;
+      width: 90%;
+      max-width: 800px;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      max-height: 90vh;
     }
+
     .modal-close {
-      position: absolute; top: 15px; right: 15px;
-      background: rgba(0, 0, 0, 0.5); color: white; border: none;
-      border-radius: 50%; width: 36px; height: 36px; cursor: pointer;
-      font-size: 20px; z-index: 10;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      font-size: 20px;
+      z-index: 10;
     }
-    .modal-image { width: 100%; height: 300px; object-fit: contain; background-color: #000; }
-    .modal-details { padding: 30px; text-align: left; overflow-y: auto; width: 100%; }
-    .modal-title { font-size: 2rem; margin-bottom: 10px; }
-    .modal-desc { color: #aaa; margin-bottom: 20px; line-height: 1.5; }
-    .modal-actions { display: flex; flex-direction: column; gap: 10px; }
+
+    .modal-image {
+      width: 100%;
+      height: 300px;
+      object-fit: contain;
+      background-color: #000;
+    }
+
+    .modal-details {
+      padding: 30px;
+      text-align: left;
+      overflow-y: auto;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .modal-title {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .modal-desc {
+      color: #aaa;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
     
     .btn-primary {
-      background-color: white; color: black; padding: 12px 30px;
-      border-radius: 4px; text-decoration: none; font-weight: bold;
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
+      background-color: white;
+      color: black;
+      padding: 12px 30px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
       transition: opacity 0.2s;
+      border: none;
     }
-    .btn-primary:hover { opacity: 0.85; }
+
+    .btn-primary:hover {
+      opacity: 0.85;
+    }
     
     /* WhatsApp Float */
     .whatsapp-float {
-      position: fixed; bottom: 20px; right: 20px;
-      background-color: #25D366; color: white; padding: 12px 20px;
-      border-radius: 50px; text-decoration: none; font-weight: bold;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); z-index: 900;
-      display: flex; align-items: center; gap: 8px;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25D366;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     
     /* Desktop Grid */
     @media (min-width: 768px) {
-      .grid-container { grid-template-columns: repeat(3, 1fr); }
-      .modal-content { flex-direction: row; }
-      .modal-image { width: 50%; height: auto; }
-      .modal-details { width: 50%; }
+      .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .modal-content {
+        flex-direction: row;
+      }
+
+      .modal-image {
+        width: 50%;
+        height: auto;
+      }
+
+      .modal-details {
+        width: 50%;
+      }
     }
   </style>
 </head>
+
 <body>
 
   <!-- Hero Section -->
@@ -286,6 +450,7 @@ fbq('track', 'PageView');
   <div id="nav-bar" class="nav-bar" style="display: none;">
     <button class="back-btn" onclick="renderHome()">← Volver</button>
   </div>
+
   <div id="category-header" class="category-header">
     <h2 id="category-title" class="category-title"></h2>
     <p id="category-subtitle" class="category-subtitle"></p>
@@ -301,291 +466,921 @@ fbq('track', 'PageView');
   <!-- Modal -->
   <div id="modal" class="modal-overlay" onclick="closeModal(event)">
     <div class="modal-content">
+
       <button class="modal-close" onclick="closeModal(event)">×</button>
+
       <img id="modal-img" class="modal-image" src="" alt="">
+
       <div class="modal-details">
+
         <h2 id="modal-title" class="modal-title"></h2>
+
         <p id="modal-desc" class="modal-desc"></p>
-        <p id="modal-offer" style="color: #46d369; font-weight: bold; margin-bottom: 15px; display:none;"></p>
-       
+
+        <p 
+          id="modal-offer"
+          style="color: #46d369; font-weight: bold; margin-bottom: 15px; display:none;">
+        </p>
+
         <div class="modal-actions">
-          <a id="modal-buy-contado" href="#" target="_blank" class="btn-primary" style="display:none;">Comprar de Contado</a>
-          <a id="modal-buy-3cuotas" href="#" target="_blank" class="btn-primary" style="display:none;">Pagar en 3 Cuotas</a>
-          <a id="modal-buy-6cuotas" href="#" target="_blank" class="btn-primary" style="display:none;">Pagar en 6 Cuotas</a>
-          <a id="modal-buy-gen" href="#" target="_blank" class="btn-primary" style="display:none;">Acceder</a>
+
+          <!-- BOTÓN PRINCIPAL -->
+          <a 
+            id="modal-buy-contado"
+            href="#"
+            target="_blank"
+            class="btn-primary"
+            style="display:none;">
+          </a>
+
+          <!-- CUOTAS -->
+          <a 
+            id="modal-buy-3cuotas"
+            href="#"
+            target="_blank"
+            class="btn-primary"
+            style="display:none;">
+            Pagar en 3 Cuotas
+          </a>
+
+          <a 
+            id="modal-buy-6cuotas"
+            href="#"
+            target="_blank"
+            class="btn-primary"
+            style="display:none;">
+            Pagar en 6 Cuotas
+          </a>
+
+          <!-- BOTÓN GENERAL -->
+          <a 
+            id="modal-buy-gen"
+            href="#"
+            target="_blank"
+            class="btn-primary"
+            style="display:none;">
+          </a>
+
         </div>
       </div>
     </div>
   </div>
 
+  <!-- WhatsApp -->
   <a id="whatsapp-btn" class="whatsapp-float" target="_blank">
+
     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.8-.384-1.456-.752-.64-.368-1.072-.816-1.312-1.168-.24-.352-.025-.544.128-.704.131-.131.296-.336.448-.504.152-.168.203-.288.304-.496.101-.208.05-.39-.025-.546-.075-.156-.665-1.6-.913-2.192-.24-.58-.48-.5-.656-.51-.17-.01-.365-.01-.56-.01-.192 0-.504.072-.768.352-.264.28-1.008.984-1.008 2.4 0 1.416 1.032 2.784 1.176 2.976.144.192 2.032 3.104 4.928 4.352.688.296 1.224.472 1.64.6.688.224 1.312.192 1.808.116.552-.084 1.704-.696 1.944-1.368.24-.672.24-1.248.168-1.368-.072-.12-.264-.192-.552-.336z"/>
+      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432-.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.8-.384-1.456-.752-.64-.368-1.072-.816-1.312-1.168-.24-.352-.025-.544.128-.704.131-.131.296-.336.448-.504.152-.168.203-.288.304-.496.101-.208.05-.39-.025-.546-.075-.156-.665-1.6-.913-2.192-.24-.58-.48-.5-.656-.51-.17-.01-.365-.01-.56-.01-.192 0-.504.072-.768.352-.264.28-1.008.984-1.008 2.4 0 1.416 1.032 2.784 1.176 2.976.144.192 2.032 3.104 4.928 4.352.688.296 1.224.472 1.64.6.688.224 1.312.192 1.808.116.552-.084 1.704-.696 1.944-1.368.24-.672.24-1.248.168-1.368-.072-.12-.264-.192-.552-.336z"/>
     </svg>
+
     WhatsApp
   </a>
 
+
   <script>
+
     let allData = {};
+
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxTGQQZWDLXcfMtMbOH9c98PfH5cQgu5lIzK6jw9vBP-9NLR_RlmX28fDSpd92UZbZU/exec"; 
+
     const FALLBACK_IMG = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23222222'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23666666' font-family='Roboto, sans-serif' font-size='20'%3ESin Imagen%3C/text%3E%3C/svg%3E";
 
+
+    /* ==========================================================
+       CARGA INICIAL
+       ========================================================== */
+
     document.addEventListener("DOMContentLoaded", () => {
-        if (!API_ENDPOINT || API_ENDPOINT.includes("TU_URL")) {
-            console.error("Error: API_ENDPOINT no está configurado correctamente.");
-            return;
-        }
-        fetch(API_ENDPOINT)
-            .then(res => res.json())
-            .then(initApp)
-            .catch(err => console.error('Error al cargar datos:', err));
+
+      if (!API_ENDPOINT || API_ENDPOINT.includes("TU_URL")) {
+        console.error("Error: API_ENDPOINT no está configurado correctamente.");
+        return;
+      }
+
+      fetch(API_ENDPOINT)
+        .then(res => res.json())
+        .then(initApp)
+        .catch(err => console.error('Error al cargar datos:', err));
+
     });
 
+
+    /* ==========================================================
+       INICIALIZACIÓN
+       ========================================================== */
+
     function initApp(data) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const modo = urlParams.get('modo');
-        
-        if (modo === 'clientes' && data.categories) {
-            data.categories = data.categories.map(cat => {
-                cat.products = cat.products.filter(prod => {
-                    const nombreProd = (prod.name || "").toLowerCase();
-                    return !nombreProd.includes("gratis") && !nombreProd.includes("gratuito");
-                });
-                return cat;
-            }).filter(cat => cat.products.length > 0);
-        }
-        
-        allData = data;
-        if(data.config?.backgroundColor) document.body.style.backgroundColor = data.config.backgroundColor;
-        if(data.config?.whatsappUrl) document.getElementById("whatsapp-btn").href = data.config.whatsappUrl;
-        
-        renderHome();
-    }
 
-    function renderHome() {
-        document.getElementById("category-header").style.display = "none";
-        document.getElementById("hero").style.display = "flex";
-        renderHeroSection();
-        document.getElementById("nav-bar").style.display = "none";
-        
-        const grid = document.getElementById("grid-container");
-        grid.innerHTML = "";
-        
-        const listasConfig = allData.listas || [];
-        if (listasConfig.length === 0) return;
-
-        listasConfig.forEach(item => {
-            const rawCatName = (item.Category || item.name || "").trim();
-            const catNameLower = rawCatName.toLowerCase();
-            
-            const displayTitle = item.Titulo || item.title || rawCatName;
-            const displaySubtitle = item.Subtitulo || item.subtitulo || item.subtitle || '';
-            const displayImg = item.ImageUrl || item.image || FALLBACK_IMG;
-            const displayCTA = item.CTA || item.cta || "Ver más";
-
-            const isFree = catNameLower.includes("gratis") || catNameLower.includes("gratuito");
-
-            if (isFree) {
-                let freeProduct = null;
-                allData.categories?.forEach(cat => {
-                    cat.products?.forEach(prod => {
-                        const pName = (prod.name || "").toLowerCase();
-                        if (pName.includes("gratis") || pName.includes("gratuito")) {
-                            freeProduct = prod;
-                        }
-                    });
-                });
-
-                const bannerDiv = document.createElement("div");
-                bannerDiv.className = "course-banner-wrapper";
-                
-                const productPayload = freeProduct || {
-                    name: displayTitle, 
-                    detail: displaySubtitle, 
-                    image: displayImg
-                };
-
-                const productData = JSON.stringify(productPayload).replace(/"/g, '&quot;');
-
-                bannerDiv.innerHTML = `
-                    <img class="course-banner-img" src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
-                    <div class="course-banner-text">
-                        <h2 class="course-banner-title">${displayTitle}</h2>
-                        <p class="course-banner-desc">${displaySubtitle}</p>
-                        <button class="hero-btn" data-product="${productData}" onclick="handleBannerClick(this)">${displayCTA}</button>
-                    </div>
-                `;
-                grid.appendChild(bannerDiv);
-            } else {
-                const card = document.createElement("div");
-                card.className = "card";
-                card.onclick = () => {
-                    const matchedCat = allData.categories?.find(c => {
-                        const cName = (c.name || "").trim().toLowerCase();
-                        return cName === catNameLower || cName.includes(catNameLower) || catNameLower.includes(cName);
-                    });
-                    if (matchedCat) {
-                        renderCategoryView(matchedCat);
-                    } else {
-                        console.warn("No se encontró categoría para:", rawCatName);
-                    }
-                };
-                card.innerHTML = `
-                    <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
-                    <div class="card-overlay">
-                        <div class="card-title">${displayTitle}</div>
-                        <div class="card-subtitle">${displaySubtitle}</div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            }
-        });
-    }
-
-    window.handleBannerClick = function(button) {
-        const rawData = button.getAttribute('data-product');
-        const product = JSON.parse(rawData);
-        openModal(product);
-    };
-
-    function openModal(product) {
-        const modal = document.getElementById("modal");
-        const modalImg = document.getElementById("modal-img");
-        modalImg.src = product.image || product.imageUrl || FALLBACK_IMG;
-        modalImg.onerror = () => { modalImg.src = FALLBACK_IMG; };
-        
-        document.getElementById("modal-title").textContent = product.name || "Detalle";
-        document.getElementById("modal-desc").textContent = product.detail || product.description || "";
-        
-        const btnContado = document.getElementById("modal-buy-contado");
-        const btn3Cuotas = document.getElementById("modal-buy-3cuotas");
-        const btn6Cuotas = document.getElementById("modal-buy-6cuotas");
-        const btnGen = document.getElementById("modal-buy-gen");
-
-        btnContado.style.display = "none";
-        btn3Cuotas.style.display = "none";
-        btn6Cuotas.style.display = "none";
-        btnGen.style.display = "none";
-
-        if (product.buyUrlContado) {
-            btnContado.href = product.buyUrlContado;
-            btnContado.style.display = "inline-flex";
-        }
-        if (product.buyUrl3Cuotas) {
-            btn3Cuotas.href = product.buyUrl3Cuotas;
-            btn3Cuotas.style.display = "inline-flex";
-        }
-        if (product.buyUrl6Cuotas) {
-            btn6Cuotas.href = product.buyUrl6Cuotas;
-            btn6Cuotas.style.display = "inline-flex";
-        }
-        if (product.buyUrl || product.url || product.link) {
-            btnGen.href = product.buyUrl || product.url || product.link;
-            btnGen.style.display = "inline-flex";
-        }
-        
-        const offerEl = document.getElementById("modal-offer");
-        if (product.offerNote) {
-            offerEl.textContent = product.offerNote;
-            offerEl.style.display = "block";
-        } else {
-            offerEl.style.display = "none";
-        }
-        
-        modal.classList.add("active");
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal(event) {
-        if (event.target.id === 'modal' || event.target.classList.contains('modal-close')) {
-            document.getElementById("modal").classList.remove("active");
-            document.body.style.overflow = 'auto';
-        }
-    }
-    
-    function renderCategoryView(category) {
-        document.getElementById("hero").style.display = "none";
-        const catHeader = document.getElementById("category-header");
-        document.getElementById("category-title").textContent = category.name;
-        document.getElementById("category-subtitle").textContent = `Explora los recursos disponibles en esta sección.`;
-        catHeader.style.display = "flex";
-
-        document.getElementById("nav-bar").style.display = "flex";
-
-        const grid = document.getElementById("grid-container");
-        grid.innerHTML = "";
-        
-        if (category.products) {
-            category.products.sort((a, b) => {
-                return (a.name || "").localeCompare(b.name || "", undefined, { numeric: true });
-            });
-        }
-
-        category.products?.forEach(prod => {
-            const card = document.createElement("div");
-            card.className = "card";
-            card.onclick = () => openModal(prod);
-            card.innerHTML = `
-                <img src="${prod.image || prod.imageUrl || FALLBACK_IMG}" alt="${prod.name}" onerror="this.src='${FALLBACK_IMG}'">
-                <div class="card-content">
-                    <div class="card-title">${prod.name}</div>
-                    <div class="card-subtitle">${prod.detail || ''}</div>
-                </div>
-            `;
-            grid.appendChild(card);
-        });
-        
-        window.scrollTo(0, 0);
-    }
-
-    function renderHeroSection() {
       const urlParams = new URLSearchParams(window.location.search);
       const modo = urlParams.get('modo');
-      const tituloHero = document.getElementById("hero-title");
-      const descHero = document.getElementById("hero-desc");
-      const heroBtn = document.getElementById("hero-btn");
-      
-      let targetProd = null;
+
+      if (modo === 'clientes' && data.categories) {
+
+        data.categories = data.categories.map(cat => {
+
+          cat.products = cat.products.filter(prod => {
+
+            const nombreProd = (prod.name || "").toLowerCase();
+
+            return !nombreProd.includes("gratis") &&
+                   !nombreProd.includes("gratuito");
+
+          });
+
+          return cat;
+
+        }).filter(cat => cat.products.length > 0);
+      }
+
+      allData = data;
+
+      if (data.config?.backgroundColor) {
+        document.body.style.backgroundColor = data.config.backgroundColor;
+      }
+
+      if (data.config?.whatsappUrl) {
+        document.getElementById("whatsapp-btn").href =
+          data.config.whatsappUrl;
+      }
+
+      renderHome();
+    }
+
+
+    /* ==========================================================
+       BUSCAR TEXTO DEL BOTÓN DE UNA CATEGORÍA
+       ========================================================== */
+
+    function getCategoryButtonText(categoryName) {
+
+      const listasConfig = allData.listas || [];
+
+      const normalizedName = (categoryName || "")
+        .trim()
+        .toLowerCase();
+
+      const item = listasConfig.find(item => {
+
+        const name = (
+          item.Category ||
+          item.name ||
+          ""
+        ).trim().toLowerCase();
+
+        return (
+          name === normalizedName ||
+          name.includes(normalizedName) ||
+          normalizedName.includes(name)
+        );
+
+      });
+
+      return (
+        item?.BotonTexto ||
+        item?.botonTexto ||
+        item?.buttonText ||
+        "Más información"
+      );
+    }
+
+
+    /* ==========================================================
+       HOME
+       ========================================================== */
+
+    function renderHome() {
+
+      document.getElementById("category-header").style.display = "none";
+
+      document.getElementById("hero").style.display = "flex";
+
+      renderHeroSection();
+
+      document.getElementById("nav-bar").style.display = "none";
+
+      const grid = document.getElementById("grid-container");
+
+      grid.innerHTML = "";
+
+      const listasConfig = allData.listas || [];
+
+      if (listasConfig.length === 0) return;
+
+
+      listasConfig.forEach(item => {
+
+        const rawCatName =
+          (item.Category || item.name || "").trim();
+
+        const catNameLower =
+          rawCatName.toLowerCase();
+
+        const displayTitle =
+          item.Titulo ||
+          item.title ||
+          rawCatName;
+
+        const displaySubtitle =
+          item.Subtitulo ||
+          item.subtitulo ||
+          item.subtitle ||
+          '';
+
+        const displayImg =
+          item.ImageUrl ||
+          item.image ||
+          FALLBACK_IMG;
+
+        const displayCTA =
+          item.CTA ||
+          item.cta ||
+          "Ver más";
+
+        /* NUEVO:
+           Texto de botón proveniente de Listas columna F
+        */
+
+        const buttonText =
+          item.BotonTexto ||
+          item.botonTexto ||
+          item.buttonText ||
+          "Más información";
+
+
+        const isFree =
+          catNameLower.includes("gratis") ||
+          catNameLower.includes("gratuito");
+
+
+        /* ======================================================
+           CURSO GRATUITO
+           ====================================================== */
+
+        if (isFree) {
+
+          let freeProduct = null;
+
+          allData.categories?.forEach(cat => {
+
+            cat.products?.forEach(prod => {
+
+              const pName =
+                (prod.name || "").toLowerCase();
+
+              if (
+                pName.includes("gratis") ||
+                pName.includes("gratuito")
+              ) {
+                freeProduct = {
+                  ...prod,
+                  buttonText: buttonText
+                };
+              }
+
+            });
+
+          });
+
+
+          const bannerDiv =
+            document.createElement("div");
+
+          bannerDiv.className =
+            "course-banner-wrapper";
+
+
+          const productPayload =
+            freeProduct || {
+              name: displayTitle,
+              detail: displaySubtitle,
+              image: displayImg,
+              buttonText: buttonText
+            };
+
+
+          const productData =
+            JSON.stringify(productPayload)
+              .replace(/"/g, '&quot;');
+
+
+          bannerDiv.innerHTML = `
+
+            <img
+              class="course-banner-img"
+              src="${displayImg}"
+              alt="${displayTitle}"
+              onerror="this.src='${FALLBACK_IMG}'"
+            >
+
+            <div class="course-banner-text">
+
+              <h2 class="course-banner-title">
+                ${displayTitle}
+              </h2>
+
+              <p class="course-banner-desc">
+                ${displaySubtitle}
+              </p>
+
+              <button
+                class="hero-btn"
+                data-product="${productData}"
+                onclick="handleBannerClick(this)"
+              >
+                ${displayCTA}
+              </button>
+
+            </div>
+
+          `;
+
+          grid.appendChild(bannerDiv);
+
+
+        } else {
+
+          /* ====================================================
+             CATEGORÍA NORMAL
+             ==================================================== */
+
+          const card =
+            document.createElement("div");
+
+          card.className = "card";
+
+
+          card.onclick = () => {
+
+            const matchedCat =
+              allData.categories?.find(c => {
+
+                const cName =
+                  (c.name || "")
+                    .trim()
+                    .toLowerCase();
+
+                return (
+                  cName === catNameLower ||
+                  cName.includes(catNameLower) ||
+                  catNameLower.includes(cName)
+                );
+
+              });
+
+
+            if (matchedCat) {
+
+              /*
+               * Guardamos el texto de botón de Listas
+               * para utilizarlo en los productos.
+               */
+
+              matchedCat.buttonText =
+                buttonText;
+
+              renderCategoryView(matchedCat);
+
+            } else {
+
+              console.warn(
+                "No se encontró categoría para:",
+                rawCatName
+              );
+
+            }
+
+          };
+
+
+          card.innerHTML = `
+
+            <img
+              src="${displayImg}"
+              alt="${displayTitle}"
+              onerror="this.src='${FALLBACK_IMG}'"
+            >
+
+            <div class="card-overlay">
+
+              <div class="card-title">
+                ${displayTitle}
+              </div>
+
+              <div class="card-subtitle">
+                ${displaySubtitle}
+              </div>
+
+            </div>
+
+          `;
+
+          grid.appendChild(card);
+
+        }
+
+      });
+
+    }
+
+
+    /* ==========================================================
+       BOTÓN DEL BANNER
+       ========================================================== */
+
+    window.handleBannerClick = function(button) {
+
+      const rawData =
+        button.getAttribute('data-product');
+
+      const product =
+        JSON.parse(rawData);
+
+      openModal(product);
+
+    };
+
+
+    /* ==========================================================
+       MODAL
+       ========================================================== */
+
+    function openModal(product) {
+
+      const modal =
+        document.getElementById("modal");
+
+      const modalImg =
+        document.getElementById("modal-img");
+
+
+      modalImg.src =
+        product.image ||
+        product.imageUrl ||
+        FALLBACK_IMG;
+
+
+      modalImg.onerror = () => {
+        modalImg.src = FALLBACK_IMG;
+      };
+
+
+      document.getElementById("modal-title").textContent =
+        product.name || "Detalle";
+
+
+      document.getElementById("modal-desc").textContent =
+        product.detail ||
+        product.description ||
+        "";
+
+
+      const btnContado =
+        document.getElementById("modal-buy-contado");
+
+      const btn3Cuotas =
+        document.getElementById("modal-buy-3cuotas");
+
+      const btn6Cuotas =
+        document.getElementById("modal-buy-6cuotas");
+
+      const btnGen =
+        document.getElementById("modal-buy-gen");
+
+
+      /* Ocultar todos inicialmente */
+
+      btnContado.style.display = "none";
+      btn3Cuotas.style.display = "none";
+      btn6Cuotas.style.display = "none";
+      btnGen.style.display = "none";
+
+
+      /* ======================================================
+         TEXTO DEL BOTÓN
+         ====================================================== */
+
+      const buttonText =
+        product.buttonText ||
+        "Más información";
+
+
+      /* ======================================================
+         URL PRINCIPAL
+         ====================================================== */
+
+      if (product.buyUrlContado) {
+
+        btnContado.href =
+          product.buyUrlContado;
+
+        /*
+         * AQUÍ ESTÁ EL CAMBIO PRINCIPAL:
+         * ya no dice "Comprar de Contado"
+         * sino el BotonTexto de Listas.
+         */
+
+        btnContado.textContent =
+          buttonText;
+
+        btnContado.style.display =
+          "inline-flex";
+
+      }
+
+
+      /* ======================================================
+         3 CUOTAS
+         ====================================================== */
+
+      if (product.buyUrl3Cuotas) {
+
+        btn3Cuotas.href =
+          product.buyUrl3Cuotas;
+
+        btn3Cuotas.textContent =
+          "Pagar en 3 Cuotas";
+
+        btn3Cuotas.style.display =
+          "inline-flex";
+
+      }
+
+
+      /* ======================================================
+         6 CUOTAS
+         ====================================================== */
+
+      if (product.buyUrl6Cuotas) {
+
+        btn6Cuotas.href =
+          product.buyUrl6Cuotas;
+
+        btn6Cuotas.textContent =
+          "Pagar en 6 Cuotas";
+
+        btn6Cuotas.style.display =
+          "inline-flex";
+
+      }
+
+
+      /* ======================================================
+         URL GENERAL
+         ====================================================== */
+
+      const generalUrl =
+        product.buyUrl ||
+        product.url ||
+        product.link;
+
+
+      /*
+       * Si no existe buyUrlContado pero sí existe
+       * una URL general, usamos el botón general.
+       */
+
+      if (
+        generalUrl &&
+        !product.buyUrlContado
+      ) {
+
+        btnGen.href =
+          generalUrl;
+
+        btnGen.textContent =
+          buttonText;
+
+        btnGen.style.display =
+          "inline-flex";
+
+      }
+
+
+      /* ======================================================
+         OFERTA
+         ====================================================== */
+
+      const offerEl =
+        document.getElementById("modal-offer");
+
+
+      if (product.offerNote) {
+
+        offerEl.textContent =
+          product.offerNote;
+
+        offerEl.style.display =
+          "block";
+
+      } else {
+
+        offerEl.style.display =
+          "none";
+
+      }
+
+
+      /* ======================================================
+         MOSTRAR MODAL
+         ====================================================== */
+
+      modal.classList.add("active");
+
+      document.body.style.overflow =
+        'hidden';
+
+    }
+
+
+    /* ==========================================================
+       CERRAR MODAL
+       ========================================================== */
+
+    function closeModal(event) {
+
+      if (
+        event.target.id === 'modal' ||
+        event.target.classList.contains('modal-close')
+      ) {
+
+        document
+          .getElementById("modal")
+          .classList.remove("active");
+
+        document.body.style.overflow =
+          'auto';
+
+      }
+
+    }
+
+
+    /* ==========================================================
+       VISTA DE CATEGORÍA
+       ========================================================== */
+
+    function renderCategoryView(category) {
+
+      document.getElementById("hero").style.display =
+        "none";
+
+
+      const catHeader =
+        document.getElementById("category-header");
+
+
+      document.getElementById("category-title").textContent =
+        category.name;
+
+
+      document.getElementById("category-subtitle").textContent =
+        `Explora los recursos disponibles en esta sección.`;
+
+
+      catHeader.style.display =
+        "flex";
+
+
+      document.getElementById("nav-bar").style.display =
+        "flex";
+
+
+      const grid =
+        document.getElementById("grid-container");
+
+
+      grid.innerHTML = "";
+
+
+      /*
+       * Obtenemos nuevamente el BotonTexto de Listas
+       * por seguridad.
+       */
+
+      const categoryButtonText =
+        category.buttonText ||
+        getCategoryButtonText(category.name);
+
+
+      if (category.products) {
+
+        category.products.sort((a, b) => {
+
+          return (a.name || "")
+            .localeCompare(
+              b.name || "",
+              undefined,
+              { numeric: true }
+            );
+
+        });
+
+      }
+
+
+      category.products?.forEach(prod => {
+
+        const card =
+          document.createElement("div");
+
+        card.className =
+          "card";
+
+
+        /*
+         * Le agregamos al producto el texto
+         * de botón correspondiente a su categoría.
+         */
+
+        const productWithButton = {
+          ...prod,
+          buttonText: categoryButtonText
+        };
+
+
+        card.onclick = () =>
+          openModal(productWithButton);
+
+
+        card.innerHTML = `
+
+          <img
+            src="${prod.image || prod.imageUrl || FALLBACK_IMG}"
+            alt="${prod.name}"
+            onerror="this.src='${FALLBACK_IMG}'"
+          >
+
+          <div class="card-content">
+
+            <div class="card-title">
+              ${prod.name}
+            </div>
+
+            <div class="card-subtitle">
+              ${prod.detail || ''}
+            </div>
+
+          </div>
+
+        `;
+
+
+        grid.appendChild(card);
+
+      });
+
+
+      window.scrollTo(0, 0);
+
+    }
+
+
+    /* ==========================================================
+       HERO
+       ========================================================== */
+
+    function renderHeroSection() {
+
+      const urlParams =
+        new URLSearchParams(window.location.search);
+
+      const modo =
+        urlParams.get('modo');
+
+
+      const tituloHero =
+        document.getElementById("hero-title");
+
+      const descHero =
+        document.getElementById("hero-desc");
+
+      const heroBtn =
+        document.getElementById("hero-btn");
+
+
+      let targetProd =
+        null;
+
 
       if (allData.categories) {
-          allData.categories.forEach(cat => {
-              cat.products?.forEach(prod => {
-                  const pName = (prod.name || "").toLowerCase();
-                  if (pName.includes("pack 3") || pName.includes("transformación total") || pName.includes("pack total")) {
-                      targetProd = prod;
-                  }
-              });
+
+        allData.categories.forEach(cat => {
+
+          cat.products?.forEach(prod => {
+
+            const pName =
+              (prod.name || "").toLowerCase();
+
+
+            if (
+              pName.includes("pack 3") ||
+              pName.includes("transformación total") ||
+              pName.includes("pack total")
+            ) {
+
+              targetProd = prod;
+
+            }
+
           });
+
+        });
+
       }
 
-      if (!targetProd && allData.categories?.[0]?.products?.[0]) {
-          targetProd = allData.categories[0].products[0];
+
+      if (
+        !targetProd &&
+        allData.categories?.[0]?.products?.[0]
+      ) {
+
+        targetProd =
+          allData.categories[0].products[0];
+
       }
+
 
       if (modo === 'clientes') {
-          tituloHero.innerText = "🚀 ¡Lleva tu Negocio al Siguiente Nivel con el Pack Total!";
-          descHero.innerText = "Ya diste el primer paso. Domina los tres pilares definitivos: Investigación de Mercado Inteligente, Landing Pages que convierten y Automatizaciones.";
-          heroBtn.textContent = "¡Ver Pack Completo!";
+
+        tituloHero.innerText =
+          "🚀 ¡Lleva tu Negocio al Siguiente Nivel con el Pack Total!";
+
+
+        descHero.innerText =
+          "Ya diste el primer paso. Domina los tres pilares definitivos: Investigación de Mercado Inteligente, Landing Pages que convierten y Automatizaciones.";
+
+
+        heroBtn.textContent =
+          "¡Ver Pack Completo!";
+
+
       } else {
-          tituloHero.innerText = "Pack Transformación Total: Todo lo que un Emprendedor Necesita";
-          descHero.innerText = "Desbloquea los 3 pilares del éxito digital: Encuentra tu nicho, crea páginas que venden y automatiza tus procesos con IA y Apps Script.";
-          heroBtn.textContent = "¡Quiero el Pack Completo!";
+
+        tituloHero.innerText =
+          "Pack Transformación Total: Todo lo que un Emprendedor Necesita";
+
+
+        descHero.innerText =
+          "Desbloquea los 3 pilares del éxito digital: Encuentra tu nicho, crea páginas que venden y automatiza tus procesos con IA y Apps Script.";
+
+
+        heroBtn.textContent =
+          "¡Quiero el Pack Completo!";
+
       }
-      
-      const hero = document.getElementById("hero");
-      const bgImage = allData.config?.heroBackgroundImage;
+
+
+      const hero =
+        document.getElementById("hero");
+
+
+      const bgImage =
+        allData.config?.heroBackgroundImage;
+
+
       if (bgImage) {
-          hero.style.backgroundImage = `url('${bgImage}')`;
+
+        hero.style.backgroundImage =
+          `url('${bgImage}')`;
+
       }
-      
+
+
       heroBtn.onclick = () => {
-          if (targetProd) {
-              openModal(targetProd);
-          } else {
-              window.location.href = "https://hugo85ar.github.io/LandingPacks/";
-          }
+
+        if (targetProd) {
+
+          /*
+           * El Hero corresponde a Packs.
+           * Le damos el texto de Listas correspondiente.
+           */
+
+          const packButtonText =
+            getCategoryButtonText(
+              "Packs & Programas Integrales"
+            );
+
+
+          targetProd = {
+            ...targetProd,
+            buttonText: packButtonText
+          };
+
+
+          openModal(targetProd);
+
+        } else {
+
+          window.location.href =
+            "https://hugo85ar.github.io/LandingPacks/";
+
+        }
+
       };
-  }
+
+    }
+
   </script>
+
 </body>
 </html>
