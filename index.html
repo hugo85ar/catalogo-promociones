@@ -646,7 +646,7 @@
     }
 
 
-    /* ==========================================================
+  /* ==========================================================
        HOME
        ========================================================== */
 
@@ -669,7 +669,7 @@
       if (listasConfig.length === 0) return;
 
 
-      listasConfig.forEach(item => {
+      listasConfig.forEach((item, index) => {
 
         const rawCatName =
           (item.Category || item.name || "").trim();
@@ -798,7 +798,7 @@
         } else {
 
           /* ====================================================
-             CATEGORÍA NORMAL
+             CATEGORÍA NORMAL / TARJETAS INFERIORES
              ==================================================== */
 
           const card =
@@ -808,6 +808,12 @@
 
 
           card.onclick = () => {
+
+            // REQUISITO 1: Primera tarjeta de abajo a la izquierda redirige a URL externa
+            if (index === 1 || catNameLower.includes("ruta") || catNameLower.includes("pack")) {
+              window.open("https://hugo85ar.github.io/LandingPacks/", "_blank");
+              return;
+            }
 
             const matchedCat =
               allData.categories?.find(c => {
@@ -874,143 +880,8 @@
       });
 
     }
-
-
-    /* ==========================================================
-       BOTÓN DEL BANNER
-       ========================================================== */
-
-    window.handleBannerClick = function(button) {
-
-      const rawData =
-        button.getAttribute('data-product');
-
-      const product =
-        JSON.parse(rawData);
-
-      window.openModal(product);
-
-    };
-
-
-    /* ==========================================================
-       MODAL (Expuestos globalmente a window)
-       ========================================================== */
-
-    window.openModal = function(product) {
-
-      const modal = document.getElementById("modal");
-      const modalImg = document.getElementById("modal-img");
-
-      modalImg.src =
-        product.image ||
-        product.imageUrl ||
-        FALLBACK_IMG;
-
-      modalImg.onerror = () => {
-        modalImg.src = FALLBACK_IMG;
-      };
-
-      document.getElementById("modal-title").textContent =
-        product.name || "Detalle";
-
-      document.getElementById("modal-desc").textContent =
-        product.detail ||
-        product.description ||
-        "";
-
-      const btnContado =
-        document.getElementById("modal-buy-contado");
-
-      const btn3Cuotas =
-        document.getElementById("modal-buy-3cuotas");
-
-      const btn6Cuotas =
-        document.getElementById("modal-buy-6cuotas");
-
-      const btnGen =
-        document.getElementById("modal-buy-gen");
-
-      const offerEl =
-        document.getElementById("modal-offer");
-
-      btnContado.style.display = "none";
-      btn3Cuotas.style.display = "none";
-      btn6Cuotas.style.display = "none";
-      btnGen.style.display = "none";
-
-      offerEl.style.display = "none";
-      offerEl.textContent = "";
-
-      const buttonText =
-        product.buttonText ||
-        product.BotonTexto ||
-        product.botonTexto ||
-        "Más información";
-
-      const offerNote =
-        (product.offerNote || "").trim();
-
-      const offerNoteIsUrl =
-        /^https?:\/\/\S+$/i.test(offerNote);
-
-      let mainUrl =
-        product.buyUrlContado ||
-        product.buyUrl ||
-        product.url ||
-        product.link ||
-        "";
-
-      if (!mainUrl && offerNoteIsUrl) {
-        mainUrl = offerNote;
-      }
-
-      if (mainUrl) {
-        btnContado.href = mainUrl;
-        btnContado.textContent = buttonText;
-        btnContado.target = "_blank";
-        btnContado.rel = "noopener noreferrer";
-        btnContado.style.display = "inline-flex";
-      }
-
-      if (product.buyUrl3Cuotas) {
-        btn3Cuotas.href = product.buyUrl3Cuotas;
-        btn3Cuotas.textContent = "Pagar en 3 Cuotas";
-        btn3Cuotas.target = "_blank";
-        btn3Cuotas.rel = "noopener noreferrer";
-        btn3Cuotas.style.display = "inline-flex";
-      }
-
-      if (product.buyUrl6Cuotas) {
-        btn6Cuotas.href = product.buyUrl6Cuotas;
-        btn6Cuotas.textContent = "Pagar en 6 Cuotas";
-        btn6Cuotas.target = "_blank";
-        btn6Cuotas.rel = "noopener noreferrer";
-        btn6Cuotas.style.display = "inline-flex";
-      }
-
-      if (offerNote && !offerNoteIsUrl) {
-        offerEl.textContent = offerNote;
-        offerEl.style.display = "block";
-      }
-
-      modal.classList.add("active");
-      document.body.style.overflow = "hidden";
-
-    };
-
-
-    window.closeModal = function(event) {
-      const modal = document.getElementById("modal");
-      if (event && event.target !== modal && !event.target.classList.contains('modal-close')) {
-        return;
-      }
-      modal.classList.remove("active");
-      document.body.style.overflow = "auto";
-    };
-
-
-    /* ==========================================================
+  
+   /* ==========================================================
        VISTA DE CATEGORÍA
        ========================================================== */
 
@@ -1054,6 +925,8 @@
         });
       }
 
+      const isSuscripcionMensual = category.name.toLowerCase().includes("suscripción mensual") || category.name.toLowerCase().includes("suscripciones");
+
       category.products?.forEach(prod => {
 
         const card =
@@ -1062,9 +935,27 @@
         card.className =
           "card";
 
+        // REQUISITO 2: Si es la categoría de Soluciones con Suscripción mensual, forzamos el texto del botón y enlace de WhatsApp
+        let prodButtonText = categoryButtonText;
+        let modifiedProd = { ...prod };
+
+        if (isSuscripcionMensual) {
+          prodButtonText = "Saber más";
+          const whatsappBaseUrl = allData.config?.whatsappUrl || "https://wa.me/";
+          const mensajeWa = encodeURIComponent(`Hola Hugo, quiero saber más sobre la solución: ${prod.name}`);
+          
+          // Si whatsappUrl ya tiene un número o estructura base, lo adaptamos o usamos el predeterminado con mensaje
+          let finalWaUrl = whatsappBaseUrl.includes("?") ? `${whatsappBaseUrl}&text=${mensajeWa}` : `${whatsappBaseUrl}?text=${mensajeWa}`;
+          if (!whatsappBaseUrl.includes("wa.me") && !whatsappBaseUrl.includes("whatsapp")) {
+             finalWaUrl = `https://wa.me/5491132338144?text=${mensajeWa}`; // Fallback seguro si fuera necesario
+          }
+
+          modifiedProd.buyUrlContado = finalWaUrl;
+        }
+
         const productWithButton = {
-          ...prod,
-          buttonText: categoryButtonText
+          ...modifiedProd,
+          buttonText: prodButtonText
         };
 
         card.onclick = () =>
@@ -1098,125 +989,8 @@
 
       window.scrollTo(0, 0);
 
-    }
-
-
-    /* ==========================================================
-       HERO
-       ========================================================== */
-
-    function renderHeroSection() {
-
-      const urlParams =
-        new URLSearchParams(window.location.search);
-
-      const modo =
-        urlParams.get('modo');
-
-      const tituloHero =
-        document.getElementById("hero-title");
-
-      const descHero =
-        document.getElementById("hero-desc");
-
-      const heroBtn =
-        document.getElementById("hero-btn");
-
-      let targetProd =
-        null;
-
-      if (allData.categories) {
-
-        allData.categories.forEach(cat => {
-
-          cat.products?.forEach(prod => {
-
-            const pName =
-              (prod.name || "").toLowerCase();
-
-            if (
-              pName.includes("pack 3") ||
-              pName.includes("transformación total") ||
-              pName.includes("pack total")
-            ) {
-              targetProd = prod;
-            }
-
-          });
-
-        });
-
-      }
-
-      if (
-        !targetProd &&
-        allData.categories?.[0]?.products?.[0]
-      ) {
-        targetProd =
-          allData.categories[0].products[0];
-      }
-
-      if (modo === 'clientes') {
-
-        tituloHero.innerText =
-          "🚀 ¡Lleva tu Negocio al Siguiente Nivel con el Pack Total!";
-
-        descHero.innerText =
-          "Ya diste el primer paso. Domina los tres pilares definitivos: Investigación de Mercado Inteligente, Landing Pages que convierten y Automatizaciones.";
-
-        heroBtn.textContent =
-          "¡Ver Pack Completo!";
-
-      } else {
-
-        tituloHero.innerText =
-          "Pack Transformación Total: Todo lo que un Emprendedor Necesita";
-
-        descHero.innerText =
-          "Desbloquea los 3 pilares del éxito digital: Encuentra tu nicho, crea páginas que venden y automatiza tus procesos con IA y Apps Script.";
-
-        heroBtn.textContent =
-          "¡Quiero el Pack Completo!";
-
-      }
-
-      const hero =
-        document.getElementById("hero");
-
-      const bgImage =
-        allData.config?.heroBackgroundImage;
-
-      if (bgImage) {
-        hero.style.backgroundImage =
-          `url('${bgImage}')`;
-      }
-
-      heroBtn.onclick = () => {
-
-        if (targetProd) {
-
-          const packButtonText =
-            getCategoryButtonText(
-              "Packs & Programas Integrales"
-            );
-
-          targetProd = {
-            ...targetProd,
-            buttonText: packButtonText
-          };
-
-          window.openModal(targetProd);
-
-        } else {
-
-          window.location.href =
-            "https://hugo85ar.github.io/LandingPacks/";
-
-        }
-
-      };
-
-    }
+    }    
+  }
 
   </script>
 
