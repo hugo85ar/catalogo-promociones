@@ -48,7 +48,6 @@ fbq('track', 'PageView');
 </noscript>
 <!-- FIN META PIXEL -->
   
-  
   <style>
     :root {
       --bg-color: #141414;
@@ -167,8 +166,8 @@ fbq('track', 'PageView');
       grid-template-columns: 1fr;
       gap: 20px;
     }
-    /* Card Styles (para categorías) */
-  .card {
+    /* Card Styles */
+    .card {
       background-color: #1f1f1f;
       border-radius: 8px;
       overflow: hidden;
@@ -195,57 +194,32 @@ fbq('track', 'PageView');
       box-shadow: 0 10px 20px rgba(0,0,0,0.5);
       border-color: #555;
     }
-    .card-img {
-      width: 100%;
-      height: 80%;
-      object-fit: contain;
-      display: block;
-      margin-top: 10px;
-    }
-
     .card img {
       width: 100%;
       height: auto;
       display: block;
       transition: transform 0.4s ease;
     }
-
     .card:hover img {
-      transform: scale(1.03); /* Sutil zoom de la imagen al hacer hover */
+      transform: scale(1.03);
     }
-
     .card-content {
       padding: 20px;
     }
-    
-    .card-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      height: 40%;
-      pointer-events: none;
-    }
-   .card-title {
+    .card-title {
       font-size: 1.25rem;
       font-weight: bold;
       color: white;
       margin-bottom: 8px;
     }
-    
-   .card-subtitle {
+    .card-subtitle {
       font-size: 0.95rem;
       color: #aaa;
       line-height: 1.4;
     }
 
-    /* ESTILOS NUEVOS: Banner Especial para el Curso Gratuito */
-   .course-banner-wrapper {
+    /* Banner Especial para el Curso Gratuito */
+    .course-banner-wrapper {
       grid-column: 1 / -1; 
       background-color: #2f2f2f;
       border-radius: 8px;
@@ -254,11 +228,11 @@ fbq('track', 'PageView');
       flex-direction: column;
       align-items: center;
       text-align: center;
-      margin-bottom: 25px; /* Espacio con las carátulas de abajo */
+      margin-bottom: 25px;
       border: 1px solid #444;
       box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     }
-   @media (min-width: 768px) {
+    @media (min-width: 768px) {
       .course-banner-wrapper {
         flex-direction: row;
         text-align: left;
@@ -266,8 +240,8 @@ fbq('track', 'PageView');
         padding: 40px;
       }
     }
- .course-banner-img {
-      max-width: 280px; /* Aumentado para que se vea mucho más */
+    .course-banner-img {
+      max-width: 280px;
       height: auto;
       border-radius: 8px;
       margin-bottom: 20px;
@@ -277,11 +251,10 @@ fbq('track', 'PageView');
       .course-banner-img {
         margin-bottom: 0;
         margin-right: 40px;
-        max-width: 350px; /* Tamaño destacado en desktop */
+        max-width: 350px;
       }
     }
-
-   .course-banner-text {
+    .course-banner-text {
       flex: 1;
     }
     .course-banner-title {
@@ -325,7 +298,9 @@ fbq('track', 'PageView');
       background-color: white; color: black; padding: 10px 30px;
       border-radius: 4px; text-decoration: none; font-weight: bold;
       display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+      border: none;
     }
+
     /* WhatsApp Float */
     .whatsapp-float {
       position: fixed; bottom: 20px; right: 20px;
@@ -345,23 +320,6 @@ fbq('track', 'PageView');
 </head>
 <body>
 
-  // Ejemplo de cómo mapearías la fila en tu Apps Script:
-let producto = {
-  id: row[headers.indexOf('id')],
-  name: row[headers.indexOf('name')],
-  detail: row[headers.indexOf('detail')],
-  imageUrl: row[headers.indexOf('imageUrl')],
-  cursoGratuito: row[headers.indexOf('Curso Gratuito')], // Mapeo exacto de tu cabecera
-  buyUrlContado: row[headers.indexOf('buyUrlContado')],
-  buyUrl3Cuotas: row[headers.indexOf('buyUrl3Cuotas')],
-  buyUrl6Cuotas: row[headers.indexOf('buyUrl6Cuotas')],
-  offerNote: row[headers.indexOf('offerNote')],
-  order: row[headers.indexOf('order')],
-  category: row[headers.indexOf('category')],
-  imgCategory: row[headers.indexOf('imgCategory')],
-  promocional: row[headers.indexOf('Promocional?')]
-};
-  
   <!-- Hero Section -->
   <div id="hero" class="hero" style="display: none;">
     <div class="hero-content">
@@ -370,6 +328,7 @@ let producto = {
       <a id="hero-btn" href="#" class="hero-btn"></a>
     </div>
   </div>
+
   <!-- Navigation Bar & Category Header -->
   <div id="nav-bar" class="nav-bar" style="display: none;">
     <button class="back-btn" onclick="renderHome()">← Volver</button>
@@ -385,27 +344,29 @@ let producto = {
       <!-- Items will be injected here -->
     </div>
   </div>
+
   <!-- Modal -->
   <div id="modal" class="modal-overlay" onclick="closeModal(event)">
-    <div class="modal-content">
+    <div class="modal-content" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeModal(event)">×</button>
       <img id="modal-img" class="modal-image" src="" alt="">
       <div class="modal-details">
         <h2 id="modal-title" class="modal-title"></h2>
         <p id="modal-desc" class="modal-desc"></p>
-        <p id="modal-offer" style="color: #46d369; font-weight: bold; margin-bottom: 15px;"></p>
-        <!-- Opciones de pago integradas aquí -->
-       
-        <div class="modal-actions">
-          <a id="modal-buy" href="#" target="_blank" class="btn-primary"></a>
-
-          
+        <p id="modal-offer" style="color: #46d369; font-weight: bold; margin-bottom: 15px; display: none;"></p>
+        
+        <!-- Opciones de pago integradas dinámicamente -->
+        <div class="modal-actions" style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+          <a id="modal-buy-contado" href="#" target="_blank" class="btn-primary" style="display: none; background-color: #4CAF50; color: white; justify-content: center;">💵 Comprar al Contado</a>
+          <a id="modal-buy-3cuotas" href="#" target="_blank" class="btn-primary" style="display: none; background-color: #008CBA; color: white; justify-content: center;">💳 Pagar en 3 Cuotas</a>
+          <a id="modal-buy-6cuotas" href="#" target="_blank" class="btn-primary" style="display: none; background-color: #555555; color: white; justify-content: center;">💳 Pagar en 6 Cuotas</a>
+          <a id="modal-buy-gen" href="#" target="_blank" class="btn-primary" style="display: none; justify-content: center;"></a>
         </div>
       </div>
     </div>
   </div>
 
-
+  <!-- WhatsApp Float Button -->
   <a id="whatsapp-btn" class="whatsapp-float" target="_blank">
     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
       <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.8-.384-1.456-.752-.64-.368-1.072-.816-1.312-1.168-.24-.352-.025-.544.128-.704.131-.131.296-.336.448-.504.152-.168.203-.288.304-.496.101-.208.05-.39-.025-.546-.075-.156-.665-1.6-.913-2.192-.24-.58-.48-.5-.656-.51-.17-.01-.365-.01-.56-.01-.192 0-.504.072-.768.352-.264.28-1.008.984-1.008 2.4 0 1.416 1.032 2.784 1.176 2.976.144.192 2.032 3.104 4.928 4.352.688.296 1.224.472 1.64.6.688.224 1.312.192 1.808.116.552-.084 1.704-.696 1.944-1.368.24-.672.24-1.248.168-1.368-.072-.12-.264-.192-.552-.336z"/>
@@ -416,7 +377,7 @@ let producto = {
   <script>
     let allData = {};
 
-    // CRÍTICO: Pega aquí tu URL de aplicación web de Apps Script (/exec)
+    // URL de aplicación web de Apps Script (/exec)
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxTGQQZWDLXcfMtMbOH9c98PfH5cQgu5lIzK6jw9vBP-9NLR_RlmX28fDSpd92UZbZU/exec"; 
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -438,7 +399,8 @@ let producto = {
             data.categories = data.categories.map(cat => {
                 cat.products = cat.products.filter(prod => {
                     const nombreProd = (prod.name || "").toLowerCase();
-                    return !nombreProd.includes("gratis") && !nombreProd.includes("gratuito");
+                    const cursoGratuitoCheck = prod.cursoGratuito || "";
+                    return cursoGratuitoCheck.trim() === "" && !nombreProd.includes("gratis") && !nombreProd.includes("gratuito");
                 });
                 return cat;
             }).filter(cat => cat.products.length > 0);
@@ -451,8 +413,7 @@ let producto = {
         renderHome();
     }
 
-
-   function renderHome() {
+    function renderHome() {
         document.getElementById("category-header").style.display = "none";
         document.getElementById("hero").style.display = "flex";
         renderHeroSection();
@@ -469,7 +430,7 @@ let producto = {
             cat.products.forEach(prod => {
                 const pName = (prod.name || "").toLowerCase();
                 const offerNoteLower = (prod.offerNote || "").toLowerCase();
-                if (pName.includes("gratis") || pName.includes("gratuito") || offerNoteLower.includes("gratis") || offerNoteLower.includes("gratuito")) {
+                if ((prod.cursoGratuito && prod.cursoGratuito.trim() !== "") || pName.includes("gratis") || pName.includes("gratuito") || offerNoteLower.includes("gratis") || offerNoteLower.includes("gratuito")) {
                     freeProduct = prod;
                 }
             });
@@ -500,7 +461,7 @@ let producto = {
             grid.appendChild(bannerDiv);
         }
 
-        // 3. Renderizar el resto de las carátulas aplicando un diccionario de respaldo directo por nombre de categoría
+        // 3. Renderizar el resto de las carátulas
         allData.categories.forEach(cat => {
             const rawCatName = (cat.Category || cat.name || "").trim();
             const catNameLower = rawCatName.toLowerCase();
@@ -526,17 +487,13 @@ let producto = {
             const card = document.createElement("div");
             card.className = "card";
 
-            // --- AQUÍ ESTÁ EL CAMBIO CLAVE DE UX ---
             if (rawCatName.includes("Packs & Programas Integrales")) {
-                // Si es la categoría de Packs, va directo a tu Landing optimizada con cuotas y precios de frente
                 card.onclick = () => {
                     window.location.href = "https://hugo85ar.github.io/LandingPacks/";
                 };
             } else {
-                // Para el resto de las categorías, mantiene el comportamiento normal
                 card.onclick = () => renderCategoryView(cat);
             }
-            // ---------------------------------------
 
             card.innerHTML = `
                 <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='https://via.placeholder.com/600x400?text=Sin+Imagen'">
@@ -547,10 +504,9 @@ let producto = {
             `;
             grid.appendChild(card);
         });
-   }
-    
+    }
 
-  function openModal(product) {
+    function openModal(product) {
         const modal = document.getElementById("modal");
         const modalImg = document.getElementById("modal-img");
         modalImg.src = product.image || product.imageUrl;
@@ -611,7 +567,12 @@ let producto = {
         document.body.style.overflow = 'hidden';
     }
 
-    
+    function closeModal(event) {
+        const modal = document.getElementById("modal");
+        modal.classList.remove("active");
+        document.body.style.overflow = 'auto';
+    }
+
     function renderCategoryView(category) {
         document.getElementById("hero").style.display = "none";
         const catHeader = document.getElementById("category-header");
@@ -624,7 +585,6 @@ let producto = {
         const grid = document.getElementById("grid-container");
         grid.innerHTML = "";
         
-        // ORDENAMIENTO: Ordena los productos de menor a mayor (Pack 1, Pack 2, Pack 3...)
         if (category.products) {
             category.products.sort((a, b) => {
                 return (a.name || "").localeCompare(b.name || "", undefined, { numeric: true });
@@ -632,9 +592,17 @@ let producto = {
         }
 
         category.products.forEach(prod => {
-            const card = createCard(prod.name, "", prod.image, () => {
-                openModal(prod);
-            }, prod.isPromotional);
+            const card = document.createElement("div");
+            card.className = "card";
+            card.onclick = () => openModal(prod);
+            
+            card.innerHTML = `
+                <img src="${prod.image || prod.imageUrl}" alt="${prod.name}" onerror="this.src='https://via.placeholder.com/600x400?text=Sin+Imagen'">
+                <div class="card-content">
+                    <div class="card-title">${prod.name}</div>
+                    <div class="card-subtitle">${prod.detail || ''}</div>
+                </div>
+            `;
             grid.appendChild(card);
         });
         
@@ -663,7 +631,6 @@ let producto = {
             });
         }
 
-        // Textos dinámicos
         if (modo === 'clientes') {
             tituloHero.innerText = "🚀 ¡Lleva tu Negocio al Siguiente Nivel con el Pack Total!";
             descHero.innerText = "Ya diste el primer paso. Domina los tres pilares definitivos: Investigación de Mercado Inteligente, Landing Pages que convierten y Automatizaciones.";
@@ -674,14 +641,12 @@ let producto = {
             heroBtn.textContent = "¡Quiero el Pack Completo!";
         }
         
-        // CORRECCIÓN: Respetamos la imagen de fondo original de la configuración global (o un respaldo limpio)
         const hero = document.getElementById("hero");
         const bgImage = allData.config?.heroBackgroundImage;
         if (bgImage) {
             hero.style.backgroundImage = `url('${bgImage}')`;
         }
         
-        // Acción del botón: abre perfectamente el modal con el enlace de pago
         heroBtn.onclick = () => {
             if (targetProd) {
                 openModal(targetProd);
@@ -699,10 +664,6 @@ let producto = {
             }
         };
     }
-
-    
-    
   </script>
 </body>
 </html>
-
