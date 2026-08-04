@@ -470,22 +470,24 @@ fbq('track', 'PageView');
                     });
                 });
 
-                const bannerDiv = document.createElement("div");
-                bannerDiv.className = "course-banner-wrapper";
-                
-                // Determinamos el link del curso gratuito (puede venir en buyUrl, cursoGratuito o en el detalle)
-                const freeUrl = freeProduct?.buyUrl || freeProduct?.cursoGratuito || "https://hugo85ar.github.io/formulario-curso-sheets/";
+             const bannerDiv = document.createElement("div");
+bannerDiv.className = "course-banner-wrapper";
+bannerDiv.innerHTML = `
+    <img class="course-banner-img" src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
+    <div class="course-banner-text">
+        <h2 class="course-banner-title">${displayTitle}</h2>
+        <p class="course-banner-desc">${displaySubtitle}</p>
+        <button class="hero-btn banner-action-btn">${displayCTA}</button>
+    </div>
+`;
 
-                bannerDiv.innerHTML = `
-                    <img class="course-banner-img" src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
-                    <div class="course-banner-text">
-                        <h2 class="course-banner-title">${displayTitle}</h2>
-                        <p class="course-banner-desc">${displaySubtitle}</p>
-                        <a class="hero-btn" href="${freeUrl}" target="_blank" style="text-decoration: none; display: inline-block; text-align: center;">${displayCTA}</a>
-                    </div>
-                `;
-                grid.appendChild(bannerDiv);
-            }
+// Asignar el evento mediante JS evitando problemas de comillas en el JSON
+const actionBtn = bannerDiv.querySelector(".banner-action-btn");
+actionBtn.onclick = () => {
+    openModal(freeProduct || {name: displayTitle, detail: displaySubtitle, image: displayImg});
+};
+
+grid.appendChild(bannerDiv);
     }
 
     function openModal(product) {
