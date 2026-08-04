@@ -48,7 +48,6 @@ fbq('track', 'PageView');
 </noscript>
 <!-- FIN META PIXEL -->
   
-  
   <style>
     :root {
       --bg-color: #141414;
@@ -388,7 +387,6 @@ fbq('track', 'PageView');
     </div>
   </div>
 
-
   <a id="whatsapp-btn" class="whatsapp-float" target="_blank">
     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
       <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.8-.384-1.456-.752-.64-.368-1.072-.816-1.312-1.168-.24-.352-.025-.544.128-.704.131-.131.296-.336.448-.504.152-.168.203-.288.304-.496.101-.208.05-.39-.025-.546-.075-.156-.665-1.6-.913-2.192-.24-.58-.48-.5-.656-.51-.17-.01-.365-.01-.56-.01-.192 0-.504.072-.768.352-.264.28-1.008.984-1.008 2.4 0 1.416 1.032 2.784 1.176 2.976.144.192 2.032 3.104 4.928 4.352.688.296 1.224.472 1.64.6.688.224 1.312.192 1.808.116.552-.084 1.704-.696 1.944-1.368.24-.672.24-1.248.168-1.368-.072-.12-.264-.192-.552-.336z"/>
@@ -459,7 +457,7 @@ fbq('track', 'PageView');
             // Identificamos si es el bloque del Curso Gratuito para pintarlo como Banner destacado
             const isFree = catNameLower.includes("gratis") || catNameLower.includes("gratuito");
 
-          if (isFree) {
+            if (isFree) {
                 let freeProduct = null;
                 allData.categories?.forEach(cat => {
                     cat.products?.forEach(prod => {
@@ -470,25 +468,49 @@ fbq('track', 'PageView');
                     });
                 });
 
-             const bannerDiv = document.createElement("div");
-bannerDiv.className = "course-banner-wrapper";
-bannerDiv.innerHTML = `
-    <img class="course-banner-img" src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
-    <div class="course-banner-text">
-        <h2 class="course-banner-title">${displayTitle}</h2>
-        <p class="course-banner-desc">${displaySubtitle}</p>
-        <button class="hero-btn banner-action-btn">${displayCTA}</button>
-    </div>
-`;
+                const bannerDiv = document.createElement("div");
+                bannerDiv.className = "course-banner-wrapper";
+                
+                const productData = JSON.stringify(freeProduct || {name: displayTitle, detail: displaySubtitle, image: displayImg})
+                    .replace(/"/g, '&quot;');
 
-// Asignar el evento mediante JS evitando problemas de comillas en el JSON
-const actionBtn = bannerDiv.querySelector(".banner-action-btn");
-actionBtn.onclick = () => {
-    openModal(freeProduct || {name: displayTitle, detail: displaySubtitle, image: displayImg});
-};
-
-grid.appendChild(bannerDiv);
+                bannerDiv.innerHTML = `
+                    <img class="course-banner-img" src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
+                    <div class="course-banner-text">
+                        <h2 class="course-banner-title">${displayTitle}</h2>
+                        <p class="course-banner-desc">${displaySubtitle}</p>
+                        <button class="hero-btn" data-product="${productData}" onclick="handleBannerClick(this)">${displayCTA}</button>
+                    </div>
+                `;
+                grid.appendChild(bannerDiv);
+            } else {
+                // Tarjetas normales de categorías (por ejemplo, para el catálogo por carpetas/listas)
+                const card = document.createElement("div");
+                card.className = "card";
+                card.onclick = () => {
+                    const matchedCat = allData.categories?.find(c => (c.name || "").trim().toLowerCase() === catNameLower);
+                    if (matchedCat) {
+                        renderCategoryView(matchedCat);
+                    }
+                };
+                card.innerHTML = `
+                    <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
+                    <div class="card-overlay">
+                        <div class="card-title">${displayTitle}</div>
+                        <div class="card-subtitle">${displaySubtitle}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            }
+        }); // 👈 CORRECCIÓN: Faltaba cerrar esta llave del bucle forEach de listasConfig
     }
+
+    // Función global para manejar de manera segura el clic en el banner gratuito
+    window.handleBannerClick = function(button) {
+        const rawData = button.getAttribute('data-product');
+        const product = JSON.parse(rawData);
+        openModal(product);
+    };
 
     function openModal(product) {
         const modal = document.getElementById("modal");
