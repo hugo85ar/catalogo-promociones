@@ -10,41 +10,28 @@
 !function(f,b,e,v,n,t,s)
 {
 if(f.fbq)return;
-
 n=f.fbq=function(){
 n.callMethod ?
 n.callMethod.apply(n,arguments) :
 n.queue.push(arguments)
 };
-
 if(!f._fbq)f._fbq=n;
-
 n.push=n;
 n.loaded=!0;
 n.version='2.0';
 n.queue=[];
-
 t=b.createElement(e);
 t.async=!0;
 t.src=v;
-
 s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s);
-
 }(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-
 fbq('init', '2189151328193841');
 fbq('track', 'PageView');
 </script>
-
 <noscript>
-<img
-  height="1"
-  width="1"
-  style="display:none"
-  src="https://www.facebook.com/tr?id=2189151328193841&ev=PageView&noscript=1"
-/>
+<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2189151328193841&ev=PageView&noscript=1"/>
 </noscript>
 <!-- FIN META PIXEL -->
   
@@ -77,10 +64,7 @@ fbq('track', 'PageView');
     .hero::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background: linear-gradient(to top, var(--bg-color), transparent 50%);
     }
     .hero-content {
@@ -112,9 +96,8 @@ fbq('track', 'PageView');
       border: none;
       transition: opacity 0.2s;
     }
-    .hero-btn:hover {
-      opacity: 0.8;
-    }
+    .hero-btn:hover { opacity: 0.8; }
+    
     /* Navigation Bar & Category Header */
     .nav-bar {
       padding: 10px 4%;
@@ -134,9 +117,7 @@ fbq('track', 'PageView');
       align-items: center;
       gap: 5px;
     }
-    .back-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
+    .back-btn:hover { background: rgba(255, 255, 255, 0.1); }
     .category-header {
       padding: 10px 4%;
       display: none;
@@ -145,28 +126,18 @@ fbq('track', 'PageView');
       background-color: var(--bg-color);
       border-bottom: 1px solid #333;
     }
-    .category-title {
-      font-size: 1.8rem;
-      font-weight: bold;
-      margin: 0;
-    }
-    .category-subtitle {
-      font-size: 1rem;
-      color: #aaa;
-      margin-top: 5px;
-      max-width: 700px;
-    }
+    .category-title { font-size: 1.8rem; font-weight: bold; margin: 0; }
+    .category-subtitle { font-size: 1rem; color: #aaa; margin-top: 5px; max-width: 700px; }
 
-    /* Grid Layout y Banner Especial */
-    .main-container {
-      padding: 0 4%;
-    }
+    /* Main Container & Grid */
+    .main-container { padding: 0 4%; }
     .grid-container {
       display: grid;
       grid-template-columns: 1fr;
       gap: 20px;
     }
-    /* Card Styles (para categorías) */
+    
+    /* Card Styles */
     .card {
       background-color: #1f1f1f;
       border-radius: 8px;
@@ -176,52 +147,22 @@ fbq('track', 'PageView');
       position: relative;
       border: 1px solid #333;
     }
-    .promo-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: var(--accent-color);
-      color: white;
-      padding: 5px 10px;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      font-weight: bold;
-      z-index: 5;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-    }
     .card:hover {
       transform: translateY(-6px);
       box-shadow: 0 10px 20px rgba(0,0,0,0.5);
       border-color: #555;
     }
-    .card-img {
-      width: 100%;
-      height: 80%;
-      object-fit: contain;
-      display: block;
-      margin-top: 10px;
-    }
-
     .card img {
       width: 100%;
       height: auto;
       display: block;
       transition: transform 0.4s ease;
     }
-
-    .card:hover img {
-      transform: scale(1.03);
-    }
-
-    .card-content {
-      padding: 20px;
-    }
-    
+    .card:hover img { transform: scale(1.03); }
+    .card-content { padding: 20px; }
     .card-overlay {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
       padding: 15px;
       display: flex;
@@ -230,21 +171,11 @@ fbq('track', 'PageView');
       height: 40%;
       pointer-events: none;
     }
-   .card-title {
-      font-size: 1.25rem;
-      font-weight: bold;
-      color: white;
-      margin-bottom: 8px;
-    }
-    
-   .card-subtitle {
-      font-size: 0.95rem;
-      color: #aaa;
-      line-height: 1.4;
-    }
+    .card-title { font-size: 1.25rem; font-weight: bold; color: white; margin-bottom: 8px; }
+    .card-subtitle { font-size: 0.95rem; color: #aaa; line-height: 1.4; }
 
-    /* ESTILOS NUEVOS: Banner Especial para el Curso Gratuito */
-   .course-banner-wrapper {
+    /* Course Banner Wrapper */
+    .course-banner-wrapper {
       grid-column: 1 / -1; 
       background-color: #2f2f2f;
       border-radius: 8px;
@@ -265,7 +196,7 @@ fbq('track', 'PageView');
         padding: 40px;
       }
     }
-  .course-banner-img {
+    .course-banner-img {
       max-width: 280px;
       height: auto;
       border-radius: 8px;
@@ -279,10 +210,7 @@ fbq('track', 'PageView');
         max-width: 350px;
       }
     }
-
-   .course-banner-text {
-      flex: 1;
-    }
+    .course-banner-text { flex: 1; }
     .course-banner-title {
       font-size: 1.8rem;
       font-weight: bold;
@@ -290,12 +218,7 @@ fbq('track', 'PageView');
       color: white;
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
-    .course-banner-desc {
-      font-size: 1.1rem;
-      color: #ddd;
-      margin-bottom: 25px;
-      line-height: 1.5;
-    }
+    .course-banner-desc { font-size: 1.1rem; color: #ddd; margin-bottom: 25px; line-height: 1.5; }
 
     /* Modal */
     .modal-overlay {
@@ -317,14 +240,16 @@ fbq('track', 'PageView');
       font-size: 20px; z-index: 10;
     }
     .modal-image { width: 100%; height: 300px; object-fit: contain; background-color: #000; }
-    .modal-details { padding: 30px; text-align: left; overflow-y: auto; }
+    .modal-details { padding: 30px; text-align: left; overflow-y: auto; width: 100%; }
     .modal-title { font-size: 2rem; margin-bottom: 10px; }
     .modal-desc { color: #aaa; margin-bottom: 20px; line-height: 1.5; }
+    .modal-actions { display: flex; flex-direction: column; gap: 10px; }
     .btn-primary {
-      background-color: white; color: black; padding: 10px 30px;
+      background-color: white; color: black; padding: 12px 30px;
       border-radius: 4px; text-decoration: none; font-weight: bold;
-      display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
     }
+    
     /* WhatsApp Float */
     .whatsapp-float {
       position: fixed; bottom: 20px; right: 20px;
@@ -333,6 +258,7 @@ fbq('track', 'PageView');
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); z-index: 900;
       display: flex; align-items: center; gap: 8px;
     }
+    
     /* Desktop Grid */
     @media (min-width: 768px) {
       .grid-container { grid-template-columns: repeat(3, 1fr); }
@@ -352,6 +278,7 @@ fbq('track', 'PageView');
       <a id="hero-btn" href="#" class="hero-btn"></a>
     </div>
   </div>
+
   <!-- Navigation Bar & Category Header -->
   <div id="nav-bar" class="nav-bar" style="display: none;">
     <button class="back-btn" onclick="renderHome()">← Volver</button>
@@ -367,6 +294,7 @@ fbq('track', 'PageView');
       <!-- Items will be injected here -->
     </div>
   </div>
+
   <!-- Modal -->
   <div id="modal" class="modal-overlay" onclick="closeModal(event)">
     <div class="modal-content">
@@ -375,7 +303,7 @@ fbq('track', 'PageView');
       <div class="modal-details">
         <h2 id="modal-title" class="modal-title"></h2>
         <p id="modal-desc" class="modal-desc"></p>
-        <p id="modal-offer" style="color: #46d369; font-weight: bold; margin-bottom: 15px;"></p>
+        <p id="modal-offer" style="color: #46d369; font-weight: bold; margin-bottom: 15px; display:none;"></p>
        
         <div class="modal-actions">
           <a id="modal-buy-contado" href="#" target="_blank" class="btn-primary" style="display:none;"></a>
@@ -397,7 +325,6 @@ fbq('track', 'PageView');
   <script>
     let allData = {};
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxTGQQZWDLXcfMtMbOH9c98PfH5cQgu5lIzK6jw9vBP-9NLR_RlmX28fDSpd92UZbZU/exec"; 
-
     const FALLBACK_IMG = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23222222'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23666666' font-family='Roboto, sans-serif' font-size='20'%3ESin Imagen%3C/text%3E%3C/svg%3E";
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -441,7 +368,6 @@ fbq('track', 'PageView');
         const grid = document.getElementById("grid-container");
         grid.innerHTML = "";
         
-        // Obtenemos la configuración de la hoja Listas
         const listasConfig = allData.listas || [];
         if (listasConfig.length === 0) return;
 
@@ -454,7 +380,6 @@ fbq('track', 'PageView');
             const displayImg = item.ImageUrl || item.image || FALLBACK_IMG;
             const displayCTA = item.CTA || item.cta || "Ver más";
 
-            // Identificamos si es el bloque del Curso Gratuito para pintarlo como Banner destacado
             const isFree = catNameLower.includes("gratis") || catNameLower.includes("gratuito");
 
             if (isFree) {
@@ -471,7 +396,7 @@ fbq('track', 'PageView');
                 const bannerDiv = document.createElement("div");
                 bannerDiv.className = "course-banner-wrapper";
                 
-                const productData = JSON.stringify(freeProduct || {name: displayTitle, detail: displaySubtitle, image: displayImg})
+                const productData = JSON.stringify(freeProduct || {name: displayTitle, detail: displaySubtitle, image: displayImg, cursoGratuito: freeProduct?.cursoGratuito || "#"})
                     .replace(/"/g, '&quot;');
 
                 bannerDiv.innerHTML = `
@@ -484,13 +409,19 @@ fbq('track', 'PageView');
                 `;
                 grid.appendChild(bannerDiv);
             } else {
-                // Tarjetas normales de categorías (por ejemplo, para el catálogo por carpetas/listas)
+                // Tarjetas inferiores: búsqueda flexible y robusta para evitar que fallen los clics
                 const card = document.createElement("div");
                 card.className = "card";
                 card.onclick = () => {
-                    const matchedCat = allData.categories?.find(c => (c.name || "").trim().toLowerCase() === catNameLower);
+                    // Busca coincidencia exacta o parcial con los nombres de categorías del JSON
+                    const matchedCat = allData.categories?.find(c => {
+                        const cName = (c.name || "").trim().toLowerCase();
+                        return cName === catNameLower || cName.includes(catNameLower) || catNameLower.includes(cName);
+                    });
                     if (matchedCat) {
                         renderCategoryView(matchedCat);
+                    } else {
+                        console.warn("No se encontró categoría para:", rawCatName);
                     }
                 };
                 card.innerHTML = `
@@ -502,10 +433,9 @@ fbq('track', 'PageView');
                 `;
                 grid.appendChild(card);
             }
-        }); // 👈 CORRECCIÓN: Faltaba cerrar esta llave del bucle forEach de listasConfig
+        });
     }
 
-    // Función global para manejar de manera segura el clic en el banner gratuito
     window.handleBannerClick = function(button) {
         const rawData = button.getAttribute('data-product');
         const product = JSON.parse(rawData);
@@ -535,8 +465,10 @@ fbq('track', 'PageView');
         const urlDestino = (urlContado || "").toLowerCase();
         const isWhatsApp = urlDestino.includes("whatsapp") || urlDestino.includes("wa.me");
 
-        if (product.cursoGratuito && product.cursoGratuito.trim() !== "") {
-            btnGen.href = product.cursoGratuito;
+        // Corrección de renderizado para cursos gratuitos o enlaces generales en modal
+        const freeUrl = product.cursoGratuito || product.cursoGratuitoUrl;
+        if (freeUrl && freeUrl.trim() !== "") {
+            btnGen.href = freeUrl;
             btnGen.innerHTML = '<span>🔗</span> ' + (product.offerNote || 'Acceder al Curso Gratuito');
             btnGen.style.display = "inline-flex";
         } else if (isWhatsApp) {
@@ -562,7 +494,7 @@ fbq('track', 'PageView');
         }
         
         const offerEl = document.getElementById("modal-offer");
-        if (product.offerNote && (!product.cursoGratuito || product.cursoGratuito.trim() === "")) {
+        if (product.offerNote && (!freeUrl || freeUrl.trim() === "")) {
             offerEl.textContent = product.offerNote;
             offerEl.style.display = "block";
         } else {
@@ -624,16 +556,21 @@ fbq('track', 'PageView');
       
       let targetProd = null;
 
-      // Buscamos explícitamente el producto del Pack para asignarlo al botón del Hero
+      // Búsqueda estricta del Pack Principal (Transformación Total o Pack 3)
       if (allData.categories) {
           allData.categories.forEach(cat => {
               cat.products?.forEach(prod => {
                   const pName = (prod.name || "").toLowerCase();
-                  if (pName.includes("transformación total") || pName.includes("pack")) {
+                  if (pName.includes("transformación total") || pName.includes("pack 3") || pName.includes("pack total")) {
                       targetProd = prod;
                   }
               });
           });
+      }
+
+      // Si no encuentra uno específico por nombre, toma el primero que tenga cuotas o el primero disponible
+      if (!targetProd && allData.categories?.[0]?.products?.[0]) {
+          targetProd = allData.categories[0].products[0];
       }
 
       if (modo === 'clientes') {
@@ -652,12 +589,10 @@ fbq('track', 'PageView');
           hero.style.backgroundImage = `url('${bgImage}')`;
       }
       
-      // Vinculamos el botón para que abra el modal del producto encontrado
       heroBtn.onclick = () => {
           if (targetProd) {
               openModal(targetProd);
           } else {
-              // Fallback por si acaso: redirige a la landing de packs
               window.location.href = "https://hugo85ar.github.io/LandingPacks/";
           }
       };
