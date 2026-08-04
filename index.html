@@ -344,6 +344,24 @@ fbq('track', 'PageView');
   </style>
 </head>
 <body>
+
+  // Ejemplo de cómo mapearías la fila en tu Apps Script:
+let producto = {
+  id: row[headers.indexOf('id')],
+  name: row[headers.indexOf('name')],
+  detail: row[headers.indexOf('detail')],
+  imageUrl: row[headers.indexOf('imageUrl')],
+  cursoGratuito: row[headers.indexOf('Curso Gratuito')], // Mapeo exacto de tu cabecera
+  buyUrlContado: row[headers.indexOf('buyUrlContado')],
+  buyUrl3Cuotas: row[headers.indexOf('buyUrl3Cuotas')],
+  buyUrl6Cuotas: row[headers.indexOf('buyUrl6Cuotas')],
+  offerNote: row[headers.indexOf('offerNote')],
+  order: row[headers.indexOf('order')],
+  category: row[headers.indexOf('category')],
+  imgCategory: row[headers.indexOf('imgCategory')],
+  promocional: row[headers.indexOf('Promocional?')]
+};
+  
   <!-- Hero Section -->
   <div id="hero" class="hero" style="display: none;">
     <div class="hero-content">
@@ -532,37 +550,57 @@ fbq('track', 'PageView');
    }
     
 
-   function openModal(product) {
+  function openModal(product) {
         const modal = document.getElementById("modal");
         const modalImg = document.getElementById("modal-img");
-        modalImg.src = product.image;
+        modalImg.src = product.image || product.imageUrl;
         modalImg.onerror = () => { modalImg.src = 'https://via.placeholder.com/600x400?text=Sin+Imagen'; };
         
         document.getElementById("modal-title").textContent = product.name;
         document.getElementById("modal-desc").textContent = product.detail;
         
-        const buyButton = document.getElementById("modal-buy");
-        buyButton.href = product.buyUrl;
+        const btnContado = document.getElementById("modal-buy-contado");
+        const btn3Cuotas = document.getElementById("modal-buy-3cuotas");
+        const btn6Cuotas = document.getElementById("modal-buy-6cuotas");
+        const btnGen = document.getElementById("modal-buy-gen");
+
+        // Ocultar todos por defecto
+        btnContado.style.display = "none";
+        btn3Cuotas.style.display = "none";
+        btn6Cuotas.style.display = "none";
+        btnGen.style.display = "none";
         
-        // Detección robusta de gratuidad
-        const pName = (product.name || "").toLowerCase();
-        const offerNoteLower = (product.offerNote || "").toLowerCase();
-        const isFree = pName.includes("gratis") || pName.includes("gratuito") || offerNoteLower.includes("gratis") || offerNoteLower.includes("gratuito");
-        
-        // Detección ampliada de WhatsApp (cubre api.whatsapp.com, wa.me, etc.)
-        const urlDestino = (product.buyUrl || "").toLowerCase();
+        const urlContado = product.buyUrlContado || product.buyUrl || product.Contado;
+        const urlDestino = (urlContado || "").toLowerCase();
         const isWhatsApp = urlDestino.includes("whatsapp") || urlDestino.includes("wa.me");
 
-        if (isFree) {
-            buyButton.innerHTML = '<span>🔗</span> ' + (product.offerNote || 'Acceder Gratis');
+        // Si la columna "Curso Gratuito" tiene contenido, priorizamos ese link de acceso libre
+        if (product.cursoGratuito && product.cursoGratuito.trim() !== "") {
+            btnGen.href = product.cursoGratuito;
+            btnGen.innerHTML = '<span>🔗</span> ' + (product.offerNote || 'Acceder al Curso Gratuito');
+            btnGen.style.display = "inline-flex";
         } else if (isWhatsApp) {
-            buyButton.innerHTML = '<span>💬</span> Consultar por WhatsApp';
+            btnGen.href = urlContado;
+            btnGen.innerHTML = '<span>💬</span> Consultar por WhatsApp';
+            btnGen.style.display = "inline-flex";
         } else {
-            buyButton.innerHTML = '<span>🛒</span> Comprar';
+            // Productos de pago tradicionales
+            if (urlContado) {
+                btnContado.href = urlContado;
+                btnContado.style.display = "inline-flex";
+            }
+            if (product.buyUrl3Cuotas) {
+                btn3Cuotas.href = product.buyUrl3Cuotas;
+                btn3Cuotas.style.display = "inline-flex";
+            }
+            if (product.buyUrl6Cuotas) {
+                btn6Cuotas.href = product.buyUrl6Cuotas;
+                btn6Cuotas.style.display = "inline-flex";
+            }
         }
         
         const offerEl = document.getElementById("modal-offer");
-        if (product.offerNote && !isFree) {
+        if (product.offerNote && (!product.cursoGratuito || product.cursoGratuito.trim() === "")) {
             offerEl.textContent = product.offerNote;
             offerEl.style.display = "block";
         } else {
@@ -572,6 +610,7 @@ fbq('track', 'PageView');
         modal.classList.add("active");
         document.body.style.overflow = 'hidden';
     }
+
     
     function renderCategoryView(category) {
         document.getElementById("hero").style.display = "none";
