@@ -539,8 +539,7 @@
     WhatsApp
   </a>
 
-
-  <script>
+<script>
 
     let allData = {};
 
@@ -699,10 +698,6 @@
           item.cta ||
           "Ver más";
 
-        /* NUEVO:
-           Texto de botón proveniente de Listas columna F
-        */
-
         const buttonText =
           item.BotonTexto ||
           item.botonTexto ||
@@ -833,11 +828,6 @@
 
             if (matchedCat) {
 
-              /*
-               * Guardamos el texto de botón de Listas
-               * para utilizarlo en los productos.
-               */
-
               matchedCat.buttonText =
                 buttonText;
 
@@ -898,224 +888,127 @@
       const product =
         JSON.parse(rawData);
 
-      openModal(product);
+      window.openModal(product);
 
     };
 
 
     /* ==========================================================
-       MODAL
+       MODAL (Expuestos globalmente a window)
        ========================================================== */
 
-  function openModal(product) {
+    window.openModal = function(product) {
+
+      const modal = document.getElementById("modal");
+      const modalImg = document.getElementById("modal-img");
+
+      modalImg.src =
+        product.image ||
+        product.imageUrl ||
+        FALLBACK_IMG;
+
+      modalImg.onerror = () => {
+        modalImg.src = FALLBACK_IMG;
+      };
+
+      document.getElementById("modal-title").textContent =
+        product.name || "Detalle";
+
+      document.getElementById("modal-desc").textContent =
+        product.detail ||
+        product.description ||
+        "";
+
+      const btnContado =
+        document.getElementById("modal-buy-contado");
+
+      const btn3Cuotas =
+        document.getElementById("modal-buy-3cuotas");
+
+      const btn6Cuotas =
+        document.getElementById("modal-buy-6cuotas");
+
+      const btnGen =
+        document.getElementById("modal-buy-gen");
+
+      const offerEl =
+        document.getElementById("modal-offer");
+
+      btnContado.style.display = "none";
+      btn3Cuotas.style.display = "none";
+      btn6Cuotas.style.display = "none";
+      btnGen.style.display = "none";
+
+      offerEl.style.display = "none";
+      offerEl.textContent = "";
+
+      const buttonText =
+        product.buttonText ||
+        product.BotonTexto ||
+        product.botonTexto ||
+        "Más información";
+
+      const offerNote =
+        (product.offerNote || "").trim();
+
+      const offerNoteIsUrl =
+        /^https?:\/\/\S+$/i.test(offerNote);
+
+      let mainUrl =
+        product.buyUrlContado ||
+        product.buyUrl ||
+        product.url ||
+        product.link ||
+        "";
+
+      if (!mainUrl && offerNoteIsUrl) {
+        mainUrl = offerNote;
+      }
+
+      if (mainUrl) {
+        btnContado.href = mainUrl;
+        btnContado.textContent = buttonText;
+        btnContado.target = "_blank";
+        btnContado.rel = "noopener noreferrer";
+        btnContado.style.display = "inline-flex";
+      }
+
+      if (product.buyUrl3Cuotas) {
+        btn3Cuotas.href = product.buyUrl3Cuotas;
+        btn3Cuotas.textContent = "Pagar en 3 Cuotas";
+        btn3Cuotas.target = "_blank";
+        btn3Cuotas.rel = "noopener noreferrer";
+        btn3Cuotas.style.display = "inline-flex";
+      }
+
+      if (product.buyUrl6Cuotas) {
+        btn6Cuotas.href = product.buyUrl6Cuotas;
+        btn6Cuotas.textContent = "Pagar en 6 Cuotas";
+        btn6Cuotas.target = "_blank";
+        btn6Cuotas.rel = "noopener noreferrer";
+        btn6Cuotas.style.display = "inline-flex";
+      }
+
+      if (offerNote && !offerNoteIsUrl) {
+        offerEl.textContent = offerNote;
+        offerEl.style.display = "block";
+      }
+
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+
+    };
 
-  const modal = document.getElementById("modal");
-  const modalImg = document.getElementById("modal-img");
 
-  /* ======================================================
-     IMAGEN
-     ====================================================== */
+    window.closeModal = function(event) {
+      const modal = document.getElementById("modal");
+      if (event && event.target !== modal && !event.target.classList.contains('modal-close')) {
+        return;
+      }
+      modal.classList.remove("active");
+      document.body.style.overflow = "auto";
+    };
 
-  modalImg.src =
-    product.image ||
-    product.imageUrl ||
-    FALLBACK_IMG;
-
-  modalImg.onerror = () => {
-    modalImg.src = FALLBACK_IMG;
-  };
-
-
-  /* ======================================================
-     TÍTULO
-     ====================================================== */
-
-  document.getElementById("modal-title").textContent =
-    product.name || "Detalle";
-
-
-  /* ======================================================
-     DESCRIPCIÓN
-     ====================================================== */
-
-  document.getElementById("modal-desc").textContent =
-    product.detail ||
-    product.description ||
-    "";
-
-
-  /* ======================================================
-     ELEMENTOS
-     ====================================================== */
-
-  const btnContado =
-    document.getElementById("modal-buy-contado");
-
-  const btn3Cuotas =
-    document.getElementById("modal-buy-3cuotas");
-
-  const btn6Cuotas =
-    document.getElementById("modal-buy-6cuotas");
-
-  const btnGen =
-    document.getElementById("modal-buy-gen");
-
-  const offerEl =
-    document.getElementById("modal-offer");
-
-
-  /* ======================================================
-     OCULTAR TODO AL ABRIR
-     ====================================================== */
-
-  btnContado.style.display = "none";
-  btn3Cuotas.style.display = "none";
-  btn6Cuotas.style.display = "none";
-  btnGen.style.display = "none";
-
-  offerEl.style.display = "none";
-  offerEl.textContent = "";
-
-
-  /* ======================================================
-     TEXTO DEL BOTÓN
-     ====================================================== */
-
-  const buttonText =
-    product.buttonText ||
-    product.BotonTexto ||
-    product.botonTexto ||
-    product.buttonText ||
-    "Más información";
-
-
-  /* ======================================================
-     DETECTAR URL EN offerNote
-     
-     Esto soluciona el problema de la URL verde
-     que aparece en la captura.
-     ====================================================== */
-
-  const offerNote =
-    (product.offerNote || "").trim();
-
-  const offerNoteIsUrl =
-    /^https?:\/\/\S+$/i.test(offerNote);
-
-
-  /* ======================================================
-     URL PRINCIPAL
-     ====================================================== */
-
-  let mainUrl =
-    product.buyUrlContado ||
-    product.buyUrl ||
-    product.url ||
-    product.link ||
-    "";
-
-
-  /*
-   * SI offerNote contiene una URL y no existe
-   * otra URL principal, usamos esa URL.
-   */
-
-  if (!mainUrl && offerNoteIsUrl) {
-
-    mainUrl = offerNote;
-
-  }
-
-
-  /* ======================================================
-     BOTÓN PRINCIPAL
-     ====================================================== */
-
-  if (mainUrl) {
-
-    btnContado.href = mainUrl;
-
-    btnContado.textContent = buttonText;
-
-    btnContado.target = "_blank";
-    btnContado.rel = "noopener noreferrer";
-
-    btnContado.style.display = "inline-flex";
-
-  }
-
-
-  /* ======================================================
-     3 CUOTAS
-     ====================================================== */
-
-  if (product.buyUrl3Cuotas) {
-
-    btn3Cuotas.href =
-      product.buyUrl3Cuotas;
-
-    btn3Cuotas.textContent =
-      "Pagar en 3 Cuotas";
-
-    btn3Cuotas.target = "_blank";
-    btn3Cuotas.rel = "noopener noreferrer";
-
-    btn3Cuotas.style.display =
-      "inline-flex";
-
-  }
-
-
-  /* ======================================================
-     6 CUOTAS
-     ====================================================== */
-
-  if (product.buyUrl6Cuotas) {
-
-    btn6Cuotas.href =
-      product.buyUrl6Cuotas;
-
-    btn6Cuotas.textContent =
-      "Pagar en 6 Cuotas";
-
-    btn6Cuotas.target = "_blank";
-    btn6Cuotas.rel = "noopener noreferrer";
-
-    btn6Cuotas.style.display =
-      "inline-flex";
-
-  }
-
-
-  /* ======================================================
-     OFERTA / NOTA
-     
-     IMPORTANTE:
-     Si offerNote es una URL NO la mostramos.
-     Si es texto normal, sí la mostramos.
-     ====================================================== */
-
-  if (offerNote && !offerNoteIsUrl) {
-
-    offerEl.textContent =
-      offerNote;
-
-    offerEl.style.display =
-      "block";
-
-  }
-
-
-  /* ======================================================
-     MOSTRAR MODAL
-     ====================================================== */
-
-  modal.classList.add("active");
-
-  document.body.style.overflow = "hidden";
-
-}
-    
 
     /* ==========================================================
        VISTA DE CATEGORÍA
@@ -1126,59 +1019,40 @@
       document.getElementById("hero").style.display =
         "none";
 
-
       const catHeader =
         document.getElementById("category-header");
-
 
       document.getElementById("category-title").textContent =
         category.name;
 
-
       document.getElementById("category-subtitle").textContent =
         `Explora los recursos disponibles en esta sección.`;
-
 
       catHeader.style.display =
         "flex";
 
-
       document.getElementById("nav-bar").style.display =
         "flex";
-
 
       const grid =
         document.getElementById("grid-container");
 
-
       grid.innerHTML = "";
-
-
-      /*
-       * Obtenemos nuevamente el BotonTexto de Listas
-       * por seguridad.
-       */
 
       const categoryButtonText =
         category.buttonText ||
         getCategoryButtonText(category.name);
 
-
       if (category.products) {
-
         category.products.sort((a, b) => {
-
           return (a.name || "")
             .localeCompare(
               b.name || "",
               undefined,
               { numeric: true }
             );
-
         });
-
       }
-
 
       category.products?.forEach(prod => {
 
@@ -1188,21 +1062,13 @@
         card.className =
           "card";
 
-
-        /*
-         * Le agregamos al producto el texto
-         * de botón correspondiente a su categoría.
-         */
-
         const productWithButton = {
           ...prod,
           buttonText: categoryButtonText
         };
 
-
         card.onclick = () =>
-          openModal(productWithButton);
-
+          window.openModal(productWithButton);
 
         card.innerHTML = `
 
@@ -1226,11 +1092,9 @@
 
         `;
 
-
         grid.appendChild(card);
 
       });
-
 
       window.scrollTo(0, 0);
 
@@ -1249,7 +1113,6 @@
       const modo =
         urlParams.get('modo');
 
-
       const tituloHero =
         document.getElementById("hero-title");
 
@@ -1259,10 +1122,8 @@
       const heroBtn =
         document.getElementById("hero-btn");
 
-
       let targetProd =
         null;
-
 
       if (allData.categories) {
 
@@ -1273,15 +1134,12 @@
             const pName =
               (prod.name || "").toLowerCase();
 
-
             if (
               pName.includes("pack 3") ||
               pName.includes("transformación total") ||
               pName.includes("pack total")
             ) {
-
               targetProd = prod;
-
             }
 
           });
@@ -1290,86 +1148,64 @@
 
       }
 
-
       if (
         !targetProd &&
         allData.categories?.[0]?.products?.[0]
       ) {
-
         targetProd =
           allData.categories[0].products[0];
-
       }
-
 
       if (modo === 'clientes') {
 
         tituloHero.innerText =
           "🚀 ¡Lleva tu Negocio al Siguiente Nivel con el Pack Total!";
 
-
         descHero.innerText =
           "Ya diste el primer paso. Domina los tres pilares definitivos: Investigación de Mercado Inteligente, Landing Pages que convierten y Automatizaciones.";
 
-
         heroBtn.textContent =
           "¡Ver Pack Completo!";
-
 
       } else {
 
         tituloHero.innerText =
           "Pack Transformación Total: Todo lo que un Emprendedor Necesita";
 
-
         descHero.innerText =
           "Desbloquea los 3 pilares del éxito digital: Encuentra tu nicho, crea páginas que venden y automatiza tus procesos con IA y Apps Script.";
-
 
         heroBtn.textContent =
           "¡Quiero el Pack Completo!";
 
       }
 
-
       const hero =
         document.getElementById("hero");
-
 
       const bgImage =
         allData.config?.heroBackgroundImage;
 
-
       if (bgImage) {
-
         hero.style.backgroundImage =
           `url('${bgImage}')`;
-
       }
-
 
       heroBtn.onclick = () => {
 
         if (targetProd) {
-
-          /*
-           * El Hero corresponde a Packs.
-           * Le damos el texto de Listas correspondiente.
-           */
 
           const packButtonText =
             getCategoryButtonText(
               "Packs & Programas Integrales"
             );
 
-
           targetProd = {
             ...targetProd,
             buttonText: packButtonText
           };
 
-
-          openModal(targetProd);
+          window.openModal(targetProd);
 
         } else {
 
