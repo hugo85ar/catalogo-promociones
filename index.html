@@ -623,18 +623,16 @@
             }
           };
 
+          // AQUÍ ESTÁ EL CAMBIO: Si la imagen ya tiene el texto integrado, solo mostramos la imagen limpia sin el overlay estorbo.
           card.innerHTML = `
-            <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
-            <div class="card-overlay">
-              <div class="card-title">${displayTitle}</div>
-              <div class="card-subtitle">${displaySubtitle}</div>
-            </div>
+            <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'" style="width: 100%; display: block; border-radius: 8px;">
           `;
           grid.appendChild(card);
         }
       });
     }
 
+  
     function renderCategoryView(category) {
       document.getElementById("hero").style.display = "none";
       const catHeader = document.getElementById("category-header");
