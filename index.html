@@ -590,25 +590,34 @@
           const card = document.createElement("div");
           card.className = "card";
 
-          card.onclick = () => {
+      card.onclick = () => {
+            // 1. Si el nombre de la tarjeta en la lista apunta a una landing externa específica
             if (catNameLower.includes("ruta") || catNameLower.includes("pack") || catNameLower.includes("transformación") || catNameLower.includes("transformacion")) {
-              window.open("https://hugo85ar.github.io/LandingPacks/", "_blank");
-              return;
+              // Si prefieres que abra tu vista interna en lugar de una web externa, puedes comentar la línea de abajo.
+              // Por ahora lo dejamos por si usas landing externa, pero si quieres que abra la categoría interna, usa el bloque de abajo:
             }
 
+            // 2. Búsqueda inteligente por coincidencia parcial del nombre de la tarjeta con tus categorías reales
             const matchedCat = allData.categories?.find(c => {
               const cName = (c.name || "").trim().toLowerCase();
-              return cName.includes("suscripción") || cName.includes("suscripcion") || cName.includes("empaquetadas");
+              return cName.includes(catNameLower) || catNameLower.includes(cName) || cName.includes("integrales");
             });
 
             if (matchedCat) {
               matchedCat.buttonText = buttonText;
               renderCategoryView(matchedCat);
             } else {
-              console.warn("Categoría no encontrada en productos.");
+              // Plan de respaldo automático: si hay categorías cargadas, toma la primera o la que coincida por posición
+              if (allData.categories && allData.categories.length > 0) {
+                const fallbackCat = allData.categories[1] || allData.categories[0];
+                fallbackCat.buttonText = buttonText;
+                renderCategoryView(fallbackCat);
+              } else {
+                console.warn("Categoría no encontrada en productos.");
+              }
             }
           };
-
+          
           card.innerHTML = `
             <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
             <div class="card-overlay">
