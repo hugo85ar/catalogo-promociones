@@ -496,12 +496,33 @@
         .catch(err => console.error('Error al cargar datos:', err));
     });
 
-    function initApp(data) {
-      allData = data;
-      renderHeroSection();
-      renderHome();
-    }
+  
+function initApp(data) {
 
+  allData = data;
+
+  console.log("Datos recibidos:", allData);
+
+  document.body.style.backgroundColor =
+    allData.config?.backgroundColor || "#141414";
+
+  // Configurar WhatsApp
+  const whatsappBtn =
+    document.getElementById("whatsapp-btn");
+
+  if (whatsappBtn && allData.config?.whatsappPhone) {
+
+    whatsappBtn.href =
+      "https://wa.me/" +
+      allData.config.whatsappPhone;
+
+  }
+
+  renderHeroSection();
+
+  renderHome();
+
+}
 
 
   function renderHeroSection() {
@@ -597,6 +618,76 @@
 
   };
 
+}
+
+
+  function renderHome() {
+
+  // Mostrar Hero
+  document.getElementById("hero").style.display = "flex";
+
+  // Ocultar navegación
+  document.getElementById("nav-bar").style.display = "none";
+
+  // Ocultar encabezado de categoría
+  document.getElementById("category-header").style.display = "none";
+
+  // Limpiar productos
+  const grid =
+    document.getElementById("grid-container");
+
+  grid.innerHTML = "";
+
+  // Mostrar categorías
+  const categories =
+    allData.categories || [];
+
+  categories.forEach(category => {
+
+    if (!category.products ||
+        category.products.length === 0) {
+      return;
+    }
+
+    const imageUrl =
+      category.image ||
+      category.products[0]?.image ||
+      FALLBACK_IMG;
+
+    const card =
+      document.createElement("div");
+
+    card.className = "card";
+
+    card.innerHTML = `
+      <img
+        src="${imageUrl}"
+        alt="${category.name}"
+        onerror="this.src='${FALLBACK_IMG}'"
+      >
+
+      <div class="card-content">
+
+        <div class="card-title">
+          ${category.name}
+        </div>
+
+        <div class="card-subtitle">
+          ${category.products.length} productos
+        </div>
+
+      </div>
+    `;
+
+    card.addEventListener("click", () => {
+      renderCategoryView(category);
+    });
+
+    grid.appendChild(card);
+
+  });
+
+  window.scrollTo(0, 0);
 }
 
   
