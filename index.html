@@ -49,14 +49,14 @@
 
     /* Hero Section */
     .hero {
-      height: 50vh;
+      height: 55vh;
       position: relative;
       background-size: cover;
       background-position: center;
       display: flex;
       align-items: flex-end;
-      padding: 20px 4%;
-      margin-bottom: 10px;
+      padding: 30px 4%;
+      margin-bottom: 20px;
     }
 
     .hero::after {
@@ -66,33 +66,34 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(to top, var(--bg-color), rgba(20,20,20,0.3) 50%);
+      background: linear-gradient(to top, var(--bg-color), rgba(20,20,20,0.2) 60%);
     }
 
     .hero-content {
       position: relative;
       z-index: 2;
-      max-width: 600px;
+      max-width: 650px;
       text-align: left;
     }
 
     .hero-title {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       font-weight: bold;
       margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
     }
 
     .hero-desc {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       margin-bottom: 20px;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+      line-height: 1.4;
     }
 
     .hero-btn {
       background-color: white;
       color: black;
-      padding: 10px 25px;
+      padding: 12px 28px;
       border-radius: 4px;
       font-weight: bold;
       text-decoration: none;
@@ -103,7 +104,7 @@
     }
 
     .hero-btn:hover {
-      opacity: 0.8;
+      opacity: 0.85;
     }
    
     /* Navigation Bar & Category Header */
@@ -118,10 +119,10 @@
       background: transparent;
       color: white;
       border: 1px solid white;
-      padding: 5px 15px;
+      padding: 6px 18px;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       display: flex;
       align-items: center;
       gap: 5px;
@@ -132,30 +133,30 @@
     }
 
     .category-header {
-      padding: 10px 4%;
+      padding: 15px 4%;
       display: none;
       flex-direction: column;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       background-color: var(--bg-color);
       border-bottom: 1px solid #333;
     }
 
     .category-title {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: bold;
       margin: 0;
     }
 
     .category-subtitle {
-      font-size: 1rem;
+      font-size: 1.05rem;
       color: #aaa;
-      margin-top: 5px;
-      max-width: 700px;
+      margin-top: 8px;
+      max-width: 750px;
     }
 
     /* Main Container & Grid */
     .main-container {
-      padding: 0 4%;
+      padding: 0 4% 40px 4%;
     }
 
     .grid-container {
@@ -201,32 +202,30 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-      padding: 15px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0,0,0,0.6) 70%, transparent);
+      padding: 20px 15px 15px 15px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      height: 40%;
-      pointer-events: none;
     }
 
     .card-title {
       font-size: 1.25rem;
       font-weight: bold;
       color: white;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .card-subtitle {
-      font-size: 0.95rem;
-      color: #aaa;
-      line-height: 1.4;
+      font-size: 0.9rem;
+      color: #bbb;
+      line-height: 1.3;
     }
 
     /* Course Banner Wrapper */
     .course-banner-wrapper {
       grid-column: 1 / -1;
-      background-color: #2f2f2f;
+      background-color: #1f1f1f;
       border-radius: 8px;
       padding: 30px;
       display: flex;
@@ -234,8 +233,8 @@
       align-items: center;
       text-align: center;
       margin-bottom: 25px;
-      border: 1px solid #444;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      border: 1px solid #333;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
     }
 
     @media (min-width: 768px) {
@@ -272,12 +271,11 @@
       font-weight: bold;
       margin-bottom: 15px;
       color: white;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
     .course-banner-desc {
       font-size: 1.1rem;
-      color: #ddd;
+      color: #ccc;
       margin-bottom: 25px;
       line-height: 1.5;
     }
@@ -289,7 +287,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -307,20 +305,21 @@
     .modal-content {
       background: #181818;
       width: 90%;
-      max-width: 800px;
+      max-width: 850px;
       border-radius: 8px;
       overflow: hidden;
       position: relative;
       display: flex;
       flex-direction: column;
       max-height: 90vh;
+      border: 1px solid #333;
     }
 
     .modal-close {
       position: absolute;
       top: 15px;
       right: 15px;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.6);
       color: white;
       border: none;
       border-radius: 50%;
@@ -333,7 +332,7 @@
 
     .modal-image {
       width: 100%;
-      height: 300px;
+      height: 280px;
       object-fit: contain;
       background-color: #000;
     }
@@ -347,8 +346,9 @@
     }
 
     .modal-title {
-      font-size: 2rem;
+      font-size: 1.8rem;
       margin-bottom: 10px;
+      color: white;
     }
 
     .modal-desc {
@@ -360,7 +360,7 @@
     .modal-actions {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
    
     .btn-primary {
@@ -377,6 +377,7 @@
       cursor: pointer;
       transition: opacity 0.2s;
       border: none;
+      font-size: 1rem;
     }
 
     .btn-primary:hover {
@@ -394,7 +395,7 @@
       border-radius: 50px;
       text-decoration: none;
       font-weight: bold;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
       z-index: 900;
       display: flex;
       align-items: center;
@@ -426,11 +427,11 @@
 <body>
 
   <!-- Hero Section -->
-  <div id="hero" class="hero" style="display: none;">
+  <div id="hero" class="hero" style="display: flex;">
     <div class="hero-content">
-      <h1 id="hero-title" class="hero-title"></h1>
-      <p id="hero-desc" class="hero-desc"></p>
-      <a id="hero-btn" href="#" class="hero-btn"></a>
+      <h1 id="hero-title" class="hero-title">Bienvenido</h1>
+      <p id="hero-desc" class="hero-desc">Explora las herramientas y sistemas diseñados para escalar tu negocio.</p>
+      <button id="hero-btn" class="hero-btn">Ver cursos</button>
     </div>
   </div>
 
@@ -459,19 +460,17 @@
       <div class="modal-details">
         <h2 id="modal-title" class="modal-title"></h2>
         <p id="modal-desc" class="modal-desc"></p>
-        <p id="modal-offer" style="color: #46d369; font-weight: bold; margin-bottom: 15px; display:none;"></p>
         <div class="modal-actions">
           <a id="modal-buy-contado" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none;"></a>
           <a id="modal-buy-3cuotas" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none;">Pagar en 3 Cuotas</a>
           <a id="modal-buy-6cuotas" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none;">Pagar en 6 Cuotas</a>
-          <a id="modal-buy-gen" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none;"></a>
         </div>
       </div>
     </div>
   </div>
 
   <!-- WhatsApp -->
-  <a id="whatsapp-btn" class="whatsapp-float" target="_blank">
+  <a id="whatsapp-btn" class="whatsapp-float" target="_blank" href="https://wa.me/">
     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
       <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432-.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.8-.384-1.456-.752-.64-.368-1.072-.816-1.312-1.168-.24-.352-.025-.544.128-.704.131-.131.296-.336.448-.504.152-.168.203-.288.304-.496.101-.208.05-.39-.025-.546-.075-.156-.665-1.6-.913-2.192-.24-.58-.48-.5-.656-.51-.17-.01-.365-.01-.56-.01-.192 0-.504.072-.768.352-.264.28-1.008.984-1.008 2.4 0 1.416 1.032 2.784 1.176 2.976.144.192 2.032 3.104 4.928 4.352.688.296 1.224.472 1.64.6.688.224 1.312.192 1.808.116.552-.084 1.704-.696 1.944-1.368.24-.672.24-1.248.168-1.368-.072-.12-.264-.192-.552-.336z"/>
     </svg>
@@ -485,7 +484,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       if (!API_ENDPOINT || API_ENDPOINT.includes("TU_URL")) {
-        console.error("Error: API_ENDPOINT no está configurado correctamente.");
+        console.error("Error: API_ENDPOINT no está configurado.");
         return;
       }
       fetch(API_ENDPOINT)
@@ -496,35 +495,19 @@
 
     function initApp(data) {
       allData = data;
-
-      // Buscar configuración general en cualquiera de las posibles estructuras que devuelva el Sheet
-      const config = data.config || (Array.isArray(data.configuracion) ? data.configuracion[0] : {}) || {};
-      
-      const bgColor = config.backgroundColor || config.colorFondo || config.fondo;
-      if (bgColor) {
-        document.body.style.backgroundColor = bgColor;
-      }
-
-      const waUrl = config.whatsappUrl || config.whatsapp || config.wa;
-      if (waUrl) {
-        document.getElementById("whatsapp-btn").href = waUrl;
-      }
-
+      renderHeroSection();
       renderHome();
     }
 
     function renderHeroSection() {
-      // Buscar la configuración del hero por cualquier nombre de propiedad posible (incluyendo celda C2 o solapa hero/config)
-      const heroConfig = allData.hero || allData.config || (Array.isArray(allData.listas) ? allData.listas[0] : {}) || {};
+      const heroConfig = allData.hero || (Array.isArray(allData.configuracion) ? allData.configuracion[0] : {}) || {};
       
       document.getElementById("hero-title").textContent = heroConfig.titulo || heroConfig.title || "Bienvenido";
-      document.getElementById("hero-desc").textContent = heroConfig.subtitulo || heroConfig.subtitle || heroConfig.descripcion || "";
+      document.getElementById("hero-desc").textContent = heroConfig.subtitulo || heroConfig.subtitle || heroConfig.descripcion || "Explora las herramientas y sistemas diseñados para escalar tu negocio.";
       
-      // Capturar la imagen de fondo desde C2 u otras variantes
-      const bgImg = heroConfig.imageUrl || heroConfig.imagenFondo || heroConfig.image || heroConfig.fondo || heroConfig.C2;
-      if (bgImg) {
-        document.getElementById("hero").style.backgroundImage = `url('${bgImg}')`;
-      }
+      // Imagen de fondo fija/respaldo para asegurar que siempre cargue la cabecera visualmente
+      const bgImg = heroConfig.imageUrl || heroConfig.imagenFondo || heroConfig.image || heroConfig.fondo || "https://res.cloudinary.com/dlnrsadbc/image/upload/q_auto,f_auto,w_1200/v1785273907/caratula_suscripcion_mensual_espanol_vli4ly.png";
+      document.getElementById("hero").style.backgroundImage = `url('${bgImg}')`;
 
       const heroBtn = document.getElementById("hero-btn");
       heroBtn.textContent = heroConfig.ctaText || "Ver cursos";
@@ -536,7 +519,6 @@
     function renderHome() {
       document.getElementById("category-header").style.display = "none";
       document.getElementById("hero").style.display = "flex";
-      renderHeroSection();
       document.getElementById("nav-bar").style.display = "none";
 
       const grid = document.getElementById("grid-container");
@@ -554,7 +536,7 @@
         const displayCTA = item.CTA || item.cta || "Inscribirse";
         const buttonText = item.BotonTexto || item.botonTexto || item.buttonText || "Más información";
         
-        // Detección precisa de curso gratuito / pack 3 principal
+        // Detección del curso gratuito (Banner superior ancho)
         const isFree = catNameLower.includes("gratis") || catNameLower.includes("gratuito") || displayTitle.toLowerCase().includes("gratis");
 
         if (isFree) {
@@ -577,7 +559,6 @@
             image: displayImg
           };
 
-          // Forzar la URL de inscripción correcta del curso gratuito
           productPayload.buyUrlContado = item.buyUrlContado || item.url || item.link || "https://hugo85ar.github.io/formulario-curso-sheets/";
           productPayload.buttonText = displayCTA;
 
@@ -591,28 +572,29 @@
           `;
           grid.appendChild(bannerDiv);
         } else {
+          // Tarjetas inferiores (Carátulas)
           const card = document.createElement("div");
           card.className = "card";
 
           card.onclick = () => {
-            // 1) Si es la carátula de Landing Packs
-            if (catNameLower.includes("ruta") || catNameLower.includes("pack") || catNameLower.includes("transformación total") || catNameLower.includes("transformacion total")) {
+            // 1) Si es Landing Packs / Ruta del Emprendedor
+            if (catNameLower.includes("ruta") || catNameLower.includes("pack") || catNameLower.includes("transformación") || catNameLower.includes("transformacion")) {
               window.open("https://hugo85ar.github.io/LandingPacks/", "_blank");
               return;
             }
 
-            // 2) Si es la segunda carátula: Soluciones empaquetadas
+            // 2) Si es Soluciones empaquetadas u otra categoría de la hoja Productos
             const targetCategoryName = "Soluciones empaquetadas (Soluciones con Suscripción mensual)";
             const matchedCat = allData.categories?.find(c => {
               const cName = (c.name || "").trim().toLowerCase();
-              return cName === targetCategoryName.toLowerCase() || cName.includes("suscripción") || cName.includes("suscripcion");
+              return cName.includes("suscripción") || cName.includes("suscripcion") || cName.includes("empaquetadas");
             });
 
             if (matchedCat) {
               matchedCat.buttonText = buttonText;
               renderCategoryView(matchedCat);
             } else {
-              console.warn("No se encontró la categoría de soluciones empaquetadas");
+              console.warn("Categoría no encontrada en productos.");
             }
           };
 
@@ -632,7 +614,7 @@
       document.getElementById("hero").style.display = "none";
       const catHeader = document.getElementById("category-header");
       document.getElementById("category-title").textContent = category.name;
-      document.getElementById("category-subtitle").textContent = "Herramientas inteligentes y automatizaciones listas para usar en tu propio negocio.";
+      document.getElementById("category-subtitle").textContent = "Herramientas inteligentes y automatizaciones listas para usar en tu negocio.";
       catHeader.style.display = "flex";
       document.getElementById("nav-bar").style.display = "flex";
 
@@ -668,9 +650,6 @@
       window.scrollTo(0, 0);
     }
 
-    /* ==========================================================
-       CONTROL DE MODAL
-       ========================================================== */
     function openModal(product) {
       const modal = document.getElementById("modal");
       document.getElementById("modal-img").src = product.image || product.imageUrl || FALLBACK_IMG;
@@ -688,7 +667,6 @@
         btnContado.style.display = "none";
       }
 
-      // Ocultar cuotas si no aplican
       document.getElementById("modal-buy-3cuotas").style.display = product.buyUrl3Cuotas ? "inline-flex" : "none";
       if (product.buyUrl3Cuotas) document.getElementById("modal-buy-3cuotas").href = product.buyUrl3Cuotas;
 
