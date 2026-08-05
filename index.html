@@ -522,18 +522,33 @@
       const heroBtn = document.getElementById("hero-btn");
       heroBtn.textContent = heroConfig.ctaText || "Ver cursos";
       
-      heroBtn.onclick = () => {
-        const matchedCat = allData.categories?.find(c => {
-          const cName = (c.name || "").trim().toLowerCase();
-          return cName.includes("suscripción") || cName.includes("suscripcion") || cName.includes("empaquetadas");
-        });
-        if (matchedCat) {
-          renderCategoryView(matchedCat);
-        } else {
-          window.scrollTo({ top: window.innerHeight * 0.5, behavior: 'smooth' });
-        }
-      };
-    }
+     heroBtn.onclick = () => {
+
+  const featuredProduct = allData.featuredProduct;
+
+  if (featuredProduct) {
+
+    // Abrimos directamente el producto marcado
+    // como "Producto Estrella" en columna N
+
+    openModal({
+      ...featuredProduct,
+      buttonText: "Más información"
+    });
+
+  } else {
+
+    console.warn(
+      "No se encontró ningún Producto Estrella en la columna N."
+    );
+
+    alert(
+      "No hay ningún producto marcado como Producto Estrella."
+    );
+
+  }
+
+};
 
     function renderHome() {
       document.getElementById("category-header").style.display = "none";
