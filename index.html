@@ -824,6 +824,111 @@ function renderHome() {
 
 }
 
+  function renderCategoryView(category) {
+
+  // =====================================================
+  // OCULTAR HERO
+  // =====================================================
+
+  document.getElementById("hero").style.display = "none";
+
+
+  // =====================================================
+  // MOSTRAR NAVEGACIÓN
+  // =====================================================
+
+  document.getElementById("nav-bar").style.display = "flex";
+
+
+  // =====================================================
+  // ENCABEZADO DE CATEGORÍA
+  // =====================================================
+
+  const catHeader =
+    document.getElementById("category-header");
+
+  document.getElementById("category-title").textContent =
+    category.name || "";
+
+
+  document.getElementById("category-subtitle").textContent =
+    "Soluciones diseñadas para mejorar la gestión, productividad y automatización de tu negocio.";
+
+
+  catHeader.style.display = "flex";
+
+
+  // =====================================================
+  // GRID
+  // =====================================================
+
+  const grid =
+    document.getElementById("grid-container");
+
+  grid.innerHTML = "";
+
+
+  // =====================================================
+  // MOSTRAR PRODUCTOS
+  // =====================================================
+
+  (category.products || []).forEach(prod => {
+
+    const card =
+      document.createElement("div");
+
+    card.className = "card";
+
+
+    card.innerHTML = `
+
+      <img
+        src="${prod.image || FALLBACK_IMG}"
+        alt="${prod.name || ""}"
+        onerror="this.src='${FALLBACK_IMG}'"
+      >
+
+      <div class="card-content">
+
+        <div class="card-title">
+          ${prod.name || ""}
+        </div>
+
+        <div class="card-subtitle">
+          ${prod.detail || ""}
+        </div>
+
+      </div>
+
+    `;
+
+
+    // ===================================================
+    // CLICK → ABRIR MODAL
+    // ===================================================
+
+    card.addEventListener("click", () => {
+
+      openModal({
+
+        ...prod,
+
+        buttonText: "¡Me interesa!"
+
+      });
+
+    });
+
+
+    grid.appendChild(card);
+
+  });
+
+
+  window.scrollTo(0, 0);
+
+}
+
   
     function openModal(product) {
       const modal = document.getElementById("modal");
