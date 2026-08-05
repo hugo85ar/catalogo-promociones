@@ -591,45 +591,31 @@
           card.className = "card";
 
       card.onclick = () => {
-            // 1. Si el nombre de la tarjeta en la lista apunta a una landing externa específica
-            if (catNameLower.includes("ruta") || catNameLower.includes("pack") || catNameLower.includes("transformación") || catNameLower.includes("transformacion")) {
-              // Si prefieres que abra tu vista interna en lugar de una web externa, puedes comentar la línea de abajo.
-              // Por ahora lo dejamos por si usas landing externa, pero si quieres que abra la categoría interna, usa el bloque de abajo:
+            let targetCategoryName = "";
+
+            // Mapeo directo y seguro según el título de la tarjeta en la home
+            if (catNameLower.includes("ruta") || catNameLower.includes("pack") || displayTitle.toLowerCase().includes("transformación") || displayTitle.toLowerCase().includes("transformacion")) {
+              targetCategoryName = "Packs & Programas Integrales";
+            } else if (catNameLower.includes("suscripción") || catNameLower.includes("suscripcion") || catNameLower.includes("riendas") || displayTitle.toLowerCase().includes("riemdas")) {
+              targetCategoryName = "Soluciones empaquetadas (Soluciones con Suscripción mensual)";
+            } else {
+              targetCategoryName = rawCatName;
             }
 
-            // 2. Búsqueda inteligente por coincidencia parcial del nombre de la tarjeta con tus categorías reales
             const matchedCat = allData.categories?.find(c => {
               const cName = (c.name || "").trim().toLowerCase();
-              return cName.includes(catNameLower) || catNameLower.includes(cName) || cName.includes("integrales");
+              return cName === targetCategoryName.toLowerCase() || cName.includes(targetCategoryName.toLowerCase());
             });
 
             if (matchedCat) {
               matchedCat.buttonText = buttonText;
               renderCategoryView(matchedCat);
             } else {
-              // Plan de respaldo automático: si hay categorías cargadas, toma la primera o la que coincida por posición
-              if (allData.categories && allData.categories.length > 0) {
-                const fallbackCat = allData.categories[1] || allData.categories[0];
-                fallbackCat.buttonText = buttonText;
-                renderCategoryView(fallbackCat);
-              } else {
-                console.warn("Categoría no encontrada en productos.");
-              }
+              console.warn("Categoría no encontrada:", targetCategoryName);
             }
           };
+
           
-          card.innerHTML = `
-            <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
-            <div class="card-overlay">
-              <div class="card-title">${displayTitle}</div>
-              <div class="card-subtitle">${displaySubtitle}</div>
-            </div>
-          `;
-          grid.appendChild(card);
-        }
-      });
-    }
- 
     function renderCategoryView(category) {
       document.getElementById("hero").style.display = "none";
       const catHeader = document.getElementById("category-header");
@@ -670,7 +656,7 @@
       window.scrollTo(0, 0);
     }
 
-    function openModal(product) {
+ function openModal(product) {
       const modal = document.getElementById("modal");
       document.getElementById("modal-img").src = product.image || product.imageUrl || FALLBACK_IMG;
       document.getElementById("modal-title").textContent = product.name || "";
@@ -681,7 +667,12 @@
      
       if (mainUrl) {
         btnContado.href = mainUrl;
-        btnContado.textContent = product.buttonText || "Inscribirse";
+        // Si el link es de WhatsApp, le ponemos un texto amigable, sino usa el del producto o "Inscribirse"
+        if (mainUrl.includes("wa.me")) {
+          btnContado.textContent = product.buttonText || "¡Me interesa!";
+        } else {
+          btnContado.textContent = product.buttonText || "Inscribirse";
+        }
         btnContado.style.display = "inline-flex";
       } else {
         btnContado.style.display = "none";
