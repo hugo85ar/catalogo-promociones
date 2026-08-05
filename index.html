@@ -8,24 +8,12 @@
   <!-- META PIXEL -->
   <script>
   !function(f,b,e,v,n,t,s)
-  {
-  if(f.fbq)return;
-  n=f.fbq=function(){
-  n.callMethod ?
-  n.callMethod.apply(n,arguments) :
-  n.queue.push(arguments)
-  };
-  if(!f._fbq)f._fbq=n;
-  n.push=n;
-  n.loaded=!0;
-  n.version='2.0';
-  n.queue=[];
-  t=b.createElement(e);
-  t.async=!0;
-  t.src=v;
-  s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s);
-  }(window, document,'script',
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
   'https://connect.facebook.net/en_US/fbevents.js');
 
   fbq('init', '2189151328193841');
@@ -465,65 +453,18 @@
 
   <!-- Modal -->
   <div id="modal" class="modal-overlay" onclick="closeModal(event)">
-    <div class="modal-content">
-
+    <div class="modal-content" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeModal(event)">×</button>
-
       <img id="modal-img" class="modal-image" src="" alt="">
-
       <div class="modal-details">
-
         <h2 id="modal-title" class="modal-title"></h2>
-
         <p id="modal-desc" class="modal-desc"></p>
-
-        <p 
-          id="modal-offer"
-          style="color: #46d369; font-weight: bold; margin-bottom: 15px; display:none;">
-        </p>
-
+        <p id="modal-offer" style="color: #46d369; font-weight: bold; margin-bottom: 15px; display:none;"></p>
         <div class="modal-actions">
-
-          <!-- BOTÓN PRINCIPAL -->
-        <a 
-  id="modal-buy-contado"
-  href="#"
-  target="_blank"
-  rel="noopener noreferrer"
-  class="btn-primary"
-  style="display:none;">
-</a>
-
-          <!-- CUOTAS -->
-        <a 
-  id="modal-buy-3cuotas"
-  href="#"
-  target="_blank"
-  rel="noopener noreferrer"
-  class="btn-primary"
-  style="display:none;">
-  Pagar en 3 Cuotas
-</a>
-
-<a 
-  id="modal-buy-6cuotas"
-  href="#"
-  target="_blank"
-  rel="noopener noreferrer"
-  class="btn-primary"
-  style="display:none;">
-  Pagar en 6 Cuotas
-</a>
-
-<a 
-  id="modal-buy-gen"
-  href="#"
-  target="_blank"
-  rel="noopener noreferrer"
-  class="btn-primary"
-  style="display:none;">
-</a>
-
+          <a id="modal-buy-contado" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none;"></a>
+          <a id="modal-buy-3cuotas" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none;">Pagar en 3 Cuotas</a>
+          <a id="modal-buy-6cuotas" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none;">Pagar en 6 Cuotas</a>
+          <a id="modal-buy-gen" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none;"></a>
         </div>
       </div>
     </div>
@@ -531,66 +472,39 @@
 
   <!-- WhatsApp -->
   <a id="whatsapp-btn" class="whatsapp-float" target="_blank">
-
     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
       <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432-.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.8-.384-1.456-.752-.64-.368-1.072-.816-1.312-1.168-.24-.352-.025-.544.128-.704.131-.131.296-.336.448-.504.152-.168.203-.288.304-.496.101-.208.05-.39-.025-.546-.075-.156-.665-1.6-.913-2.192-.24-.58-.48-.5-.656-.51-.17-.01-.365-.01-.56-.01-.192 0-.504.072-.768.352-.264.28-1.008.984-1.008 2.4 0 1.416 1.032 2.784 1.176 2.976.144.192 2.032 3.104 4.928 4.352.688.296 1.224.472 1.64.6.688.224 1.312.192 1.808.116.552-.084 1.704-.696 1.944-1.368.24-.672.24-1.248.168-1.368-.072-.12-.264-.192-.552-.336z"/>
     </svg>
-
     WhatsApp
   </a>
 
 <script>
-
     let allData = {};
-
     const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxTGQQZWDLXcfMtMbOH9c98PfH5cQgu5lIzK6jw9vBP-9NLR_RlmX28fDSpd92UZbZU/exec"; 
-
     const FALLBACK_IMG = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23222222'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23666666' font-family='Roboto, sans-serif' font-size='20'%3ESin Imagen%3C/text%3E%3C/svg%3E";
 
-
-    /* ==========================================================
-       CARGA INICIAL
-       ========================================================== */
-
     document.addEventListener("DOMContentLoaded", () => {
-
       if (!API_ENDPOINT || API_ENDPOINT.includes("TU_URL")) {
         console.error("Error: API_ENDPOINT no está configurado correctamente.");
         return;
       }
-
       fetch(API_ENDPOINT)
         .then(res => res.json())
         .then(initApp)
         .catch(err => console.error('Error al cargar datos:', err));
-
     });
 
-
-    /* ==========================================================
-       INICIALIZACIÓN
-       ========================================================== */
-
     function initApp(data) {
-
       const urlParams = new URLSearchParams(window.location.search);
       const modo = urlParams.get('modo');
 
       if (modo === 'clientes' && data.categories) {
-
         data.categories = data.categories.map(cat => {
-
           cat.products = cat.products.filter(prod => {
-
             const nombreProd = (prod.name || "").toLowerCase();
-
-            return !nombreProd.includes("gratis") &&
-                   !nombreProd.includes("gratuito");
-
+            return !nombreProd.includes("gratis") && !nombreProd.includes("gratuito");
           });
-
           return cat;
-
         }).filter(cat => cat.products.length > 0);
       }
 
@@ -601,341 +515,146 @@
       }
 
       if (data.config?.whatsappUrl) {
-        document.getElementById("whatsapp-btn").href =
-          data.config.whatsappUrl;
+        document.getElementById("whatsapp-btn").href = data.config.whatsappUrl;
       }
 
       renderHome();
     }
 
-
-    /* ==========================================================
-       BUSCAR TEXTO DEL BOTÓN DE UNA CATEGORÍA
-       ========================================================== */
-
     function getCategoryButtonText(categoryName) {
-
       const listasConfig = allData.listas || [];
-
-      const normalizedName = (categoryName || "")
-        .trim()
-        .toLowerCase();
-
+      const normalizedName = (categoryName || "").trim().toLowerCase();
       const item = listasConfig.find(item => {
-
-        const name = (
-          item.Category ||
-          item.name ||
-          ""
-        ).trim().toLowerCase();
-
-        return (
-          name === normalizedName ||
-          name.includes(normalizedName) ||
-          normalizedName.includes(name)
-        );
-
+        const name = (item.Category || item.name || "").trim().toLowerCase();
+        return name === normalizedName || name.includes(normalizedName) || normalizedName.includes(name);
       });
-
-      return (
-        item?.BotonTexto ||
-        item?.botonTexto ||
-        item?.buttonText ||
-        "Más información"
-      );
+      return item?.BotonTexto || item?.botonTexto || item?.buttonText || "Más información";
     }
 
-
-  /* ==========================================================
-       HOME
-       ========================================================== */
+    function renderHeroSection() {
+      const heroConfig = allData.hero || allData.config || {};
+      document.getElementById("hero-title").textContent = heroConfig.titulo || heroConfig.title || "Bienvenido";
+      document.getElementById("hero-desc").textContent = heroConfig.subtitulo || heroConfig.subtitle || "";
+      const heroBtn = document.getElementById("hero-btn");
+      heroBtn.textContent = heroConfig.ctaText || "Ver cursos";
+      heroBtn.onclick = () => {
+        window.scrollTo({ top: window.innerHeight * 0.5, behavior: 'smooth' });
+      };
+    }
 
     function renderHome() {
-
       document.getElementById("category-header").style.display = "none";
-
       document.getElementById("hero").style.display = "flex";
-
       renderHeroSection();
-
       document.getElementById("nav-bar").style.display = "none";
 
       const grid = document.getElementById("grid-container");
-
       grid.innerHTML = "";
 
       const listasConfig = allData.listas || [];
-
       if (listasConfig.length === 0) return;
 
-
       listasConfig.forEach((item, index) => {
-
-        const rawCatName =
-          (item.Category || item.name || "").trim();
-
-        const catNameLower =
-          rawCatName.toLowerCase();
-
-        const displayTitle =
-          item.Titulo ||
-          item.title ||
-          rawCatName;
-
-        const displaySubtitle =
-          item.Subtitulo ||
-          item.subtitulo ||
-          item.subtitle ||
-          '';
-
-        const displayImg =
-          item.ImageUrl ||
-          item.image ||
-          FALLBACK_IMG;
-
-        const displayCTA =
-          item.CTA ||
-          item.cta ||
-          "Ver más";
-
-        const buttonText =
-          item.BotonTexto ||
-          item.botonTexto ||
-          item.buttonText ||
-          "Más información";
-
-
-        const isFree =
-          catNameLower.includes("gratis") ||
-          catNameLower.includes("gratuito");
-
-
-        /* ======================================================
-           CURSO GRATUITO
-           ====================================================== */
+        const rawCatName = (item.Category || item.name || "").trim();
+        const catNameLower = rawCatName.toLowerCase();
+        const displayTitle = item.Titulo || item.title || rawCatName;
+        const displaySubtitle = item.Subtitulo || item.subtitulo || item.subtitle || '';
+        const displayImg = item.ImageUrl || item.image || FALLBACK_IMG;
+        const displayCTA = item.CTA || item.cta || "Ver más";
+        const buttonText = item.BotonTexto || item.botonTexto || item.buttonText || "Más información";
+        const isFree = catNameLower.includes("gratis") || catNameLower.includes("gratuito");
 
         if (isFree) {
-
           let freeProduct = null;
-
           allData.categories?.forEach(cat => {
-
             cat.products?.forEach(prod => {
-
-              const pName =
-                (prod.name || "").toLowerCase();
-
-              if (
-                pName.includes("gratis") ||
-                pName.includes("gratuito")
-              ) {
-                freeProduct = {
-                  ...prod,
-                  buttonText: buttonText
-                };
+              const pName = (prod.name || "").toLowerCase();
+              if (pName.includes("gratis") || pName.includes("gratuito")) {
+                freeProduct = { ...prod, buttonText: buttonText };
               }
-
             });
-
           });
 
+          const bannerDiv = document.createElement("div");
+          bannerDiv.className = "course-banner-wrapper";
 
-          const bannerDiv =
-            document.createElement("div");
-
-          bannerDiv.className =
-            "course-banner-wrapper";
-
-
-          const productPayload =
-            freeProduct || {
-              name: displayTitle,
-              detail: displaySubtitle,
-              image: displayImg,
-              buttonText: buttonText
-            };
-
-
-          const productData =
-            JSON.stringify(productPayload)
-              .replace(/"/g, '&quot;');
-
+          const productPayload = freeProduct || {
+            name: displayTitle,
+            detail: displaySubtitle,
+            image: displayImg,
+            buttonText: buttonText,
+            buyUrlContado: item.buyUrlContado || item.url || "#"
+          };
 
           bannerDiv.innerHTML = `
-
-            <img
-              class="course-banner-img"
-              src="${displayImg}"
-              alt="${displayTitle}"
-              onerror="this.src='${FALLBACK_IMG}'"
-            >
-
+            <img class="course-banner-img" src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
             <div class="course-banner-text">
-
-              <h2 class="course-banner-title">
-                ${displayTitle}
-              </h2>
-
-              <p class="course-banner-desc">
-                ${displaySubtitle}
-              </p>
-
-              <button
-                class="hero-btn"
-                data-product="${productData}"
-                onclick="handleBannerClick(this)"
-              >
-                ${displayCTA}
-              </button>
-
+              <h2 class="course-banner-title">${displayTitle}</h2>
+              <p class="course-banner-desc">${displaySubtitle}</p>
+              <button class="hero-btn" onclick='openModal(${JSON.stringify(productPayload)})'>${displayCTA}</button>
             </div>
-
           `;
-
           grid.appendChild(bannerDiv);
-
-
         } else {
-
-          /* ====================================================
-             CATEGORÍA NORMAL / TARJETAS INFERIORES
-             ==================================================== */
-
-          const card =
-            document.createElement("div");
-
+          const card = document.createElement("div");
           card.className = "card";
 
-
           card.onclick = () => {
-
-            // REQUISITO 1: Primera tarjeta de abajo a la izquierda redirige a URL externa
             if (index === 1 || catNameLower.includes("ruta") || catNameLower.includes("pack")) {
               window.open("https://hugo85ar.github.io/LandingPacks/", "_blank");
               return;
             }
 
-            const matchedCat =
-              allData.categories?.find(c => {
-
-                const cName =
-                  (c.name || "")
-                    .trim()
-                    .toLowerCase();
-
-                return (
-                  cName === catNameLower ||
-                  cName.includes(catNameLower) ||
-                  catNameLower.includes(cName)
-                );
-
-              });
-
+            const matchedCat = allData.categories?.find(c => {
+              const cName = (c.name || "").trim().toLowerCase();
+              return cName === catNameLower || cName.includes(catNameLower) || catNameLower.includes(cName);
+            });
 
             if (matchedCat) {
-
-              matchedCat.buttonText =
-                buttonText;
-
+              matchedCat.buttonText = buttonText;
               renderCategoryView(matchedCat);
-
             } else {
-
-              console.warn(
-                "No se encontró categoría para:",
-                rawCatName
-              );
-
+              console.warn("No se encontró categoría para:", rawCatName);
             }
-
           };
 
-
           card.innerHTML = `
-
-            <img
-              src="${displayImg}"
-              alt="${displayTitle}"
-              onerror="this.src='${FALLBACK_IMG}'"
-            >
-
+            <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
             <div class="card-overlay">
-
-              <div class="card-title">
-                ${displayTitle}
-              </div>
-
-              <div class="card-subtitle">
-                ${displaySubtitle}
-              </div>
-
+              <div class="card-title">${displayTitle}</div>
+              <div class="card-subtitle">${displaySubtitle}</div>
             </div>
-
           `;
-
           grid.appendChild(card);
-
         }
-
       });
-
     }
   
-   /* ==========================================================
-       VISTA DE CATEGORÍA
-       ========================================================== */
-
     function renderCategoryView(category) {
+      document.getElementById("hero").style.display = "none";
+      const catHeader = document.getElementById("category-header");
+      document.getElementById("category-title").textContent = category.name;
+      document.getElementById("category-subtitle").textContent = `Explora los recursos disponibles en esta sección.`;
+      catHeader.style.display = "flex";
+      document.getElementById("nav-bar").style.display = "flex";
 
-      document.getElementById("hero").style.display =
-        "none";
-
-      const catHeader =
-        document.getElementById("category-header");
-
-      document.getElementById("category-title").textContent =
-        category.name;
-
-      document.getElementById("category-subtitle").textContent =
-        `Explora los recursos disponibles en esta sección.`;
-
-      catHeader.style.display =
-        "flex";
-
-      document.getElementById("nav-bar").style.display =
-        "flex";
-
-      const grid =
-        document.getElementById("grid-container");
-
+      const grid = document.getElementById("grid-container");
       grid.innerHTML = "";
 
-      const categoryButtonText =
-        category.buttonText ||
-        getCategoryButtonText(category.name);
+      const categoryButtonText = category.buttonText || getCategoryButtonText(category.name);
 
       if (category.products) {
         category.products.sort((a, b) => {
-          return (a.name || "")
-            .localeCompare(
-              b.name || "",
-              undefined,
-              { numeric: true }
-            );
+          return (a.name || "").localeCompare(b.name || "", undefined, { numeric: true });
         });
       }
 
       const isSuscripcionMensual = category.name.toLowerCase().includes("suscripción mensual") || category.name.toLowerCase().includes("suscripciones");
 
       category.products?.forEach(prod => {
+        const card = document.createElement("div");
+        card.className = "card";
 
-        const card =
-          document.createElement("div");
-
-        card.className =
-          "card";
-
-        // REQUISITO 2: Si es la categoría de Soluciones con Suscripción mensual, forzamos el texto del botón y enlace de WhatsApp
         let prodButtonText = categoryButtonText;
         let modifiedProd = { ...prod };
 
@@ -943,13 +662,10 @@
           prodButtonText = "Saber más";
           const whatsappBaseUrl = allData.config?.whatsappUrl || "https://wa.me/";
           const mensajeWa = encodeURIComponent(`Hola Hugo, quiero saber más sobre la solución: ${prod.name}`);
-          
-          // Si whatsappUrl ya tiene un número o estructura base, lo adaptamos o usamos el predeterminado con mensaje
           let finalWaUrl = whatsappBaseUrl.includes("?") ? `${whatsappBaseUrl}&text=${mensajeWa}` : `${whatsappBaseUrl}?text=${mensajeWa}`;
           if (!whatsappBaseUrl.includes("wa.me") && !whatsappBaseUrl.includes("whatsapp")) {
-             finalWaUrl = `https://wa.me/5491132338144?text=${mensajeWa}`; // Fallback seguro si fuera necesario
+             finalWaUrl = `https://wa.me/5491132338144?text=${mensajeWa}`;
           }
-
           modifiedProd.buyUrlContado = finalWaUrl;
         }
 
@@ -958,40 +674,69 @@
           buttonText: prodButtonText
         };
 
-        card.onclick = () =>
-          window.openModal(productWithButton);
+        // Asignación segura con event listener para evitar errores de sintaxis por caracteres especiales
+        card.addEventListener('click', () => {
+          openModal(productWithButton);
+        });
 
         card.innerHTML = `
-
-          <img
-            src="${prod.image || prod.imageUrl || FALLBACK_IMG}"
-            alt="${prod.name}"
-            onerror="this.src='${FALLBACK_IMG}'"
-          >
-
+          <img src="${prod.image || prod.imageUrl || FALLBACK_IMG}" alt="${prod.name}" onerror="this.src='${FALLBACK_IMG}'">
           <div class="card-content">
-
-            <div class="card-title">
-              ${prod.name}
-            </div>
-
-            <div class="card-subtitle">
-              ${prod.detail || ''}
-            </div>
-
+            <div class="card-title">${prod.name}</div>
+            <div class="card-subtitle">${prod.detail || ''}</div>
           </div>
-
         `;
 
         grid.appendChild(card);
-
       });
 
       window.scrollTo(0, 0);
+    }
 
-    }    
-  }
+    /* ==========================================================
+       CONTROL DE MODAL
+       ========================================================== */
+    function openModal(product) {
+      const modal = document.getElementById("modal");
+      document.getElementById("modal-img").src = product.image || product.imageUrl || FALLBACK_IMG;
+      document.getElementById("modal-title").textContent = product.name || "";
+      document.getElementById("modal-desc").textContent = product.detail || product.description || "";
 
+      const btnContado = document.getElementById("modal-buy-contado");
+      const mainUrl = product.buyUrlContado || product.url || product.link;
+      
+      if (mainUrl) {
+        btnContado.href = mainUrl;
+        btnContado.textContent = product.buttonText || "Más información";
+        btnContado.style.display = "inline-flex";
+      } else {
+        btnContado.style.display = "none";
+      }
+
+      // Control opcional de cuotas si existen en el objeto
+      const btn3 = document.getElementById("modal-buy-3cuotas");
+      if (product.buyUrl3Cuotas) {
+        btn3.href = product.buyUrl3Cuotas;
+        btn3.style.display = "inline-flex";
+      } else {
+        btn3.style.display = "none";
+      }
+
+      const btn6 = document.getElementById("modal-buy-6cuotas");
+      if (product.buyUrl6Cuotas) {
+        btn6.href = product.buyUrl6Cuotas;
+        btn6.style.display = "inline-flex";
+      } else {
+        btn6.style.display = "none";
+      }
+
+      modal.classList.add("active");
+    }
+
+    function closeModal(event) {
+      if (event) event.stopPropagation();
+      document.getElementById("modal").classList.remove("active");
+    }
   </script>
 
 </body>
