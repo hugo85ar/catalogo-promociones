@@ -30,7 +30,7 @@
   </noscript>
   <!-- FIN META PIXEL -->
  
-  <style>
+<style>
     :root {
       --bg-color: #141414;
       --text-color: #e5e5e5;
@@ -165,7 +165,7 @@
       gap: 20px;
     }
    
-    /* Card Styles */
+    /* Card Styles corregidos */
     .card {
       background-color: #1f1f1f;
       border-radius: 8px;
@@ -174,6 +174,8 @@
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       position: relative;
       border: 1px solid #333;
+      display: flex;
+      flex-direction: column;
     }
 
     .card:hover {
@@ -197,13 +199,14 @@
       padding: 20px;
     }
 
+    /* Ajuste para que el overlay no pise de más y se lea perfecto */
     .card-overlay {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0,0,0,0.6) 70%, transparent);
-      padding: 20px 15px 15px 15px;
+      background: linear-gradient(to top, rgba(20, 20, 20, 0.95) 60%, rgba(20, 20, 20, 0.7) 85%, transparent);
+      padding: 25px 20px 18px 20px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
