@@ -66,7 +66,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(to top, var(--bg-color), transparent 50%);
+      background: linear-gradient(to top, var(--bg-color), rgba(20,20,20,0.4) 50%);
     }
 
     .hero-content {
@@ -494,7 +494,7 @@
         .catch(err => console.error('Error al cargar datos:', err));
     });
 
-   function initApp(data) {
+    function initApp(data) {
       const urlParams = new URLSearchParams(window.location.search);
       const modo = urlParams.get('modo');
 
@@ -510,7 +510,7 @@
 
       allData = data;
 
-      // Configuración general de la hoja Configuración
+      // Configuración general desde la hoja Configuración
       const config = data.config || {};
       if (config.backgroundColor) {
         document.body.style.backgroundColor = config.backgroundColor;
@@ -538,8 +538,8 @@
       document.getElementById("hero-title").textContent = heroConfig.titulo || heroConfig.title || "Bienvenido";
       document.getElementById("hero-desc").textContent = heroConfig.subtitulo || heroConfig.subtitle || "";
       
-      // Aplicar imagen de fondo desde la configuración de Apps Script
-      const bgImg = heroConfig.imageUrl || heroConfig.imagenFondo || heroConfig.image;
+      // Tomar la imagen de fondo desde la celda de configuración (ej. C2)
+      const bgImg = heroConfig.imageUrl || heroConfig.imagenFondo || heroConfig.image || heroConfig.fondo;
       if (bgImg) {
         document.getElementById("hero").style.backgroundImage = `url('${bgImg}')`;
       }
@@ -551,7 +551,7 @@
       };
     }
 
-function renderHome() {
+    function renderHome() {
       document.getElementById("category-header").style.display = "none";
       document.getElementById("hero").style.display = "flex";
       renderHeroSection();
@@ -569,7 +569,7 @@ function renderHome() {
         const displayTitle = item.Titulo || item.title || rawCatName;
         const displaySubtitle = item.Subtitulo || item.subtitulo || item.subtitle || '';
         const displayImg = item.ImageUrl || item.image || FALLBACK_IMG;
-        const displayCTA = item.CTA || item.cta || "Ver más";
+        const displayCTA = item.CTA || item.cta || "Inscribirse";
         const buttonText = item.BotonTexto || item.botonTexto || item.buttonText || "Más información";
         const isFree = catNameLower.includes("gratis") || catNameLower.includes("gratuito");
 
@@ -579,7 +579,7 @@ function renderHome() {
             cat.products?.forEach(prod => {
               const pName = (prod.name || "").toLowerCase();
               if (pName.includes("gratis") || pName.includes("gratuito")) {
-                freeProduct = { ...prod, buttonText: buttonText };
+                freeProduct = { ...prod };
               }
             });
           });
@@ -587,13 +587,16 @@ function renderHome() {
           const bannerDiv = document.createElement("div");
           bannerDiv.className = "course-banner-wrapper";
 
-          const productPayload = freeProduct || {
+          // Enlace y datos limpios para el banner de curso gratuito
+          const productPayload = freeProduct ? { ...freeProduct } : {
             name: displayTitle,
             detail: displaySubtitle,
-            image: displayImg,
-            buttonText: buttonText,
-            buyUrlContado: item.buyUrlContado || item.url || item.link || "#"
+            image: displayImg
           };
+
+          // Asignar explícitamente el link de inscripción proveniente del sheet (item.url o item.buyUrlContado)
+          productPayload.buyUrlContado = item.buyUrlContado || item.url || item.link || productPayload.buyUrlContado || "#";
+          productPayload.buttonText = displayCTA;
 
           bannerDiv.innerHTML = `
             <img class="course-banner-img" src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
@@ -610,20 +613,22 @@ function renderHome() {
 
           card.onclick = () => {
             // Redirección para la landing de packs
-            if (catNameLower.includes("ruta") || catNameLower.includes("pack")) {
+            if (catNameLower.includes("ruta") || catNameLower.includes("pack") || catNameLower.includes("transformación total") || catNameLower.includes("transformacion total")) {
               window.open("https://hugo85ar.github.io/LandingPacks/", "_blank");
               return;
             }
 
-            // Búsqueda de categoría para abrir los productos correspondientes
+            // Búsqueda robusta para las Soluciones empaquetadas estilo Netflix
             const matchedCat = allData.categories?.find(c => {
               const cName = (c.name || "").trim().toLowerCase();
-              return cName === catNameLower || cName.includes(catNameLower) || catNameLower.includes(cName);
+              return cName === catNameLower || cName.includes(catNameLower) || catNameLower.includes(cName) || cName.includes("suscripción") || cName.includes("suscripcion");
             });
 
             if (matchedCat) {
               matchedCat.buttonText = buttonText;
               renderCategoryView(matchedCat);
+            } else {
+              console.warn("No se encontró categoría para:", rawCatName);
             }
           };
 
@@ -658,29 +663,13 @@ function renderHome() {
         });
       }
 
-      const isSuscripcionMensual = category.name.toLowerCase().includes("suscripción mensual") || category.name.toLowerCase().includes("suscripciones");
-
       category.products?.forEach(prod => {
         const card = document.createElement("div");
         card.className = "card";
 
-        let prodButtonText = categoryButtonText;
-        let modifiedProd = { ...prod };
-
-        if (isSuscripcionMensual) {
-          prodButtonText = "Saber más";
-          const whatsappBaseUrl = allData.config?.whatsappUrl || "https://wa.me/";
-          const mensajeWa = encodeURIComponent(`Hola Hugo, quiero saber más sobre la solución: ${prod.name}`);
-          let finalWaUrl = whatsappBaseUrl.includes("?") ? `${whatsappBaseUrl}&text=${mensajeWa}` : `${whatsappBaseUrl}?text=${mensajeWa}`;
-          if (!whatsappBaseUrl.includes("wa.me") && !whatsappBaseUrl.includes("whatsapp")) {
-             finalWaUrl = `https://wa.me/5491132338144?text=${mensajeWa}`;
-          }
-          modifiedProd.buyUrlContado = finalWaUrl;
-        }
-
         const productWithButton = {
-          ...modifiedProd,
-          buttonText: prodButtonText
+          ...prod,
+          buttonText: prod.buttonText || categoryButtonText || "Más información"
         };
 
         card.addEventListener('click', () => {
@@ -715,7 +704,7 @@ function renderHome() {
      
       if (mainUrl) {
         btnContado.href = mainUrl;
-        btnContado.textContent = product.buttonText || "Más información";
+        btnContado.textContent = product.buttonText || "Inscribirse";
         btnContado.style.display = "inline-flex";
       } else {
         btnContado.style.display = "none";
