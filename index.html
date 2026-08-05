@@ -590,7 +590,7 @@
           const card = document.createElement("div");
           card.className = "card";
 
-      card.onclick = () => {
+          card.onclick = () => {
             const titleLower = displayTitle.toLowerCase();
 
             // 1. Si es la Carátula 1, redirige directamente a la landing externa de Packs
@@ -620,7 +620,18 @@
             }
           };
 
-          
+          card.innerHTML = `
+            <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
+            <div class="card-overlay">
+              <div class="card-title">${displayTitle}</div>
+              <div class="card-subtitle">${displaySubtitle}</div>
+            </div>
+          `;
+          grid.appendChild(card);
+        }
+      });
+    }
+
     function renderCategoryView(category) {
       document.getElementById("hero").style.display = "none";
       const catHeader = document.getElementById("category-header");
@@ -661,7 +672,7 @@
       window.scrollTo(0, 0);
     }
 
- function openModal(product) {
+    function openModal(product) {
       const modal = document.getElementById("modal");
       document.getElementById("modal-img").src = product.image || product.imageUrl || FALLBACK_IMG;
       document.getElementById("modal-title").textContent = product.name || "";
@@ -672,7 +683,6 @@
      
       if (mainUrl) {
         btnContado.href = mainUrl;
-        // Si el link es de WhatsApp, le ponemos un texto amigable, sino usa el del producto o "Inscribirse"
         if (mainUrl.includes("wa.me")) {
           btnContado.textContent = product.buttonText || "¡Me interesa!";
         } else {
