@@ -502,189 +502,104 @@
       renderHome();
     }
 
-    function renderHeroSection() {
-      const cfgSource = allData.config || allData.configuracion || allData.hero || {};
-      let heroConfig = {};
-      
-      if (Array.isArray(cfgSource)) {
-        heroConfig = cfgSource[0] || {};
-      } else if (typeof cfgSource === 'object' && cfgSource !== null) {
-        heroConfig = cfgSource;
-      }
 
-      const bgImg = heroConfig.C2 || heroConfig.c2 || heroConfig.C3 || heroConfig.c3 || heroConfig.imagenFondo || heroConfig.imageUrl || heroConfig.image || "https://res.cloudinary.com/dlnrsadbc/image/upload/v1762866318/Bienvenido_1_cqim8n.png";
-      
-      document.getElementById("hero-title").textContent = heroConfig.titulo || heroConfig.title || "Bienvenido";
-      document.getElementById("hero-desc").textContent = heroConfig.subtitulo || heroConfig.subtitle || heroConfig.descripcion || "Explora las herramientas y sistemas diseñados para escalar tu negocio.";
-      
-      document.getElementById("hero").style.backgroundImage = `url('${bgImg}')`;
 
-      const heroBtn = document.getElementById("hero-btn");
-      heroBtn.textContent = heroConfig.ctaText || "Ver cursos";
-      
-     heroBtn.onclick = () => {
+  function renderHeroSection() {
 
-  const featuredProduct = allData.featuredProduct;
+  const cfgSource =
+    allData.config ||
+    allData.configuracion ||
+    allData.hero ||
+    {};
 
-  if (featuredProduct) {
+  let heroConfig = {};
 
-    // Abrimos directamente el producto marcado
-    // como "Producto Estrella" en columna N
+  if (Array.isArray(cfgSource)) {
 
-    openModal({
-      ...featuredProduct,
-      buttonText: "Más información"
-    });
+    heroConfig = cfgSource[0] || {};
 
-  } else {
+  } else if (
+    typeof cfgSource === "object" &&
+    cfgSource !== null
+  ) {
 
-    console.warn(
-      "No se encontró ningún Producto Estrella en la columna N."
-    );
-
-    alert(
-      "No hay ningún producto marcado como Producto Estrella."
-    );
+    heroConfig = cfgSource;
 
   }
 
-};
 
-    function renderHome() {
-      document.getElementById("category-header").style.display = "none";
-      document.getElementById("hero").style.display = "flex";
-      document.getElementById("nav-bar").style.display = "none";
+  const bgImg =
+    heroConfig.C2 ||
+    heroConfig.c2 ||
+    heroConfig.C3 ||
+    heroConfig.c3 ||
+    heroConfig.imagenFondo ||
+    heroConfig.imageUrl ||
+    heroConfig.image ||
+    "https://res.cloudinary.com/dlnrsadbc/image/upload/v1762866318/Bienvenido_1_cqim8n.png";
 
-      const grid = document.getElementById("grid-container");
-      grid.innerHTML = "";
 
-      const listasConfig = allData.listas || [];
-     
-      if (listasConfig.length === 0) return;
-       let nonFreeCardIndex = 0;
-      listasConfig.forEach((item) => {
-        const rawCatName = (item.Category || item.category || item.name || "").trim();
-        const catNameLower = rawCatName.toLowerCase();
-        const displayTitle = item.Titulo || item.title || rawCatName;
-        const displaySubtitle = item.Subtitulo || item.subtitulo || item.subtitle || item.descripcion || '';
-        const displayImg = item.ImageUrl || item.image || item.imagen || FALLBACK_IMG;
-        const displayCTA = item.CTA || item.cta || "Inscribirse";
-        const buttonText = item.BotonTexto || item.botonTexto || item.buttonText || "Más información";
-        
-        const isFree = catNameLower.includes("gratis") || catNameLower.includes("gratuito") || displayTitle.toLowerCase().includes("gratis");
+  document.getElementById("hero-title").textContent =
+    heroConfig.titulo ||
+    heroConfig.title ||
+    "Bienvenido";
 
-        if (isFree) {
-          let freeProduct = null;
-          allData.categories?.forEach(cat => {
-            cat.products?.forEach(prod => {
-              const pName = (prod.name || "").toLowerCase();
-              if (pName.includes("gratis") || pName.includes("gratuito")) {
-                freeProduct = { ...prod };
-              }
-            });
-          });
 
-          const bannerDiv = document.createElement("div");
-          bannerDiv.className = "course-banner-wrapper";
+  document.getElementById("hero-desc").textContent =
+    heroConfig.subtitulo ||
+    heroConfig.subtitle ||
+    heroConfig.descripcion ||
+    "Explora las herramientas y sistemas diseñados para escalar tu negocio.";
 
-          const productPayload = freeProduct ? { ...freeProduct } : {
-            name: displayTitle,
-            detail: displaySubtitle,
-            image: displayImg
-          };
 
-          productPayload.buyUrlContado = item.buyUrlContado || item.url || item.link || "https://hugo85ar.github.io/formulario-curso-sheets/";
-          productPayload.buttonText = displayCTA;
+  document.getElementById("hero").style.backgroundImage =
+    `url('${bgImg}')`;
 
-          bannerDiv.innerHTML = `
-            <img class="course-banner-img" src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
-            <div class="course-banner-text">
-              <h2 class="course-banner-title">${displayTitle}</h2>
-              <p class="course-banner-desc">${displaySubtitle}</p>
-              <button class="hero-btn" onclick='openModal(${JSON.stringify(productPayload)})'>${displayCTA}</button>
-            </div>
-          `;
-          grid.appendChild(bannerDiv);
-       } else {
 
-  // Contamos solamente las carátulas que NO son el curso gratuito
-  const currentNonFreeCardIndex = nonFreeCardIndex++;
+  const heroBtn =
+    document.getElementById("hero-btn");
 
-  const card = document.createElement("div");
-  card.className = "card";
 
-  card.onclick = () => {
+  heroBtn.textContent =
+    heroConfig.ctaText ||
+    "Ver cursos";
 
-    const titleLower = (displayTitle || "").trim().toLowerCase();
-    const catNameLower = (rawCatName || "").trim().toLowerCase();
 
-    // =====================================================
-    // CARÁTULA 1 → LANDING DE PACKS
-    // =====================================================
+  // =====================================================
+  // BOTÓN "VER CURSOS"
+  // BUSCA EL PRODUCTO MARCADO EN COLUMNA N
+  // =====================================================
 
-    if (
-      currentNonFreeCardIndex === 0 ||
-      catNameLower.includes("ruta") ||
-      titleLower.includes("transformación") ||
-      titleLower.includes("transformacion") ||
-      titleLower.includes("packs")
-    ) {
+  heroBtn.onclick = () => {
 
-      window.open(
-        "https://hugo85ar.github.io/LandingPacks/",
-        "_blank"
-      );
+    const featuredProduct =
+      allData.featuredProduct;
 
-      return;
-    }
 
-    // =====================================================
-    // CARÁTULA 2 → SUSCRIPCIÓN
-    // =====================================================
+    if (featuredProduct) {
 
-    const matchedCat = allData.categories?.find(c => {
-
-      const cName = (c.name || "").trim().toLowerCase();
-
-      return (
-        cName.includes("suscripción") ||
-        cName.includes("suscripcion") ||
-        cName.includes("empaquetadas") ||
-        cName.includes(catNameLower) ||
-        catNameLower.includes(cName)
-      );
-    });
-
-    if (matchedCat) {
-
-      matchedCat.buttonText = buttonText;
-      renderCategoryView(matchedCat);
+      openModal({
+        ...featuredProduct,
+        buttonText: "Más información"
+      });
 
     } else {
 
       console.warn(
-        "Categoría no encontrada para:",
-        rawCatName,
-        titleLower
+        "No se encontró ningún Producto Estrella en columna N."
       );
 
-      if (
-        allData.categories &&
-        allData.categories.length > 0
-      ) {
-        renderCategoryView(allData.categories[0]);
-      }
+      alert(
+        "No hay ningún producto marcado como Producto Estrella."
+      );
+
     }
+
   };
 
-          // Renderizado limpio de la imagen sin textos superpuestos molestos
-          card.innerHTML = `
-            <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'" style="width: 100%; display: block; border-radius: 8px;">
-          `;
-          grid.appendChild(card);
-        }
-      });
-    }
+}
+
+  
     function renderCategoryView(category) {
       document.getElementById("hero").style.display = "none";
       const catHeader = document.getElementById("category-header");
