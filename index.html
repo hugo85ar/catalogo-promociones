@@ -500,7 +500,6 @@
     }
 
     function renderHeroSection() {
-      // Obtenemos la configuración sin importar cómo venga estructurada (objeto, array, etc.)
       const cfgSource = allData.config || allData.configuracion || allData.hero || {};
       let heroConfig = {};
       
@@ -510,10 +509,8 @@
         heroConfig = cfgSource;
       }
 
-      // Verificamos explícitamente C2, c2, o variantes comunes
       const bgImg = heroConfig.C2 || heroConfig.c2 || heroConfig.C3 || heroConfig.c3 || heroConfig.imagenFondo || heroConfig.imageUrl || heroConfig.image || "https://res.cloudinary.com/dlnrsadbc/image/upload/q_auto,f_auto,w_1200/v1785273907/caratula_suscripcion_mensual_espanol_vli4ly.png";
       
-      document.getElementById("hero-title">").textContent = heroConfig.titulo || heroConfig.title || "Bienvenido"; // Nota: corregido tag interno si existiera pero usamos getElementById limpio abajo
       document.getElementById("hero-title").textContent = heroConfig.titulo || heroConfig.title || "Bienvenido";
       document.getElementById("hero-desc").textContent = heroConfig.subtitulo || heroConfig.subtitle || heroConfig.descripcion || "Explora las herramientas y sistemas diseñados para escalar tu negocio.";
       
@@ -555,7 +552,6 @@
         const displayCTA = item.CTA || item.cta || "Inscribirse";
         const buttonText = item.BotonTexto || item.botonTexto || item.buttonText || "Más información";
         
-        // Detección del curso gratuito (Banner superior ancho)
         const isFree = catNameLower.includes("gratis") || catNameLower.includes("gratuito") || displayTitle.toLowerCase().includes("gratis");
 
         if (isFree) {
@@ -591,18 +587,15 @@
           `;
           grid.appendChild(bannerDiv);
         } else {
-          // Tarjetas inferiores (Carátulas)
           const card = document.createElement("div");
           card.className = "card";
 
           card.onclick = () => {
-            // 1) Si es Landing Packs / Ruta del Emprendedor
             if (catNameLower.includes("ruta") || catNameLower.includes("pack") || catNameLower.includes("transformación") || catNameLower.includes("transformacion")) {
               window.open("https://hugo85ar.github.io/LandingPacks/", "_blank");
               return;
             }
 
-            // 2) Si es la segunda carátula de suscripción mensual (Sistemas y Mejoras Continuas)
             const matchedCat = allData.categories?.find(c => {
               const cName = (c.name || "").trim().toLowerCase();
               return cName.includes("suscripción") || cName.includes("suscripcion") || cName.includes("empaquetadas");
