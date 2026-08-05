@@ -500,22 +500,19 @@
     }
 
     function renderHeroSection() {
-      // Tomamos directamente de la celda C3 (índice 2 de la configuración/hero si viene en array, o propiedad C3 / imagenFondo)
       const heroConfig = allData.config || allData.hero || (Array.isArray(allData.configuracion) ? allData.configuracion[0] : {}) || {};
       
       document.getElementById("hero-title").textContent = heroConfig.titulo || heroConfig.title || "Bienvenido";
       document.getElementById("hero-desc").textContent = heroConfig.subtitulo || heroConfig.subtitle || heroConfig.descripcion || "Explora las herramientas y sistemas diseñados para escalar tu negocio.";
       
-      // Apuntando específicamente a C3 o propiedades equivalentes
-      const bgImg = heroConfig.C3 || heroConfig.imagenFondo || heroConfig.imageUrl || heroConfig.image || "https://res.cloudinary.com/dlnrsadbc/image/upload/q_auto,f_auto,w_1200/v1785273907/caratula_suscripcion_mensual_espanol_vli4ly.png";
+      // Apuntando exactamente a la celda C2 de la hoja Configuración
+      const bgImg = heroConfig.C2 || heroConfig.imagenFondo || heroConfig.imageUrl || heroConfig.image || "https://res.cloudinary.com/dlnrsadbc/image/upload/q_auto,f_auto,w_1200/v1785273907/caratula_suscripcion_mensual_espanol_vli4ly.png";
       document.getElementById("hero").style.backgroundImage = `url('${bgImg}')`;
 
       const heroBtn = document.getElementById("hero-btn");
       heroBtn.textContent = heroConfig.ctaText || "Ver cursos";
       
-      // Botón "Ver cursos" abre la categoría de suscripción mensual directamente en estilo Netflix
       heroBtn.onclick = () => {
-        const targetCategoryName = "Soluciones empaquetadas (Soluciones con Suscripción mensual)";
         const matchedCat = allData.categories?.find(c => {
           const cName = (c.name || "").trim().toLowerCase();
           return cName.includes("suscripción") || cName.includes("suscripcion") || cName.includes("empaquetadas");
