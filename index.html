@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -600,8 +601,7 @@
           card.className = "card";
 
           card.onclick = () => {
-            // CORRECCIÓN: Comprobamos explícitamente si es la tarjeta específica de transformación total o packs
-            if (catNameLower.includes("ruta") || catNameLower.includes("pack") || catNameLower.includes("transformación total") || catNameLower.includes("transformacion total")) {
+            if (index === 1 || catNameLower.includes("ruta") || catNameLower.includes("pack")) {
               window.open("https://hugo85ar.github.io/LandingPacks/", "_blank");
               return;
             }
@@ -675,6 +675,7 @@
           buttonText: prodButtonText
         };
 
+        // Asignación segura con event listener para evitar errores de sintaxis por caracteres especiales
         card.addEventListener('click', () => {
           openModal(productWithButton);
         });
@@ -713,6 +714,7 @@
         btnContado.style.display = "none";
       }
 
+      // Control opcional de cuotas si existen en el objeto
       const btn3 = document.getElementById("modal-buy-3cuotas");
       if (product.buyUrl3Cuotas) {
         btn3.href = product.buyUrl3Cuotas;
@@ -740,3 +742,8 @@
 
 </body>
 </html>
+--
+
+Hugo Alvigini
+Proyectos y Productividad con Google y GAS
+Enlaces de contacto y más!!
