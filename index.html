@@ -544,8 +544,9 @@
       grid.innerHTML = "";
 
       const listasConfig = allData.listas || [];
+     
       if (listasConfig.length === 0) return;
-
+       let nonFreeCardIndex = 0;
       listasConfig.forEach((item) => {
         const rawCatName = (item.Category || item.category || item.name || "").trim();
         const catNameLower = rawCatName.toLowerCase();
