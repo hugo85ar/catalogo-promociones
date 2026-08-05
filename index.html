@@ -494,7 +494,7 @@
         .catch(err => console.error('Error al cargar datos:', err));
     });
 
-    function initApp(data) {
+   function initApp(data) {
       const urlParams = new URLSearchParams(window.location.search);
       const modo = urlParams.get('modo');
 
@@ -510,7 +510,7 @@
 
       allData = data;
 
-      // Configuración general
+      // Configuración general de la hoja Configuración
       const config = data.config || {};
       if (config.backgroundColor) {
         document.body.style.backgroundColor = config.backgroundColor;
@@ -551,7 +551,7 @@
       };
     }
 
-    function renderHome() {
+function renderHome() {
       document.getElementById("category-header").style.display = "none";
       document.getElementById("hero").style.display = "flex";
       renderHeroSection();
@@ -563,7 +563,7 @@
       const listasConfig = allData.listas || [];
       if (listasConfig.length === 0) return;
 
-      listasConfig.forEach((item, index) => {
+      listasConfig.forEach((item) => {
         const rawCatName = (item.Category || item.name || "").trim();
         const catNameLower = rawCatName.toLowerCase();
         const displayTitle = item.Titulo || item.title || rawCatName;
@@ -595,12 +595,6 @@
             buyUrlContado: item.buyUrlContado || item.url || item.link || "#"
           };
 
-          // Asegurar que tenga el link correcto para el botón del curso gratuito
-          if (!productPayload.buyUrlContado || productPayload.buyUrlContado === "#") {
-            productPayload.buyUrlContado = item.buyUrlContado || item.url || item.link || "#";
-          }
-          productPayload.buttonText = displayCTA || buttonText;
-
           bannerDiv.innerHTML = `
             <img class="course-banner-img" src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
             <div class="course-banner-text">
@@ -615,23 +609,21 @@
           card.className = "card";
 
           card.onclick = () => {
-            // Redirección fija para la landing de packs
-            if (catNameLower.includes("ruta") || catNameLower.includes("pack") || catNameLower.includes("transformación total") || catNameLower.includes("transformacion total")) {
+            // Redirección para la landing de packs
+            if (catNameLower.includes("ruta") || catNameLower.includes("pack")) {
               window.open("https://hugo85ar.github.io/LandingPacks/", "_blank");
               return;
             }
 
-            // Búsqueda flexible de categoría para las soluciones empaquetadas (Segunda carátula)
+            // Búsqueda de categoría para abrir los productos correspondientes
             const matchedCat = allData.categories?.find(c => {
               const cName = (c.name || "").trim().toLowerCase();
-              return cName === catNameLower || cName.includes(catNameLower) || catNameLower.includes(cName) || cName.includes("suscripción") || cName.includes("suscripcion");
+              return cName === catNameLower || cName.includes(catNameLower) || catNameLower.includes(cName);
             });
 
             if (matchedCat) {
               matchedCat.buttonText = buttonText;
               renderCategoryView(matchedCat);
-            } else {
-              console.warn("No se encontró categoría para:", rawCatName);
             }
           };
 
