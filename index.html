@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -511,12 +510,14 @@
 
       allData = data;
 
-      if (data.config?.backgroundColor) {
-        document.body.style.backgroundColor = data.config.backgroundColor;
+      // Configuración general
+      const config = data.config || {};
+      if (config.backgroundColor) {
+        document.body.style.backgroundColor = config.backgroundColor;
       }
 
-      if (data.config?.whatsappUrl) {
-        document.getElementById("whatsapp-btn").href = data.config.whatsappUrl;
+      if (config.whatsappUrl) {
+        document.getElementById("whatsapp-btn").href = config.whatsappUrl;
       }
 
       renderHome();
@@ -536,6 +537,13 @@
       const heroConfig = allData.hero || allData.config || {};
       document.getElementById("hero-title").textContent = heroConfig.titulo || heroConfig.title || "Bienvenido";
       document.getElementById("hero-desc").textContent = heroConfig.subtitulo || heroConfig.subtitle || "";
+      
+      // Aplicar imagen de fondo desde la configuración de Apps Script
+      const bgImg = heroConfig.imageUrl || heroConfig.imagenFondo || heroConfig.image;
+      if (bgImg) {
+        document.getElementById("hero").style.backgroundImage = `url('${bgImg}')`;
+      }
+
       const heroBtn = document.getElementById("hero-btn");
       heroBtn.textContent = heroConfig.ctaText || "Ver cursos";
       heroBtn.onclick = () => {
@@ -584,8 +592,14 @@
             detail: displaySubtitle,
             image: displayImg,
             buttonText: buttonText,
-            buyUrlContado: item.buyUrlContado || item.url || "#"
+            buyUrlContado: item.buyUrlContado || item.url || item.link || "#"
           };
+
+          // Asegurar que tenga el link correcto para el botón del curso gratuito
+          if (!productPayload.buyUrlContado || productPayload.buyUrlContado === "#") {
+            productPayload.buyUrlContado = item.buyUrlContado || item.url || item.link || "#";
+          }
+          productPayload.buttonText = displayCTA || buttonText;
 
           bannerDiv.innerHTML = `
             <img class="course-banner-img" src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'">
@@ -601,14 +615,16 @@
           card.className = "card";
 
           card.onclick = () => {
-            if (index === 1 || catNameLower.includes("ruta") || catNameLower.includes("pack")) {
+            // Redirección fija para la landing de packs
+            if (catNameLower.includes("ruta") || catNameLower.includes("pack") || catNameLower.includes("transformación total") || catNameLower.includes("transformacion total")) {
               window.open("https://hugo85ar.github.io/LandingPacks/", "_blank");
               return;
             }
 
+            // Búsqueda flexible de categoría para las soluciones empaquetadas (Segunda carátula)
             const matchedCat = allData.categories?.find(c => {
               const cName = (c.name || "").trim().toLowerCase();
-              return cName === catNameLower || cName.includes(catNameLower) || catNameLower.includes(cName);
+              return cName === catNameLower || cName.includes(catNameLower) || catNameLower.includes(cName) || cName.includes("suscripción") || cName.includes("suscripcion");
             });
 
             if (matchedCat) {
@@ -675,7 +691,6 @@
           buttonText: prodButtonText
         };
 
-        // Asignación segura con event listener para evitar errores de sintaxis por caracteres especiales
         card.addEventListener('click', () => {
           openModal(productWithButton);
         });
@@ -714,7 +729,6 @@
         btnContado.style.display = "none";
       }
 
-      // Control opcional de cuotas si existen en el objeto
       const btn3 = document.getElementById("modal-buy-3cuotas");
       if (product.buyUrl3Cuotas) {
         btn3.href = product.buyUrl3Cuotas;
@@ -742,8 +756,3 @@
 
 </body>
 </html>
---
-
-Hugo Alvigini
-Proyectos y Productividad con Google y GAS
-Enlaces de contacto y más!!
