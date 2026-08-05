@@ -593,37 +593,41 @@
           const card = document.createElement("div");
           card.className = "card";
 
-          card.onclick = () => {
-            const titleLower = displayTitle.toLowerCase();
+      card.onclick = () => {
+            const titleLower = (displayTitle || "").trim().toLowerCase();
+            const catNameLower = (rawCatName || "").trim().toLowerCase();
 
             // 1. Si es la Carátula 1, redirige directamente a la landing externa de Packs
-            if (catNameLower.includes("ruta") || titleLower.includes("transformación") || titleLower.includes("transformacion")) {
+            if (catNameLower.includes("ruta") || titleLower.includes("transformación") || titleLower.includes("transformacion") || titleLower.includes("packs")) {
               window.open("https://hugo85ar.github.io/LandingPacks/", "_blank");
               return;
             }
 
-            // 2. Si es la Carátula 2, abre la categoría interna de Soluciones Empaquetadas
-            let targetCategoryName = "";
-            if (catNameLower.includes("suscripción") || catNameLower.includes("suscripcion") || titleLower.includes("riendas")) {
-              targetCategoryName = "Soluciones empaquetadas (Soluciones con Suscripción mensual)";
-            } else {
-              targetCategoryName = rawCatName;
-            }
-
+            // 2. Búsqueda inteligente y flexible para la Carátula 2 (Suscripción / Soluciones / Riendas)
             const matchedCat = allData.categories?.find(c => {
               const cName = (c.name || "").trim().toLowerCase();
-              return cName === targetCategoryName.toLowerCase() || cName.includes(targetCategoryName.toLowerCase());
+              return (
+                cName.includes("suscripción") || 
+                cName.includes("suscripcion") || 
+                cName.includes("empaquetadas") ||
+                cName.includes(catNameLower) ||
+                catNameLower.includes(cName)
+              );
             });
 
             if (matchedCat) {
               matchedCat.buttonText = buttonText;
               renderCategoryView(matchedCat);
             } else {
-              console.warn("Categoría no encontrada:", targetCategoryName);
+              console.warn("Categoría no encontrada para:", rawCatName, titleLower);
+              // Plan de emergencia: si por algo no la halla, abre la primera categoría disponible para que no quede tildado
+              if (allData.categories && allData.categories.length > 0) {
+                renderCategoryView(allData.categories[0]);
+              }
             }
           };
 
-          // AQUÍ ESTÁ EL CAMBIO: Si la imagen ya tiene el texto integrado, solo mostramos la imagen limpia sin el overlay estorbo.
+          // Renderizado limpio de la imagen sin textos superpuestos molestos
           card.innerHTML = `
             <img src="${displayImg}" alt="${displayTitle}" onerror="this.src='${FALLBACK_IMG}'" style="width: 100%; display: block; border-radius: 8px;">
           `;
@@ -631,7 +635,6 @@
         }
       });
     }
-
   
     function renderCategoryView(category) {
       document.getElementById("hero").style.display = "none";
