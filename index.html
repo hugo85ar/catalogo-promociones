@@ -527,92 +527,87 @@ function initApp(data) {
 
   function renderHeroSection() {
 
-  const cfgSource =
-    allData.config ||
-    allData.configuracion ||
-    allData.hero ||
-    {};
+  const config =
+    allData.config || {};
 
-  let heroConfig = {};
 
-  if (Array.isArray(cfgSource)) {
-
-    heroConfig = cfgSource[0] || {};
-
-  } else if (
-    typeof cfgSource === "object" &&
-    cfgSource !== null
-  ) {
-
-    heroConfig = cfgSource;
-
-  }
-
+  // =====================================================
+  // IMAGEN DE FONDO
+  // =====================================================
 
   const bgImg =
-    heroConfig.C2 ||
-    heroConfig.c2 ||
-    heroConfig.C3 ||
-    heroConfig.c3 ||
-    heroConfig.imagenFondo ||
-    heroConfig.imageUrl ||
-    heroConfig.image ||
+    config.heroBackgroundImage ||
     "https://res.cloudinary.com/dlnrsadbc/image/upload/v1762866318/Bienvenido_1_cqim8n.png";
-
-
-  document.getElementById("hero-title").textContent =
-    heroConfig.titulo ||
-    heroConfig.title ||
-    "Bienvenido";
-
-
-  document.getElementById("hero-desc").textContent =
-    heroConfig.subtitulo ||
-    heroConfig.subtitle ||
-    heroConfig.descripcion ||
-    "Explora las herramientas y sistemas diseñados para escalar tu negocio.";
 
 
   document.getElementById("hero").style.backgroundImage =
     `url('${bgImg}')`;
 
 
-  const heroBtn =
+  // =====================================================
+  // PRODUCTO ESTRELLA
+  // =====================================================
+
+  const featured =
+    allData.featuredProduct;
+
+
+  const title =
+    document.getElementById("hero-title");
+
+  const desc =
+    document.getElementById("hero-desc");
+
+  const btn =
     document.getElementById("hero-btn");
 
 
-  heroBtn.textContent =
-    heroConfig.ctaText ||
-    "Ver cursos";
+  if (featured) {
+
+    title.textContent =
+      featured.name || "Producto destacado";
+
+
+    desc.textContent =
+      featured.detail || "";
+
+
+    btn.textContent =
+      "Más información";
+
+
+  } else {
+
+    title.textContent =
+      "Bienvenido";
+
+
+    desc.textContent =
+      "Explora las herramientas y sistemas diseñados para escalar tu negocio.";
+
+
+    btn.textContent =
+      "Ver cursos";
+
+  }
 
 
   // =====================================================
-  // BOTÓN "VER CURSOS"
-  // BUSCA EL PRODUCTO MARCADO EN COLUMNA N
+  // BOTÓN DEL PRODUCTO ESTRELLA
   // =====================================================
 
-  heroBtn.onclick = () => {
+  btn.onclick = () => {
 
-    const featuredProduct =
-      allData.featuredProduct;
-
-
-    if (featuredProduct) {
+    if (featured) {
 
       openModal({
-        ...featuredProduct,
-        buttonText: "Más información"
+
+        ...featured,
+
+        buttonText:
+          "Más información"
+
       });
-
-    } else {
-
-      console.warn(
-        "No se encontró ningún Producto Estrella en columna N."
-      );
-
-      alert(
-        "No hay ningún producto marcado como Producto Estrella."
-      );
 
     }
 
@@ -620,46 +615,146 @@ function initApp(data) {
 
 }
 
+function renderHome() {
 
-  function renderHome() {
+  // =====================================================
+  // MOSTRAR HERO
+  // =====================================================
 
-  // Mostrar Hero
   document.getElementById("hero").style.display = "flex";
 
-  // Ocultar navegación
+
+  // =====================================================
+  // OCULTAR NAVEGACIÓN
+  // =====================================================
+
   document.getElementById("nav-bar").style.display = "none";
 
-  // Ocultar encabezado de categoría
   document.getElementById("category-header").style.display = "none";
 
-  // Limpiar productos
+
+  // =====================================================
+  // GRID
+  // =====================================================
+
   const grid =
     document.getElementById("grid-container");
 
   grid.innerHTML = "";
 
-  // Mostrar categorías
+
+  // =====================================================
+  // 1. BANNER CURSO GRATUITO
+  // =====================================================
+
+  const freeCourse =
+    allData.freeCourse;
+
+
+  if (freeCourse) {
+
+    const banner =
+      document.createElement("div");
+
+    banner.className =
+      "course-banner-wrapper";
+
+
+    banner.innerHTML = `
+
+      <img
+        class="course-banner-img"
+        src="${freeCourse.image || FALLBACK_IMG}"
+        alt="${freeCourse.name || "Curso gratuito"}"
+        onerror="this.src='${FALLBACK_IMG}'"
+      >
+
+      <div class="course-banner-text">
+
+        <div class="course-banner-title">
+          ${freeCourse.name || ""}
+        </div>
+
+        <div class="course-banner-desc">
+          ${freeCourse.detail || ""}
+        </div>
+
+        <button
+          class="btn-primary"
+          id="free-course-btn"
+        >
+          ${freeCourse.offerNote || "Reservá tu cupo"}
+        </button>
+
+      </div>
+
+    `;
+
+
+    grid.appendChild(banner);
+
+
+    const freeCourseBtn =
+      banner.querySelector(
+        "#free-course-btn"
+      );
+
+
+    freeCourseBtn.addEventListener(
+      "click",
+      () => {
+
+        openModal({
+
+          ...freeCourse,
+
+          buttonText:
+            freeCourse.offerNote ||
+            "Reservá tu cupo"
+
+        });
+
+      }
+    );
+
+  }
+
+
+  // =====================================================
+  // 2. CATEGORÍAS
+  // =====================================================
+
   const categories =
     allData.categories || [];
 
+
   categories.forEach(category => {
 
-    if (!category.products ||
-        category.products.length === 0) {
+    if (
+      !category ||
+      !category.products ||
+      category.products.length === 0
+    ) {
+
       return;
+
     }
+
 
     const imageUrl =
       category.image ||
       category.products[0]?.image ||
       FALLBACK_IMG;
 
+
     const card =
       document.createElement("div");
 
     card.className = "card";
 
+
     card.innerHTML = `
+
       <img
         src="${imageUrl}"
         alt="${category.name}"
@@ -673,64 +768,63 @@ function initApp(data) {
         </div>
 
         <div class="card-subtitle">
-          ${category.products.length} productos
+          ${
+            category.type === "external"
+              ? "Ver catálogo"
+              : `${category.products.length} servicios`
+          }
         </div>
 
       </div>
+
     `;
 
-    card.addEventListener("click", () => {
-      renderCategoryView(category);
-    });
+
+    // ===================================================
+    // CLICK
+    // ===================================================
+
+    card.addEventListener(
+      "click",
+      () => {
+
+        // -----------------------------------------------
+        // PACKS → LANDING EXTERNA
+        // -----------------------------------------------
+
+        if (
+          category.type === "external" &&
+          category.url
+        ) {
+
+          window.location.href =
+            category.url;
+
+          return;
+
+        }
+
+
+        // -----------------------------------------------
+        // SOLUCIONES → CATÁLOGO INTERNO
+        // -----------------------------------------------
+
+        renderCategoryView(category);
+
+      }
+    );
+
 
     grid.appendChild(card);
 
   });
 
+
   window.scrollTo(0, 0);
+
 }
 
   
-    function renderCategoryView(category) {
-      document.getElementById("hero").style.display = "none";
-      const catHeader = document.getElementById("category-header");
-      document.getElementById("category-title").textContent = category.name;
-      document.getElementById("category-subtitle").textContent = "Herramientas inteligentes y automatizaciones listas para usar en tu negocio.";
-      catHeader.style.display = "flex";
-      document.getElementById("nav-bar").style.display = "flex";
-
-      const grid = document.getElementById("grid-container");
-      grid.innerHTML = "";
-
-      const categoryButtonText = category.buttonText || "Más información";
-
-      category.products?.forEach(prod => {
-        const card = document.createElement("div");
-        card.className = "card";
-
-        const productWithButton = {
-          ...prod,
-          buttonText: categoryButtonText
-        };
-
-        card.addEventListener('click', () => {
-          openModal(productWithButton);
-        });
-
-        card.innerHTML = `
-          <img src="${prod.image || prod.imageUrl || FALLBACK_IMG}" alt="${prod.name}" onerror="this.src='${FALLBACK_IMG}'">
-          <div class="card-content">
-            <div class="card-title">${prod.name}</div>
-            <div class="card-subtitle">${prod.detail || prod.description || ''}</div>
-          </div>
-        `;
-
-        grid.appendChild(card);
-      });
-
-      window.scrollTo(0, 0);
-    }
-
     function openModal(product) {
       const modal = document.getElementById("modal");
       document.getElementById("modal-img").src = product.image || product.imageUrl || FALLBACK_IMG;
