@@ -66,7 +66,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(to top, var(--bg-color), rgba(20,20,20,0.4) 50%);
+      background: linear-gradient(to top, var(--bg-color), rgba(20,20,20,0.3) 50%);
     }
 
     .hero-content {
@@ -495,51 +495,33 @@
     });
 
     function initApp(data) {
-      const urlParams = new URLSearchParams(window.location.search);
-      const modo = urlParams.get('modo');
-
-      if (modo === 'clientes' && data.categories) {
-        data.categories = data.categories.map(cat => {
-          cat.products = cat.products.filter(prod => {
-            const nombreProd = (prod.name || "").toLowerCase();
-            return !nombreProd.includes("gratis") && !nombreProd.includes("gratuito");
-          });
-          return cat;
-        }).filter(cat => cat.products.length > 0);
-      }
-
       allData = data;
 
-      // Configuración general desde la hoja Configuración
-      const config = data.config || {};
-      if (config.backgroundColor) {
-        document.body.style.backgroundColor = config.backgroundColor;
+      // Buscar configuración general en cualquiera de las posibles estructuras que devuelva el Sheet
+      const config = data.config || (Array.isArray(data.configuracion) ? data.configuracion[0] : {}) || {};
+      
+      const bgColor = config.backgroundColor || config.colorFondo || config.fondo;
+      if (bgColor) {
+        document.body.style.backgroundColor = bgColor;
       }
 
-      if (config.whatsappUrl) {
-        document.getElementById("whatsapp-btn").href = config.whatsappUrl;
+      const waUrl = config.whatsappUrl || config.whatsapp || config.wa;
+      if (waUrl) {
+        document.getElementById("whatsapp-btn").href = waUrl;
       }
 
       renderHome();
     }
 
-    function getCategoryButtonText(categoryName) {
-      const listasConfig = allData.listas || [];
-      const normalizedName = (categoryName || "").trim().toLowerCase();
-      const item = listasConfig.find(item => {
-        const name = (item.Category || item.name || "").trim().toLowerCase();
-        return name === normalizedName || name.includes(normalizedName) || normalizedName.includes(name);
-      });
-      return item?.BotonTexto || item?.botonTexto || item?.buttonText || "Más información";
-    }
-
     function renderHeroSection() {
-      const heroConfig = allData.hero || allData.config || {};
-      document.getElementById("hero-title").textContent = heroConfig.titulo || heroConfig.title || "Bienvenido";
-      document.getElementById("hero-desc").textContent = heroConfig.subtitulo || heroConfig.subtitle || "";
+      // Buscar la configuración del hero por cualquier nombre de propiedad posible (incluyendo celda C2 o solapa hero/config)
+      const heroConfig = allData.hero || allData.config || (Array.isArray(allData.listas) ? allData.listas[0] : {}) || {};
       
-      // Tomar la imagen de fondo desde la celda de configuración (ej. C2)
-      const bgImg = heroConfig.imageUrl || heroConfig.imagenFondo || heroConfig.image || heroConfig.fondo;
+      document.getElementById("hero-title").textContent = heroConfig.titulo || heroConfig.title || "Bienvenido";
+      document.getElementById("hero-desc").textContent = heroConfig.subtitulo || heroConfig.subtitle || heroConfig.descripcion || "";
+      
+      // Capturar la imagen de fondo desde C2 u otras variantes
+      const bgImg = heroConfig.imageUrl || heroConfig.imagenFondo || heroConfig.image || heroConfig.fondo || heroConfig.C2;
       if (bgImg) {
         document.getElementById("hero").style.backgroundImage = `url('${bgImg}')`;
       }
@@ -564,14 +546,16 @@
       if (listasConfig.length === 0) return;
 
       listasConfig.forEach((item) => {
-        const rawCatName = (item.Category || item.name || "").trim();
+        const rawCatName = (item.Category || item.category || item.name || "").trim();
         const catNameLower = rawCatName.toLowerCase();
         const displayTitle = item.Titulo || item.title || rawCatName;
-        const displaySubtitle = item.Subtitulo || item.subtitulo || item.subtitle || '';
-        const displayImg = item.ImageUrl || item.image || FALLBACK_IMG;
+        const displaySubtitle = item.Subtitulo || item.subtitulo || item.subtitle || item.descripcion || '';
+        const displayImg = item.ImageUrl || item.image || item.imagen || FALLBACK_IMG;
         const displayCTA = item.CTA || item.cta || "Inscribirse";
         const buttonText = item.BotonTexto || item.botonTexto || item.buttonText || "Más información";
-        const isFree = catNameLower.includes("gratis") || catNameLower.includes("gratuito");
+        
+        // Detección precisa de curso gratuito / pack 3 principal
+        const isFree = catNameLower.includes("gratis") || catNameLower.includes("gratuito") || displayTitle.toLowerCase().includes("gratis");
 
         if (isFree) {
           let freeProduct = null;
@@ -587,15 +571,14 @@
           const bannerDiv = document.createElement("div");
           bannerDiv.className = "course-banner-wrapper";
 
-          // Enlace y datos limpios para el banner de curso gratuito
           const productPayload = freeProduct ? { ...freeProduct } : {
             name: displayTitle,
             detail: displaySubtitle,
             image: displayImg
           };
 
-          // Asignar explícitamente el link de inscripción proveniente del sheet (item.url o item.buyUrlContado)
-          productPayload.buyUrlContado = item.buyUrlContado || item.url || item.link || productPayload.buyUrlContado || "#";
+          // Forzar la URL de inscripción correcta del curso gratuito
+          productPayload.buyUrlContado = item.buyUrlContado || item.url || item.link || "https://hugo85ar.github.io/formulario-curso-sheets/";
           productPayload.buttonText = displayCTA;
 
           bannerDiv.innerHTML = `
@@ -612,23 +595,24 @@
           card.className = "card";
 
           card.onclick = () => {
-            // Redirección para la landing de packs
+            // 1) Si es la carátula de Landing Packs
             if (catNameLower.includes("ruta") || catNameLower.includes("pack") || catNameLower.includes("transformación total") || catNameLower.includes("transformacion total")) {
               window.open("https://hugo85ar.github.io/LandingPacks/", "_blank");
               return;
             }
 
-            // Búsqueda robusta para las Soluciones empaquetadas estilo Netflix
+            // 2) Si es la segunda carátula: Soluciones empaquetadas
+            const targetCategoryName = "Soluciones empaquetadas (Soluciones con Suscripción mensual)";
             const matchedCat = allData.categories?.find(c => {
               const cName = (c.name || "").trim().toLowerCase();
-              return cName === catNameLower || cName.includes(catNameLower) || catNameLower.includes(cName) || cName.includes("suscripción") || cName.includes("suscripcion");
+              return cName === targetCategoryName.toLowerCase() || cName.includes("suscripción") || cName.includes("suscripcion");
             });
 
             if (matchedCat) {
               matchedCat.buttonText = buttonText;
               renderCategoryView(matchedCat);
             } else {
-              console.warn("No se encontró categoría para:", rawCatName);
+              console.warn("No se encontró la categoría de soluciones empaquetadas");
             }
           };
 
@@ -648,20 +632,14 @@
       document.getElementById("hero").style.display = "none";
       const catHeader = document.getElementById("category-header");
       document.getElementById("category-title").textContent = category.name;
-      document.getElementById("category-subtitle").textContent = `Explora los recursos disponibles en esta sección.`;
+      document.getElementById("category-subtitle").textContent = "Herramientas inteligentes y automatizaciones listas para usar en tu propio negocio.";
       catHeader.style.display = "flex";
       document.getElementById("nav-bar").style.display = "flex";
 
       const grid = document.getElementById("grid-container");
       grid.innerHTML = "";
 
-      const categoryButtonText = category.buttonText || getCategoryButtonText(category.name);
-
-      if (category.products) {
-        category.products.sort((a, b) => {
-          return (a.name || "").localeCompare(b.name || "", undefined, { numeric: true });
-        });
-      }
+      const categoryButtonText = category.buttonText || "Más información";
 
       category.products?.forEach(prod => {
         const card = document.createElement("div");
@@ -669,7 +647,7 @@
 
         const productWithButton = {
           ...prod,
-          buttonText: prod.buttonText || categoryButtonText || "Más información"
+          buttonText: categoryButtonText
         };
 
         card.addEventListener('click', () => {
@@ -680,7 +658,7 @@
           <img src="${prod.image || prod.imageUrl || FALLBACK_IMG}" alt="${prod.name}" onerror="this.src='${FALLBACK_IMG}'">
           <div class="card-content">
             <div class="card-title">${prod.name}</div>
-            <div class="card-subtitle">${prod.detail || ''}</div>
+            <div class="card-subtitle">${prod.detail || prod.description || ''}</div>
           </div>
         `;
 
@@ -710,21 +688,12 @@
         btnContado.style.display = "none";
       }
 
-      const btn3 = document.getElementById("modal-buy-3cuotas");
-      if (product.buyUrl3Cuotas) {
-        btn3.href = product.buyUrl3Cuotas;
-        btn3.style.display = "inline-flex";
-      } else {
-        btn3.style.display = "none";
-      }
+      // Ocultar cuotas si no aplican
+      document.getElementById("modal-buy-3cuotas").style.display = product.buyUrl3Cuotas ? "inline-flex" : "none";
+      if (product.buyUrl3Cuotas) document.getElementById("modal-buy-3cuotas").href = product.buyUrl3Cuotas;
 
-      const btn6 = document.getElementById("modal-buy-6cuotas");
-      if (product.buyUrl6Cuotas) {
-        btn6.href = product.buyUrl6Cuotas;
-        btn6.style.display = "inline-flex";
-      } else {
-        btn6.style.display = "none";
-      }
+      document.getElementById("modal-buy-6cuotas").style.display = product.buyUrl6Cuotas ? "inline-flex" : "none";
+      if (product.buyUrl6Cuotas) document.getElementById("modal-buy-6cuotas").href = product.buyUrl6Cuotas;
 
       modal.classList.add("active");
     }
