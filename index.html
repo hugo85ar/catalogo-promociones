@@ -591,12 +591,17 @@
           card.className = "card";
 
       card.onclick = () => {
-            let targetCategoryName = "";
+            const titleLower = displayTitle.toLowerCase();
 
-            // Mapeo directo y seguro según el título de la tarjeta en la home
-            if (catNameLower.includes("ruta") || catNameLower.includes("pack") || displayTitle.toLowerCase().includes("transformación") || displayTitle.toLowerCase().includes("transformacion")) {
-              targetCategoryName = "Packs & Programas Integrales";
-            } else if (catNameLower.includes("suscripción") || catNameLower.includes("suscripcion") || catNameLower.includes("riendas") || displayTitle.toLowerCase().includes("riemdas")) {
+            // 1. Si es la Carátula 1, redirige directamente a la landing externa de Packs
+            if (catNameLower.includes("ruta") || titleLower.includes("transformación") || titleLower.includes("transformacion")) {
+              window.open("https://hugo85ar.github.io/LandingPacks/", "_blank");
+              return;
+            }
+
+            // 2. Si es la Carátula 2, abre la categoría interna de Soluciones Empaquetadas
+            let targetCategoryName = "";
+            if (catNameLower.includes("suscripción") || catNameLower.includes("suscripcion") || titleLower.includes("riendas")) {
               targetCategoryName = "Soluciones empaquetadas (Soluciones con Suscripción mensual)";
             } else {
               targetCategoryName = rawCatName;
