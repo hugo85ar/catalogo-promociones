@@ -692,13 +692,10 @@ function renderHome() {
       );
 
 
-    freeCourseBtn.addEventListener("click", () => {
+  freeCourseBtn.addEventListener("click", () => {
   if(window.fbq) fbq('track', 'Lead', {content_name: freeCourse.name, content_category: 'Gratuito Banner'});
-  if(window.fbq) fbq('track', 'ViewContent', {content_name: category.name || prod.name});     
   openModal({...freeCourse, buttonText: freeCourse.offerNote || "Reservá tu cupo"});
 });
-    );
-
   }
 
 
@@ -894,7 +891,7 @@ card.addEventListener("click", () => {
       document.getElementById("modal-desc").textContent = product.detail || product.description || "";
 
       const btnContado = document.getElementById("modal-buy-contado");
-      const mainUrl = product.buyUrlContado || product.url || product.link;
+      const mainUrl = product.buyUrlContado || product.url || product.link || (product.name && product.name.toLowerCase().includes("gratuito") ? FREE_COURSE_FORM_URL : null);
      
       if (mainUrl) {
         btnContado.href = mainUrl;
