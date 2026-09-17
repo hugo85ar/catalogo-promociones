@@ -3,766 +3,143 @@
 <head>
   <base target="_top" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
- 
-  <!-- META PIXEL -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-
-  fbq('init', '2189151328193841');
-  fbq('track', 'PageView');
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src='https://connect.'+'facebook.net/en_US/fbevents.js';s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script');
+  fbq('init','2189151328193841');fbq('track','PageView');
   </script>
-
-  <noscript>
-    <img
-      height="1"
-      width="1"
-      style="display:none"
-      src="https://www.facebook.com/tr?id=2189151328193841&ev=PageView&noscript=1"
-    />
-  </noscript>
-  <!-- FIN META PIXEL -->
- 
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2189151328193841&ev=PageView&noscript=1"/></noscript>
 <style>
-    :root {
-      --bg-color: #141414;
-      --text-color: #e5e5e5;
-      --accent-color: #e50914;
-      --card-bg: #141414;
-    }
-
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      font-family: "Roboto", sans-serif;
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-    }
-
-    /* Hero Section */
-    .hero {
-      height: 55vh;
-      position: relative;
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: flex-end;
-      padding: 30px 4%;
-      margin-bottom: 20px;
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(to top, var(--bg-color), rgba(20,20,20,0.2) 60%);
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 650px;
-      text-align: left;
-    }
-
-    .hero-title {
-      font-size: 2.8rem;
-      font-weight: bold;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
-    }
-
-    .hero-desc {
-      font-size: 1.15rem;
-      margin-bottom: 20px;
-      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
-      line-height: 1.4;
-    }
-
-    .hero-btn {
-      background-color: white;
-      color: black;
-      padding: 12px 28px;
-      border-radius: 4px;
-      font-weight: bold;
-      text-decoration: none;
-      display: inline-block;
-      cursor: pointer;
-      border: none;
-      transition: opacity 0.2s;
-    }
-
-    .hero-btn:hover {
-      opacity: 0.85;
-    }
-   
-    /* Navigation Bar & Category Header */
-    .nav-bar {
-      padding: 10px 4%;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .back-btn {
-      background: transparent;
-      color: white;
-      border: 1px solid white;
-      padding: 6px 18px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .back-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .category-header {
-      padding: 15px 4%;
-      display: none;
-      flex-direction: column;
-      margin-bottom: 15px;
-      background-color: var(--bg-color);
-      border-bottom: 1px solid #333;
-    }
-
-    .category-title {
-      font-size: 2rem;
-      font-weight: bold;
-      margin: 0;
-    }
-
-    .category-subtitle {
-      font-size: 1.05rem;
-      color: #aaa;
-      margin-top: 8px;
-      max-width: 750px;
-    }
-
-    /* Main Container & Grid */
-    .main-container {
-      padding: 0 4% 40px 4%;
-    }
-
-    .grid-container {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-   
-    /* Card Styles corregidos */
-    .card {
-      background-color: #1f1f1f;
-      border-radius: 8px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      position: relative;
-      border: 1px solid #333;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-      border-color: #555;
-    }
-
-    .card img {
-      width: 100%;
-      height: auto;
-      display: block;
-      transition: transform 0.4s ease;
-    }
-
-    .card:hover img {
-      transform: scale(1.03);
-    }
-
-    .card-content {
-      padding: 20px;
-    }
-
-    /* Ajuste para que el overlay no pise de más y se lea perfecto */
-    .card-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(to top, rgba(20, 20, 20, 0.95) 60%, rgba(20, 20, 20, 0.7) 85%, transparent);
-      padding: 25px 20px 18px 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-    }
-
-    .card-title {
-      font-size: 1.25rem;
-      font-weight: bold;
-      color: white;
-      margin-bottom: 6px;
-    }
-
-    .card-subtitle {
-      font-size: 0.9rem;
-      color: #bbb;
-      line-height: 1.3;
-    }
-
-    /* Course Banner Wrapper */
-    .course-banner-wrapper {
-      grid-column: 1 / -1;
-      background-color: #1f1f1f;
-      border-radius: 8px;
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      margin-bottom: 25px;
-      border: 1px solid #333;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-    }
-
-    @media (min-width: 768px) {
-      .course-banner-wrapper {
-        flex-direction: row;
-        text-align: left;
-        align-items: center;
-        padding: 40px;
-      }
-    }
-
-    .course-banner-img {
-      max-width: 280px;
-      height: auto;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      object-fit: contain;
-    }
-
-    @media (min-width: 768px) {
-      .course-banner-img {
-        margin-bottom: 0;
-        margin-right: 40px;
-        max-width: 350px;
-      }
-    }
-
-    .course-banner-text {
-      flex: 1;
-    }
-
-    .course-banner-title {
-      font-size: 1.8rem;
-      font-weight: bold;
-      margin-bottom: 15px;
-      color: white;
-    }
-
-    .course-banner-desc {
-      font-size: 1.1rem;
-      color: #ccc;
-      margin-bottom: 25px;
-      line-height: 1.5;
-    }
-
-    /* Modal */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.85);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s;
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal-content {
-      background: #181818;
-      width: 90%;
-      max-width: 850px;
-      border-radius: 8px;
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      max-height: 90vh;
-      border: 1px solid #333;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: rgba(0, 0, 0, 0.6);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      cursor: pointer;
-      font-size: 20px;
-      z-index: 10;
-    }
-
-    .modal-image {
-      width: 100%;
-      height: 280px;
-      object-fit: contain;
-      background-color: #000;
-    }
-
-    .modal-details {
-      padding: 30px;
-      text-align: left;
-      overflow-y: auto;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    .modal-title {
-      font-size: 1.8rem;
-      margin-bottom: 10px;
-      color: white;
-    }
-
-    .modal-desc {
-      color: #aaa;
-      margin-bottom: 20px;
-      line-height: 1.5;
-    }
-
-    .modal-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-   
-    .btn-primary {
-      background-color: white;
-      color: black;
-      padding: 12px 30px;
-      border-radius: 4px;
-      text-decoration: none;
-      font-weight: bold;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      transition: opacity 0.2s;
-      border: none;
-      font-size: 1rem;
-    }
-
-    .btn-primary:hover {
-      opacity: 0.85;
-    }
-   
-    /* WhatsApp Float */
-    .whatsapp-float {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #25D366;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: bold;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-      z-index: 900;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-   
-    /* Desktop Grid */
-    @media (min-width: 768px) {
-      .grid-container {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .modal-content {
-        flex-direction: row;
-      }
-
-      .modal-image {
-        width: 50%;
-        height: auto;
-      }
-
-      .modal-details {
-        width: 50%;
-      }
-    }
-  </style>
+:root{--bg:#0A1E1E;--card:#102E2E;--teal:#4EEED8;--orange:#FF6B35;--text:#E8F5F3;--muted:#7AB3AC;--border:rgba(78,238,216,0.15);}
+body{background:radial-gradient(circle at 50% 0%,#143A3A 0%,#0A1E1E 70%);color:var(--text);font-family:"Inter",sans-serif;margin:0;padding:0;overflow-x:hidden;min-height:100vh;}
+.top-logo{text-align:center;padding:28px 20px 12px;}
+.top-logo img{height:80px;width:auto;filter:drop-shadow(0 0 20px rgba(78,238,216,0.3));}
+.hero{height:55vh;min-height:420px;position:relative;background-size:cover;background-position:center;display:flex;align-items:flex-end;padding:30px 4%;margin-bottom:20px;}
+.hero::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(to top,var(--bg),rgba(20,20,20,0.2) 60%);}
+.hero-content{position:relative;z-index:2;max-width:650px;text-align:left;}
+.hero-title{font-size:2.8rem;font-weight:800;margin-bottom:10px;color:#fff;line-height:1.05;}
+.hero-desc{font-size:1.15rem;margin-bottom:20px;color:var(--muted);line-height:1.4;}
+.hero-btn{background:var(--orange);color:#0A1E1E;padding:12px 28px;border-radius:999px;font-weight:800;display:inline-block;cursor:pointer;border:none;box-shadow:0 8px 25px rgba(255,107,53,0.35);}
+.nav-bar{padding:10px 4%;display:flex;align-items:center;gap:10px;}
+.back-btn{background:transparent;color:var(--text);border:1px solid var(--border);padding:6px 18px;border-radius:999px;cursor:pointer;font-size:.95rem;display:flex;align-items:center;gap:5px;}
+.category-header{padding:15px 4%;display:none;flex-direction:column;margin-bottom:15px;background-color:transparent;border-bottom:1px solid var(--border);}
+.category-title{font-size:2rem;font-weight:800;margin:0;color:var(--teal);}
+.category-subtitle{font-size:1.05rem;color:var(--muted);margin-top:8px;max-width:750px;}
+.main-container{padding:0 4% 40px 4%;}
+.grid-container{display:grid;grid-template-columns:1fr;gap:20px;}
+.card{background-color:var(--card);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;position:relative;border:1px solid var(--border);display:flex;flex-direction:column;isolation:isolate;}
+.card:hover{transform:translateY(-6px);box-shadow:0 10px 20px rgba(0,0,0,0.5);border-color:rgba(78,238,216,0.35);}
+.card img{width:100%;height:240px;object-fit:cover;object-position:center top;display:block;flex-shrink:0;transition:none;}
+.card-content{padding:20px;background:var(--card);position:relative;z-index:2;}
+.card-title{font-size:1.25rem;font-weight:800;color:#fff;margin-bottom:6px;}
+.card-subtitle{font-size:.9rem;color:var(--muted);line-height:1.3;}
+.course-banner-wrapper{grid-column:1 / -1;background-color:var(--card);border-radius:16px;padding:30px;display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:25px;border:1px dashed rgba(78,238,216,0.3);box-shadow:0 4px 10px rgba(0,0,0,0.4);}
+@media(min-width:768px){.course-banner-wrapper{flex-direction:row;text-align:left;align-items:center;padding:40px;}}
+.course-banner-img{max-width:280px;height:auto;max-height:200px;object-fit:contain;border-radius:12px;margin-bottom:20px;}
+@media(min-width:768px){.course-banner-img{margin-bottom:0;margin-right:40px;max-width:350px;}}
+.course-banner-text{flex:1;}
+.course-banner-title{font-size:1.8rem;font-weight:800;margin-bottom:15px;color:var(--teal);}
+.course-banner-desc{font-size:1.1rem;color:var(--muted);margin-bottom:25px;line-height:1.5;}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);display:flex;justify-content:center;align-items:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-overlay.active{opacity:1;pointer-events:auto;}
+.modal-content{background:var(--card);width:90%;max-width:850px;border-radius:16px;overflow:hidden;position:relative;display:flex;flex-direction:column;max-height:90vh;border:1px solid rgba(78,238,216,0.25);}
+.modal-close{position:absolute;top:15px;right:15px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:20px;z-index:10;}
+.modal-image{width:100%;height:280px;object-fit:contain;background-color:#000;}
+.modal-details{padding:30px;text-align:left;overflow-y:auto;width:100%;box-sizing:border-box;}
+.modal-title{font-size:1.8rem;margin-bottom:10px;color:#fff;font-weight:800;}
+.modal-desc{color:var(--muted);margin-bottom:20px;line-height:1.5;}
+.modal-actions{display:flex;flex-direction:column;gap:12px;}
+.btn-primary{background-color:var(--orange);color:#0A1E1E;padding:12px 30px;border-radius:999px;text-decoration:none;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;border:none;font-size:1rem;}
+.whatsapp-float{position:fixed;bottom:20px;right:20px;background-color:#25D366;color:#fff;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:800;box-shadow:0 4px 10px rgba(0,0,0,0.4);z-index:900;display:flex;align-items:center;gap:8px;}
+@media(min-width:768px){.grid-container{grid-template-columns:repeat(3,1fr);}.modal-content{flex-direction:row;}.modal-image{width:50%;height:auto;}.modal-details{width:50%;}.card img{height:220px;}}
+</style>
 </head>
-
 <body>
-
-  <!-- Hero Section -->
-  <div id="hero" class="hero" style="display: flex;">
-    <div class="hero-content">
-      <h1 id="hero-title" class="hero-title">Bienvenido</h1>
-      <p id="hero-desc" class="hero-desc">Explora las herramientas y sistemas diseñados para escalar tu negocio.</p>
-      <button id="hero-btn" class="hero-btn">Ver cursos</button>
-    </div>
-  </div>
-
-  <!-- Navigation Bar & Category Header -->
-  <div id="nav-bar" class="nav-bar" style="display: none;">
-    <button class="back-btn" onclick="renderHome()">← Volver</button>
-  </div>
-
-  <div id="category-header" class="category-header">
-    <h2 id="category-title" class="category-title"></h2>
-    <p id="category-subtitle" class="category-subtitle"></p>
-  </div>
-
-  <!-- Main Content Grid -->
-  <div id="main-container" class="main-container">
-    <div id="grid-container" class="grid-container">
-      <!-- Items will be injected here -->
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div id="modal" class="modal-overlay" onclick="closeModal(event)">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <button class="modal-close" onclick="closeModal(event)">×</button>
-      <img id="modal-img" class="modal-image" src="" alt="">
-      <div class="modal-details">
-        <h2 id="modal-title" class="modal-title"></h2>
-        <p id="modal-desc" class="modal-desc"></p>
-        <div class="modal-actions">
-          <a id="modal-buy-contado" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none;"></a>
-          <a id="modal-buy-3cuotas" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none;">Pagar en 3 Cuotas</a>
-          <a id="modal-buy-6cuotas" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none;">Pagar en 6 Cuotas</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- WhatsApp -->
-  <a id="whatsapp-btn" class="whatsapp-float" target="_blank" href="https://wa.me/">
-    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432-.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.8-.384-1.456-.752-.64-.368-1.072-.816-1.312-1.168-.24-.352-.025-.544.128-.704.131-.131.296-.336.448-.504.152-.168.203-.288.304-.496.101-.208.05-.39-.025-.546-.075-.156-.665-1.6-.913-2.192-.24-.58-.48-.5-.656-.51-.17-.01-.365-.01-.56-.01-.192 0-.504.072-.768.352-.264.28-1.008.984-1.008 2.4 0 1.416 1.032 2.784 1.176 2.976.144.192 2.032 3.104 4.928 4.352.688.296 1.224.472 1.64.6.688.224 1.312.192 1.808.116.552-.084 1.704-.696 1.944-1.368.24-.672.24-1.248.168-1.368-.072-.12-.264-.192-.552-.336z"/>
-    </svg>
-    WhatsApp
-  </a>
-
+<div class="top-logo"><img src="https://res.cloudinary.com/dlnrsadbc/image/upload/v1773424062/PROYECTOS_4_y2p2mq.png" alt="Hugo Alvigini"></div>
+<div id="hero" class="hero" style="display:flex;"><div class="hero-content"><h1 id="hero-title" class="hero-title">Bienvenido</h1><p id="hero-desc" class="hero-desc">Explora las herramientas y sistemas diseñados para escalar tu negocio.</p><button id="hero-btn" class="hero-btn">Ver cursos</button></div></div>
+<div id="nav-bar" class="nav-bar" style="display:none;"><button class="back-btn" onclick="renderHome()">← Volver</button></div>
+<div id="category-header" class="category-header"><h2 id="category-title" class="category-title"></h2><p id="category-subtitle" class="category-subtitle"></p></div>
+<div id="main-container" class="main-container"><div id="grid-container" class="grid-container"></div></div>
+<div id="modal" class="modal-overlay" onclick="closeModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><button class="modal-close" onclick="closeModal(event)">×</button><img id="modal-img" class="modal-image" src="" alt=""><div class="modal-details"><h2 id="modal-title" class="modal-title"></h2><p id="modal-desc" class="modal-desc"></p><div class="modal-actions"><a id="modal-buy-contado" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none;"></a><a id="modal-buy-3cuotas" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none;">Pagar en 3 Cuotas</a><a id="modal-buy-6cuotas" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none;">Pagar en 6 Cuotas</a></div></div></div></div>
+<a id="whatsapp-btn" class="whatsapp-float" target="_blank" href="https://wa.me/"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.585 1.961.898 3.03.899 3.181 0 5.769-2.587 5.769-5.766.001-3.18-2.584-5.768-5.763-5.768zm7.693 5.766c-.001 4.244-3.453 7.695-7.692 7.695-1.285 0-2.488-.324-3.516-.892l-4.133 1.083 1.107-4.029c-.631-1.08-1.006-2.338-1.006-3.857 0-4.245 3.451-7.698 7.695-7.698 4.245 0 7.695 3.453 7.695 7.698zm-3.446 2.323c-.191-.095-1.134-.56-1.311-.624-.176-.064-.303-.096-.432-.096-.127.192-.495.624-.605.752-.111.128-.224.144-.415.048-.192-.096-.8-.384-1.456-.752-.64-.368-1.072-.816-1.312-1.168-.24-.352-.025-.544.128-.704.131-.131.296-.336.448-.504.152-.168.203-.288.304-.496.101-.208.05-.39-.025-.546-.075-.156-.665-1.6-.913-2.192-.24-.58-.48-.5-.656-.51-.17-.01-.365-.01-.56-.01-.192 0-.504.072-.768.352-.264.28-1.008.984-1.008 2.4 0 1.416 1.032 2.784 1.176 2.976.144.192 2.032 3.104 4.928 4.352.688.296 1.224.472 1.64.6.688.224 1.312.192 1.808.116.552-.084 1.704-.696 1.944-1.368.24-.672.24-1.248.168-1.368-.072-.12-.264-.192-.552-.336z"/></svg> WhatsApp</a>
 <script>
-    let allData = {};
-    const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxTGQQZWDLXcfMtMbOH9c98PfH5cQgu5lIzK6jw9vBP-9NLR_RlmX28fDSpd92UZbZU/exec";
-    const FALLBACK_IMG = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23222222'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23666666' font-family='Roboto, sans-serif' font-size='20'%3ESin Imagen%3C/text%3E%3C/svg%3E";
-    const FREE_COURSE_FORM_URL = "https://hugo85ar.github.io/Plataforma-de-Cursos/";
-  
-    document.addEventListener("DOMContentLoaded", () => {
-      if (!API_ENDPOINT || API_ENDPOINT.includes("TU_URL")) {
-        console.error("Error: API_ENDPOINT no está configurado.");
-        return;
-      }
-      fetch(API_ENDPOINT)
-        .then(res => res.json())
-        .then(initApp)
-        .catch(err => console.error('Error al cargar datos:', err));
-    });
-
-  
+let allData = {};
+const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbxTGQQZWDLXcfMtMbOH9c98PfH5cQgu5lIzK6jw9vBP-9NLR_RlmX28fDSpd92UZbZU/exec";
+const FALLBACK_IMG = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23222222'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23666666' font-family='Roboto, sans-serif' font-size='20'%3ESin Imagen%3C/text%3E%3C/svg%3E";
+const FREE_COURSE_FORM_URL = "https://hugo85ar.github.io/Plataforma-de-Cursos/";
+document.addEventListener("DOMContentLoaded", () => {
+  if (!API_ENDPOINT || API_ENDPOINT.includes("TU_URL")) { console.error("Error: API_ENDPOINT no está configurado."); return; }
+  fetch(API_ENDPOINT).then(res => res.json()).then(initApp).catch(err => console.error('Error al cargar datos:', err));
+});
 function initApp(data) {
-
   allData = data;
-
   console.log("Datos recibidos:", allData);
-
-  document.body.style.backgroundColor =
-    allData.config?.backgroundColor || "#141414";
-
-  // Configurar WhatsApp
-  const whatsappBtn =
-    document.getElementById("whatsapp-btn");
-
-  if (whatsappBtn && allData.config?.whatsappPhone) {
-
-    whatsappBtn.href =
-      "https://wa.me/" +
-      allData.config.whatsappPhone;
-
-  }
-
+  document.body.style.backgroundColor = allData.config?.backgroundColor || "#0A1E1E";
+  const whatsappBtn = document.getElementById("whatsapp-btn");
+  if (whatsappBtn && allData.config?.whatsappPhone) { whatsappBtn.href = "https://wa.me/" + allData.config.whatsappPhone; }
   renderHeroSection();
-
   renderHome();
-
 }
-
-
-  function renderHeroSection() {
-
-  const config =
-    allData.config || {};
-
-
-  // =====================================================
-  // IMAGEN DE FONDO
-  // =====================================================
-
-  const bgImg =
-    config.heroBackgroundImage ||
-    "https://res.cloudinary.com/dlnrsadbc/image/upload/v1762866318/Bienvenido_1_cqim8n.png";
-
-
-  document.getElementById("hero").style.backgroundImage =
-    `url('${bgImg}')`;
-
-
-  // =====================================================
-  // PRODUCTO ESTRELLA
-  // =====================================================
-
-  const featured =
-    allData.featuredProduct;
-
-
-  const title =
-    document.getElementById("hero-title");
-
-  const desc =
-    document.getElementById("hero-desc");
-
-  const btn =
-    document.getElementById("hero-btn");
-
-
+function renderHeroSection() {
+  const config = allData.config || {};
+  const bgImg = config.heroBackgroundImage || "https://res.cloudinary.com/dlnrsadbc/image/upload/v1762866318/Bienvenido_1_cqim8n.png";
+  document.getElementById("hero").style.backgroundImage = `url('${bgImg}')`;
+  const featured = allData.featuredProduct;
+  const title = document.getElementById("hero-title");
+  const desc = document.getElementById("hero-desc");
+  const btn = document.getElementById("hero-btn");
   if (featured) {
-
-    title.textContent =
-      featured.name || "Producto destacado";
-
-
-    desc.textContent =
-      featured.detail || "";
-
-
-    btn.textContent =
-      "Más información";
-
-
+    title.textContent = featured.name || "Producto destacado";
+    desc.textContent = featured.detail || "";
+    btn.textContent = "Más información";
   } else {
-
-    title.textContent =
-      "Bienvenido";
-
-
-    desc.textContent =
-      "Explora las herramientas y sistemas diseñados para escalar tu negocio.";
-
-
-    btn.textContent =
-      "Ver cursos";
-
+    title.textContent = "Bienvenido";
+    desc.textContent = "Explora las herramientas y sistemas diseñados para escalar tu negocio.";
+    btn.textContent = "Ver cursos";
   }
-
-
-  // =====================================================
-  // BOTÓN DEL PRODUCTO ESTRELLA
-  // =====================================================
   btn.onclick = () => {
     if (featured) {
       if(window.fbq) fbq('track', 'ViewContent', {content_name: featured.name, content_category: 'Hero Pack 3'});
       openModal({...featured, buttonText: "Más información"});
     }
   };
-
-
-
 }
-
 function renderHome() {
-
-  // =====================================================
-  // MOSTRAR HERO
-  // =====================================================
-
   document.getElementById("hero").style.display = "flex";
-
-
-  // =====================================================
-  // OCULTAR NAVEGACIÓN
-  // =====================================================
-
   document.getElementById("nav-bar").style.display = "none";
-
   document.getElementById("category-header").style.display = "none";
-
-
-  // =====================================================
-  // GRID
-  // =====================================================
-
-  const grid =
-    document.getElementById("grid-container");
-
+  const grid = document.getElementById("grid-container");
   grid.innerHTML = "";
-
-
-  // =====================================================
-  // 1. BANNER CURSO GRATUITO
-  // =====================================================
-
-  const freeCourse =
-    allData.freeCourse;
-
-
+  const freeCourse = allData.freeCourse;
   if (freeCourse) {
-
-    const banner =
-      document.createElement("div");
-
-    banner.className =
-      "course-banner-wrapper";
-
-
+    const banner = document.createElement("div");
+    banner.className = "course-banner-wrapper";
     banner.innerHTML = `
-
-      <img
-        class="course-banner-img"
-        src="${freeCourse.image || FALLBACK_IMG}"
-        alt="${freeCourse.name || "Curso gratuito"}"
-        onerror="this.src='${FALLBACK_IMG}'"
-      >
-
+      <img class="course-banner-img" src="${freeCourse.image || FALLBACK_IMG}" alt="${freeCourse.name || "Curso gratuito"}" onerror="this.src='${FALLBACK_IMG}'">
       <div class="course-banner-text">
-
-        <div class="course-banner-title">
-          ${freeCourse.name || ""}
-        </div>
-
-        <div class="course-banner-desc">
-          ${freeCourse.detail || ""}
-        </div>
-
-        <button
-          class="btn-primary"
-          id="free-course-btn"
-        >
-          ${freeCourse.offerNote || "Reservá tu cupo"}
-        </button>
-
-      </div>
-
-    `;
-
-
+        <div class="course-banner-title">${freeCourse.name || ""}</div>
+        <div class="course-banner-desc">${freeCourse.detail || ""}</div>
+        <button class="btn-primary" id="free-course-btn">${freeCourse.offerNote || "Reservá tu cupo"}</button>
+      </div>`;
     grid.appendChild(banner);
-
-
-    const freeCourseBtn =
-      banner.querySelector(
-        "#free-course-btn"
-      );
-
-
-  freeCourseBtn.addEventListener("click", () => {
-  if(window.fbq) fbq('track', 'Lead', {content_name: freeCourse.name, content_category: 'Gratuito Banner'});
-  openModal({...freeCourse, buttonText: freeCourse.offerNote || "Reservá tu cupo"});
-});
+    const freeCourseBtn = banner.querySelector("#free-course-btn");
+    freeCourseBtn.addEventListener("click", () => {
+      if(window.fbq) fbq('track', 'Lead', {content_name: freeCourse.name, content_category: 'Gratuito Banner'});
+      openModal({...freeCourse, buttonText: freeCourse.offerNote || "Reservá tu cupo"});
+    });
   }
-
-
-  // =====================================================
-  // 2. CATEGORÍAS
-  // =====================================================
-
-  const categories =
-    allData.categories || [];
-
-
+  const categories = allData.categories || [];
   categories.forEach(category => {
-
-    if (
-      !category ||
-      !category.products ||
-      category.products.length === 0
-    ) {
-
-      return;
-
-    }
-
-
-    const imageUrl =
-      category.image ||
-      category.products[0]?.image ||
-      FALLBACK_IMG;
-
-
-    const card =
-      document.createElement("div");
-
+    if (!category || !category.products || category.products.length === 0) { return; }
+    const imageUrl = category.image || category.products[0]?.image || FALLBACK_IMG;
+    const card = document.createElement("div");
     card.className = "card";
-
-
     card.innerHTML = `
-
-      <img
-        src="${imageUrl}"
-        alt="${category.name}"
-        onerror="this.src='${FALLBACK_IMG}'"
-      >
-
+      <img src="${imageUrl}" alt="${category.name}" onerror="this.src='${FALLBACK_IMG}'">
       <div class="card-content">
-
-        <div class="card-title">
-          ${category.name}
-        </div>
-
-        <div class="card-subtitle">
-          ${
-            category.type === "external"
-              ? "Ver catálogo"
-              : `${category.products.length} servicios`
-          }
-        </div>
-
-      </div>
-
-    `;
-
-
-    // ===================================================
-    // CLICK
-    // ===================================================
-
+        <div class="card-title">${category.name}</div>
+        <div class="card-subtitle">${category.type === "external" ? "Ver catálogo" : `${category.products.length} servicios`}</div>
+      </div>`;
     card.addEventListener("click", () => {
       if (category.type === "external" && category.url) {
         if(window.fbq) fbq('track', 'ViewContent', {content_name: category.name, content_category: 'Packs Externos'});
@@ -772,166 +149,65 @@ function renderHome() {
       if(window.fbq) fbq('track', 'ViewContent', {content_name: category.name, content_category: 'Soluciones Mensuales'});
       renderCategoryView(category);
     });
-
     grid.appendChild(card);
-
   });
-
-
   window.scrollTo(0, 0);
-
 }
-
-  function renderCategoryView(category) {
-
-  // =====================================================
-  // OCULTAR HERO
-  // =====================================================
-
+function renderCategoryView(category) {
   document.getElementById("hero").style.display = "none";
-
-
-  // =====================================================
-  // MOSTRAR NAVEGACIÓN
-  // =====================================================
-
   document.getElementById("nav-bar").style.display = "flex";
-
-
-  // =====================================================
-  // ENCABEZADO DE CATEGORÍA
-  // =====================================================
-
-  const catHeader =
-    document.getElementById("category-header");
-
-  document.getElementById("category-title").textContent =
-    category.name || "";
-
-
-  document.getElementById("category-subtitle").textContent =
-    "Soluciones diseñadas para mejorar la gestión, productividad y automatización de tu negocio.";
-
-
+  const catHeader = document.getElementById("category-header");
+  document.getElementById("category-title").textContent = category.name || "";
+  document.getElementById("category-subtitle").textContent = "Soluciones diseñadas para mejorar la gestión, productividad y automatización de tu negocio.";
   catHeader.style.display = "flex";
-
-
-  // =====================================================
-  // GRID
-  // =====================================================
-
-  const grid =
-    document.getElementById("grid-container");
-
+  const grid = document.getElementById("grid-container");
   grid.innerHTML = "";
-
-
-  // =====================================================
-  // MOSTRAR PRODUCTOS
-  // =====================================================
-
   (category.products || []).forEach(prod => {
-
-    const card =
-      document.createElement("div");
-
+    const card = document.createElement("div");
     card.className = "card";
-
-
     card.innerHTML = `
-
-      <img
-        src="${prod.image || FALLBACK_IMG}"
-        alt="${prod.name || ""}"
-        onerror="this.src='${FALLBACK_IMG}'"
-      >
-
+      <img src="${prod.image || FALLBACK_IMG}" alt="${prod.name || ""}" onerror="this.src='${FALLBACK_IMG}'">
       <div class="card-content">
-
-        <div class="card-title">
-          ${prod.name || ""}
-        </div>
-
-        <div class="card-subtitle">
-          ${prod.detail || ""}
-        </div>
-
-      </div>
-
-    `;
-
-
-    // ===================================================
-    // CLICK → ABRIR MODAL
-    // ===================================================
-
-card.addEventListener("click", () => {
-  if(window.fbq) fbq('track', 'ViewContent', {content_name: prod.name, content_category: category.name});
-  openModal({
-    ...prod,
-    buttonText: "¡Me interesa!"
-  });
-});
-
-
+        <div class="card-title">${prod.name || ""}</div>
+        <div class="card-subtitle">${prod.detail || ""}</div>
+      </div>`;
+    card.addEventListener("click", () => {
+      if(window.fbq) fbq('track', 'ViewContent', {content_name: prod.name, content_category: category.name});
+      openModal({...prod, buttonText: "¡Me interesa!"});
+    });
     grid.appendChild(card);
-
   });
-
-
   window.scrollTo(0, 0);
-
 }
-
-  
-    function openModal(product) {
-      const modal = document.getElementById("modal");
-      document.getElementById("modal-img").src = product.image || product.imageUrl || FALLBACK_IMG;
-      document.getElementById("modal-title").textContent = product.name || "";
-      document.getElementById("modal-desc").textContent = product.detail || product.description || "";
-
-      const btnContado = document.getElementById("modal-buy-contado");
-      const mainUrl = product.buyUrlContado || product.url || product.link || (product.name && product.name.toLowerCase().includes("gratuito") ? FREE_COURSE_FORM_URL : null);
-     
-      if (mainUrl) {
-        btnContado.href = mainUrl;
-        if (mainUrl.includes("wa.me")) {
-          btnContado.textContent = product.buttonText || "¡Me interesa!";
-        } else {
-          btnContado.textContent = product.buttonText || "Inscribirse";
-        }
-        btnContado.style.display = "inline-flex";
-      } else {
-        btnContado.style.display = "none";
-      }
-
-      document.getElementById("modal-buy-3cuotas").style.display = product.buyUrl3Cuotas ? "inline-flex" : "none";
-      if (product.buyUrl3Cuotas) document.getElementById("modal-buy-3cuotas").href = product.buyUrl3Cuotas;
-
-      document.getElementById("modal-buy-6cuotas").style.display = product.buyUrl6Cuotas ? "inline-flex" : "none";
-      if (product.buyUrl6Cuotas) document.getElementById("modal-buy-6cuotas").href = product.buyUrl6Cuotas;
-
-
-      // CLICKS PARA CHECKOUT
-btnContado.onclick = () => {
-  if(window.fbq){
-    if(product.name.toLowerCase().includes("gratuito")){
-      fbq('track','Lead',{content_name: product.name});
-    } else {
-      fbq('track','InitiateCheckout',{content_name: product.name});
+function openModal(product) {
+  const modal = document.getElementById("modal");
+  document.getElementById("modal-img").src = product.image || product.imageUrl || FALLBACK_IMG;
+  document.getElementById("modal-title").textContent = product.name || "";
+  document.getElementById("modal-desc").textContent = product.detail || product.description || "";
+  const btnContado = document.getElementById("modal-buy-contado");
+  const mainUrl = product.buyUrlContado || product.url || product.link || (product.name && product.name.toLowerCase().includes("gratuito") ? FREE_COURSE_FORM_URL : null);
+  if (mainUrl) {
+    btnContado.href = mainUrl;
+    if (mainUrl.includes("wa.me")) { btnContado.textContent = product.buttonText || "¡Me interesa!"; } else { btnContado.textContent = product.buttonText || "Inscribirse"; }
+    btnContado.style.display = "inline-flex";
+  } else { btnContado.style.display = "none"; }
+  document.getElementById("modal-buy-3cuotas").style.display = product.buyUrl3Cuotas ? "inline-flex" : "none";
+  if (product.buyUrl3Cuotas) document.getElementById("modal-buy-3cuotas").href = product.buyUrl3Cuotas;
+  document.getElementById("modal-buy-6cuotas").style.display = product.buyUrl6Cuotas ? "inline-flex" : "none";
+  if (product.buyUrl6Cuotas) document.getElementById("modal-buy-6cuotas").href = product.buyUrl6Cuotas;
+  btnContado.onclick = () => {
+    if(window.fbq){
+      if(product.name.toLowerCase().includes("gratuito")){ fbq('track','Lead',{content_name: product.name}); } else { fbq('track','InitiateCheckout',{content_name: product.name}); }
     }
-  }
-};
-document.getElementById("modal-buy-3cuotas").onclick = () => { if(window.fbq) fbq('track','InitiateCheckout',{content_name: product.name + ' 3c'}); };
-document.getElementById("modal-buy-6cuotas").onclick = () => { if(window.fbq) fbq('track','InitiateCheckout',{content_name: product.name + ' 6c'}); };
-      modal.classList.add("active");
-    }
-
-    function closeModal(event) {
-      if (event) event.stopPropagation();
-      document.getElementById("modal").classList.remove("active");
-    }
-  </script>
-
+  };
+  document.getElementById("modal-buy-3cuotas").onclick = () => { if(window.fbq) fbq('track','InitiateCheckout',{content_name: product.name + ' 3c'}); };
+  document.getElementById("modal-buy-6cuotas").onclick = () => { if(window.fbq) fbq('track','InitiateCheckout',{content_name: product.name + ' 6c'}); };
+  modal.classList.add("active");
+}
+function closeModal(event) {
+  if (event) event.stopPropagation();
+  document.getElementById("modal").classList.remove("active");
+}
+</script>
 </body>
 </html>
